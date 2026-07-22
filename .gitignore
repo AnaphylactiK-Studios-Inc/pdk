@@ -1,12 +1,13 @@
-# Godot 4+ specific ignores
+# Godot Ignores
 .godot/
 .nomedia
-
-# Godot-specific ignores
 .import/
 export.cfg
 export_credentials.cfg
 *.tmp
+
+# VSCode/IDE Ignores
+.vscode/
 
 # Imported translations (automatically generated from CSV files)
 *.translation
