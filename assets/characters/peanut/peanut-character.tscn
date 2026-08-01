@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://di57l68jpvua"]
+
+[ext_resource type="Script" uid="uid://b8jojar8n1eap" path="res://scripts/player/peanut.gd" id="1_4v4dh"]
+[ext_resource type="PackedScene" uid="uid://beb7tnflv36fi" path="res://assets/characters/peanut/model/peanut.tscn" id="2_wwoe8"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ruy7h"]
+radius = 0.11279297
+height = 0.4402771
+
+[node name="Peanut" type="CharacterBody3D" unique_id=447074899]
+floor_stop_on_slope = false
+script = ExtResource("1_4v4dh")
+
+[node name="peanut" parent="." unique_id=1583545392 instance=ExtResource("2_wwoe8")]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=557861621]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.19938904, 0)
+shape = SubResource("CapsuleShape3D_ruy7h")

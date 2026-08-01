@@ -1,11 +1,30 @@
 extends MarginContainer
 
+## The scene to load when the player presses Start.
+## Drag a gameplay scene onto this property in the Inspector once one exists.
+@export var game_scene: PackedScene
 
-# Called when the node enters the scene tree for the first time.
+@onready var start_button: Button = %StartButton
+@onready var quit_button: Button = %QuitButton
+
+
 func _ready() -> void:
-	pass # Replace with function body.
+	start_button.pressed.connect(_on_start_pressed)
+	quit_button.pressed.connect(_on_quit_pressed)
+
+	# Focus the first button so the menu can be used with a keyboard or gamepad.
+	start_button.grab_focus()
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+func _on_start_pressed() -> void:
+	if game_scene == null:
+		push_warning("Main menu has no game scene assigned yet.")
+		return
+
+	var error := get_tree().change_scene_to_packed(game_scene)
+	if error != OK:
+		push_error("Could not load the game scene: %s" % error_string(error))
+
+
+func _on_quit_pressed() -> void:
+	get_tree().quit()
