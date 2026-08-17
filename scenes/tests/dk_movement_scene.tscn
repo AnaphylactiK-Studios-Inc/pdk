@@ -1,0 +1,76 @@
+[gd_scene format=3 uid="uid://d4ma553e6a15i"]
+
+[ext_resource type="PackedScene" uid="uid://dkg07bfxu6vge" path="res://assets/characters/dreadnought_killer/dk-character.tscn" id="1_ivghs"]
+[ext_resource type="Script" uid="uid://cw2rfi0upx15w" path="res://scripts/player/dreadnought_killer.gd" id="2_jdwd6"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_f1lh2"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jdwd6"]
+albedo_color = Color(0.32941177, 1, 1, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rg5n0"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_nx1pg"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nx1pg"]
+
+[node name="DkMovementScene" type="Node3D" unique_id=243647898]
+
+[node name="DkCharacter" parent="." unique_id=284637548 instance=ExtResource("1_ivghs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.15847397, 0, 2.0113063)
+script = ExtResource("2_jdwd6")
+cell_size = 1.0
+
+[node name="FrontRaycast" parent="DkCharacter" index="2" unique_id=1834425244]
+hit_from_inside = true
+collide_with_areas = true
+
+[node name="Camera3D" type="Camera3D" parent="DkCharacter" unique_id=157225116]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.3806696)
+
+[node name="Floor" type="Node3D" parent="." unique_id=867695297]
+transform = Transform3D(18.608133, 0, 0, 0, 1, 0, 0, 0, 14.695843, -0.15847397, -0.9806783, -0.4388188)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor" unique_id=636158477]
+transform = Transform3D(1.0000002, 0, 0, 0, 1, 0, 0, 0, 1, 0.00050361827, -0.009296298, -7.998198e-05)
+mesh = SubResource("BoxMesh_f1lh2")
+surface_material_override/0 = SubResource("StandardMaterial3D_jdwd6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor" unique_id=106616402]
+shape = SubResource("BoxShape3D_rg5n0")
+
+[node name="Wall" type="StaticBody3D" parent="." unique_id=1350169570]
+transform = Transform3D(3.0488331, 0, 0, 0, 2.4442267, 0, 0, 0, 2.3195615, -1.4122696, 0, -3.9929762)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Wall" unique_id=1193344366]
+mesh = SubResource("BoxMesh_nx1pg")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Wall" unique_id=715806448]
+shape = SubResource("BoxShape3D_nx1pg")
+
+[node name="Wall2" type="StaticBody3D" parent="." unique_id=502616813]
+transform = Transform3D(3.0488331, 0, 0, 0, 2.4442267, 0, 0, 0, 2.3195615, 3.8492448, 0, -3.9929762)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Wall2" unique_id=434802362]
+transform = Transform3D(1, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0.54326355, 0, 0)
+mesh = SubResource("BoxMesh_nx1pg")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Wall2" unique_id=1069102167]
+transform = Transform3D(1, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0.54058254, 0, 0)
+shape = SubResource("BoxShape3D_nx1pg")
+
+[node name="Wall3" type="StaticBody3D" parent="." unique_id=412710548]
+transform = Transform3D(3.0488331, 0, 0, 0, 2.4442267, 0, 0, 0, 5.2619443, 3.8492448, 0, 2.3045063)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Wall3" unique_id=638805897]
+transform = Transform3D(1, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0.54326355, 0, 0)
+mesh = SubResource("BoxMesh_nx1pg")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Wall3" unique_id=1120382094]
+transform = Transform3D(1, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0.54058254, 0, 0)
+shape = SubResource("BoxShape3D_nx1pg")
+
+[node name="AreaLight3D" type="AreaLight3D" parent="." unique_id=1782618295]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.3841858e-07, 1.0096388, -0.099090576)
+
+[editable path="DkCharacter"]

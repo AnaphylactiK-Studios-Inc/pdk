@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://dkg07bfxu6vge"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_rg5n0"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rg5n0"]
+
+[node name="DkCharacter" type="CharacterBody3D" unique_id=284637548]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1978676604]
+mesh = SubResource("BoxMesh_rg5n0")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=186210756]
+shape = SubResource("BoxShape3D_rg5n0")
+
+[node name="FrontRaycast" type="RayCast3D" parent="." unique_id=1834425244]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, -0.5089185)
+
+[node name="BackRaycast" type="RayCast3D" parent="." unique_id=1349924396]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0.48443508)
+target_position = Vector3(0, 1, 0)
