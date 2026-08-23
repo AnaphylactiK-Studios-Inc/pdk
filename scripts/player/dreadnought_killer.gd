@@ -37,17 +37,21 @@ func rotate_right() -> void:
 	rotate_90_degrees(-1)
 
 func move_forward() -> void:
+	var direction := get_forward_grid_direction()
+	
 	if !can_move_forward():
+		bump_into_obstacle(direction)
 		return
 
-	var direction := get_forward_grid_direction()
 	try_move(direction)
 
 func move_backward() -> void:
+	var direction := -get_forward_grid_direction()
+	
 	if !can_move_backwards():
+		bump_into_obstacle(direction)
 		return
 		
-	var direction := -get_forward_grid_direction()
 	try_move(direction)
 
 # Movement
@@ -99,6 +103,33 @@ func can_move_forward() -> bool:
 	
 func can_move_backwards() -> bool:
 	return !back_raycast.is_colliding()
+
+func bump_into_obstacle(
+	direction: Vector2i, 
+	distance: float = 0.25,
+	bump_height: float = -0.1,
+	duration: float = 0.08
+) -> void:
+	if _moving:
+		return
+
+	_moving = true
+
+	var start_pos := global_position
+	var bump_direction := Vector3(direction.x, 0.0, direction.y).normalized()
+	var end_pos := start_pos + bump_direction * distance
+	
+	end_pos.y += bump_height
+
+	var tween := create_tween()
+	tween.set_trans(Tween.TRANS_SINE)
+	tween.set_ease(Tween.EASE_OUT)
+
+	tween.tween_property(self, "global_position", end_pos, duration)
+	tween.tween_property(self, "global_position", start_pos, duration * 2)
+
+	await tween.finished
+	_moving = false
 
 # Rotation
 func rotate_90_degrees(direction: int) -> void:
