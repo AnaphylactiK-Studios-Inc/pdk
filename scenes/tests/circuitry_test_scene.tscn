@@ -1,0 +1,102 @@
+[gd_scene format=3 uid="uid://cmj8nhsuy3b7h"]
+
+[ext_resource type="PackedScene" uid="uid://dbnd2cyiklnfh" path="res://assets/world/objects/lever.tscn" id="1_by4lx"]
+[ext_resource type="Texture2D" uid="uid://bp5ejxar7ql82" path="res://assets/2d/PLACEHOLDER_clear_sky.png" id="1_dytx0"]
+[ext_resource type="PackedScene" uid="uid://ccditdaywowtc" path="res://assets/world/objects/button.tscn" id="2_ob8ju"]
+[ext_resource type="PackedScene" uid="uid://di57l68jpvua" path="res://assets/characters/peanut/peanut-character.tscn" id="2_smxyd"]
+[ext_resource type="PackedScene" uid="uid://d3mmdskg8uv0o" path="res://assets/world/objects/wire.tscn" id="5_yirpm"]
+[ext_resource type="PackedScene" uid="uid://bao7vydfblf0f" path="res://assets/world/objects/door.tscn" id="6_max6g"]
+[ext_resource type="PackedScene" uid="uid://5a65xaleut14" path="res://assets/world/objects/platform.tscn" id="7_8fde8"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_yirpm"]
+panorama = ExtResource("1_dytx0")
+filter = false
+
+[sub_resource type="Sky" id="Sky_f6pb0"]
+sky_material = SubResource("PanoramaSkyMaterial_yirpm")
+
+[sub_resource type="Environment" id="Environment_max6g"]
+background_mode = 2
+sky = SubResource("Sky_f6pb0")
+fog_light_energy = 1.44
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fyfm1"]
+albedo_color = Color(0.6004616, 0.8076863, 0.4930253, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_8fde8"]
+material = SubResource("StandardMaterial3D_fyfm1")
+size = Vector2(25, 25)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_22fu7"]
+size = Vector3(25, 0.80892336, 25)
+
+[sub_resource type="VoxelGIData" id="VoxelGIData_yd7ox"]
+
+[node name="CircuitryTestScene" type="Node3D" unique_id=767040196]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1793835094]
+environment = SubResource("Environment_max6g")
+
+[node name="Plane" type="StaticBody3D" parent="." unique_id=300973135]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Plane" unique_id=742984944]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.06172037, -0.107052326, 0.061229944)
+mesh = SubResource("PlaneMesh_8fde8")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Plane" unique_id=670391606]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.49507728, 0)
+shape = SubResource("BoxShape3D_22fu7")
+
+[node name="VoxelGI" type="VoxelGI" parent="." unique_id=64284892]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.6310425, 0, 0)
+subdiv = 0
+size = Vector3(50, 25, 50)
+data = SubResource("VoxelGIData_yd7ox")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1131083438]
+transform = Transform3D(1, 0, 0, 0, -0.010973634, 0.9999398, 0, -0.9999398, -0.010973634, 2.6310425, 8.02878, 0)
+light_color = Color(0.79607844, 0.9137255, 1, 1)
+light_specular = 1.14
+shadow_enabled = true
+
+[node name="Peanut" parent="." unique_id=447074899 instance=ExtResource("2_smxyd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03624946, -2.212394)
+
+[node name="Camera3D" type="Camera3D" parent="Peanut" unique_id=2139937882]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0.0019557476, 0.9208068, -1.8164884)
+
+[node name="Button" parent="." unique_id=1336324132 instance=ExtResource("2_ob8ju")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 2.8690717, -0.09084512, 1.9198871)
+
+[node name="Lever" parent="." unique_id=708373182 instance=ExtResource("1_by4lx")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0.09833372, -0.11006938, 1.0552639)
+is_on = false
+
+[node name="Door" parent="." unique_id=2140460678 node_paths=PackedStringArray("triggers") instance=ExtResource("6_max6g")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6528426, 0.40938443, 2.786857)
+triggers = [NodePath("../Button")]
+
+[node name="Platform" parent="." unique_id=1531490433 node_paths=PackedStringArray("triggers") instance=ExtResource("7_8fde8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.27086735, -0.046543777, 2.6822412)
+triggers = [NodePath("Platform/Button")]
+
+[node name="Button" parent="Platform/Platform" parent_id_path=PackedInt32Array(1531490433, 1628791351) index="0" unique_id=230813520 instance=ExtResource("2_ob8ju")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.03949684, 0)
+
+[node name="Wire2" parent="." unique_id=902598797 node_paths=PackedStringArray("triggers") instance=ExtResource("5_yirpm")]
+transform = Transform3D(-1, 0, 4.8225015e-09, 0, 1, 0, -1.3909066e-08, 0, -0.34671646, 2.8847332, -0.084872775, 2.4290729)
+triggers = [NodePath("../Button")]
+
+[node name="Wire" parent="." unique_id=1850777998 node_paths=PackedStringArray("triggers") instance=ExtResource("5_yirpm")]
+transform = Transform3D(2.9802322e-08, 0, -0.34671646, 0, 1, 0, 1, 0, 1.0332956e-08, 2.5527918, -0.084872775, 2.7885394)
+triggers = [NodePath("../Button")]
+
+[node name="Wire3" parent="." unique_id=1965212947 node_paths=PackedStringArray("triggers") instance=ExtResource("5_yirpm")]
+transform = Transform3D(2.9802322e-08, 0, -0.34671646, 0, 1, 0, 1, 0, 1.0332956e-08, -0.27652246, -0.084872775, 1.0459964)
+triggers = [NodePath("../Lever")]
+
+[editable path="Lever"]
+[editable path="Platform"]
+[editable path="Wire2"]
+[editable path="Wire"]
+[editable path="Wire3"]
