@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://dbnd2cyiklnfh"]
+
+[ext_resource type="Script" uid="uid://bcy1f6kbg2gv5" path="res://scripts/interaction/triggers/lever.gd" id="1_2vv5x"]
+[ext_resource type="PackedScene" uid="uid://45n1a44jowhi" path="res://assets/art/models/lever/SM_leverOffPCC_01.fbx" id="1_nptyo"]
+[ext_resource type="PackedScene" uid="uid://4vmk3d01ldb8" path="res://assets/art/models/lever/SM_leverOnPCC_03.fbx" id="3_kp0ef"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rg5n0"]
+size = Vector3(0.06921387, 0.044971943, 0.11669922)
+
+[node name="Lever" type="Node3D" unique_id=708373182 node_paths=PackedStringArray("on_model", "off_model")]
+script = ExtResource("1_2vv5x")
+on_model = NodePath("OnModel")
+off_model = NodePath("OffModel")
+is_on = true
+
+[node name="OnModel" parent="." unique_id=1247193824 instance=ExtResource("3_kp0ef")]
+
+[node name="OffModel" parent="." unique_id=272648798 instance=ExtResource("1_nptyo")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=381923186]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1120893935]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00030517578, 0.0221169, 0.0007324219)
+shape = SubResource("BoxShape3D_rg5n0")
