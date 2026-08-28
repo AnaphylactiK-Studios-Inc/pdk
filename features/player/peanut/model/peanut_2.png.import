@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c851wj0u3skjh"
-path.s3tc="res://.godot/imported/peanut_2.png-083aa11ec1979feb31250537032b9dc3.s3tc.ctex"
+path.s3tc="res://.godot/imported/peanut_2.png-299378d84403eec72ea1caaabcdbfef3.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -14,8 +14,8 @@ generator_parameters={
 
 [deps]
 
-source_file="res://assets/characters/peanut/model/peanut_2.png"
-dest_files=["res://.godot/imported/peanut_2.png-083aa11ec1979feb31250537032b9dc3.s3tc.ctex"]
+source_file="res://features/player/peanut/model/peanut_2.png"
+dest_files=["res://.godot/imported/peanut_2.png-299378d84403eec72ea1caaabcdbfef3.s3tc.ctex"]
 
 [params]
 

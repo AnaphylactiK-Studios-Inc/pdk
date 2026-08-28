@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://cw3hkrfch0hw1"
-path="res://.godot/imported/peanut.fbx-f52b0987629f93a86f4f847b576f1866.scn"
+path="res://.godot/imported/peanut.fbx-2f6cee022978ff82cc399d8588a32647.scn"
 
 [deps]
 
-source_file="res://assets/characters/peanut/model/peanut.fbx"
-dest_files=["res://.godot/imported/peanut.fbx-f52b0987629f93a86f4f847b576f1866.scn"]
+source_file="res://features/player/peanut/model/peanut.fbx"
+dest_files=["res://.godot/imported/peanut.fbx-2f6cee022978ff82cc399d8588a32647.scn"]
 
 [params]
 
@@ -43,7 +43,7 @@ _subresources={
 "materials": {
 "Peanut_MAT": {
 "use_external/enabled": true,
-"use_external/fallback_path": "res://assets/characters/peanut/model/Peanut_MAT.tres",
+"use_external/fallback_path": "res://features/player/peanut/model/Peanut_MAT.tres",
 "use_external/path": "uid://bqct1ft6740mv"
 }
 }

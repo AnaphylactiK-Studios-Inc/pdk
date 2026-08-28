@@ -1,0 +1,83 @@
+[gd_scene format=3 uid="uid://d1gnuqqf81rom"]
+
+[ext_resource type="Script" uid="uid://c4072je0niw23" path="res://features/interface/controls/controls_panel.gd" id="1_w4an8"]
+
+[node name="ControlsPanel" type="Control" unique_id=1107907594]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_w4an8")
+
+[node name="Dim" type="ColorRect" parent="." unique_id=724730376]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.39215687)
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1038631623]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="CenterContainer" unique_id=1386538055]
+layout_mode = 2
+
+[node name="Margin" type="MarginContainer" parent="CenterContainer/Panel" unique_id=1339174497]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="VBox" type="VBoxContainer" parent="CenterContainer/Panel/Margin" unique_id=47850947]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="SettingsLabel" type="Label" parent="CenterContainer/Panel/Margin/VBox" unique_id=1131038586]
+layout_mode = 2
+text = "Controls"
+horizontal_alignment = 1
+
+[node name="HintLabel" type="Label" parent="CenterContainer/Panel/Margin/VBox" unique_id=257315948]
+unique_name_in_owner = true
+layout_mode = 2
+horizontal_alignment = 1
+
+[node name="Separator" type="HSeparator" parent="CenterContainer/Panel/Margin/VBox" unique_id=986415061]
+layout_mode = 2
+
+[node name="Scroll" type="ScrollContainer" parent="CenterContainer/Panel/Margin/VBox" unique_id=1563808345]
+custom_minimum_size = Vector2(420, 320)
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="ActionList" type="VBoxContainer" parent="CenterContainer/Panel/Margin/VBox/Scroll" unique_id=1857017387]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Separator2" type="HSeparator" parent="CenterContainer/Panel/Margin/VBox" unique_id=1769676471]
+layout_mode = 2
+
+[node name="Buttons" type="HBoxContainer" parent="CenterContainer/Panel/Margin/VBox" unique_id=1043486317]
+layout_mode = 2
+
+[node name="ResetButton" type="Button" parent="CenterContainer/Panel/Margin/VBox/Buttons" unique_id=623976198]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Reset Controls"
+
+[node name="BackButton" type="Button" parent="CenterContainer/Panel/Margin/VBox/Buttons" unique_id=1906343286]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Back"
