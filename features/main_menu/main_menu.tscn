@@ -7,6 +7,10 @@
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 1.0
+offset_top = -9.0
+offset_right = 1.0
+offset_bottom = -9.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 80
@@ -26,6 +30,12 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 48
 text = "Start"
+
+[node name="SettingsButton" type="Button" parent="VBoxContainer" unique_id=833067410]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Settings"
 
 [node name="QuitButton" type="Button" parent="VBoxContainer" unique_id=1637353847]
 unique_name_in_owner = true
