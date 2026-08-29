@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://d4ma553e6a15i"]
 
-[ext_resource type="PackedScene" uid="uid://dkg07bfxu6vge" path="res://assets/characters/dreadnought_killer/dk-character.tscn" id="1_ivghs"]
-[ext_resource type="Script" uid="uid://cw2rfi0upx15w" path="res://scripts/player/dreadnought_killer.gd" id="2_jdwd6"]
+[ext_resource type="PackedScene" uid="uid://dkg07bfxu6vge" path="res://features/player/dreadnought_killer/dk-character.tscn" id="1_ivghs"]
+[ext_resource type="Script" uid="uid://cw2rfi0upx15w" path="res://features/player/dreadnought_killer/dreadnought_killer.gd" id="2_jdwd6"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_f1lh2"]
 
