@@ -18,6 +18,7 @@ signal closed
 @onready var controls_button: Button = %ControlsButton
 @onready var reset_button: Button = %ResetButton
 @onready var back_button: Button = %BackButton
+@onready var reset_confirm_dialog: ConfirmationDialog = %ResetConfirmDialog
 
 var _syncing := false
 var _controls_instance: Node = null
@@ -39,7 +40,8 @@ func _ready() -> void:
 	vsync_check.toggled.connect(_on_vsync_toggled)
 
 	controls_button.pressed.connect(_on_controls_pressed)
-	reset_button.pressed.connect(_on_reset_pressed)
+	reset_button.pressed.connect(reset_confirm_dialog.popup_centered)
+	reset_confirm_dialog.confirmed.connect(_on_reset_confirmed)
 	back_button.pressed.connect(close)
 
 	SettingsManager.settings_changed.connect(_sync_from_manager)
@@ -148,8 +150,9 @@ func _on_vsync_toggled(pressed: bool) -> void:
 	SettingsManager.set_vsync(pressed)
 
 
-func _on_reset_pressed() -> void:
-	SettingsManager.reset_to_defaults()
+func _on_reset_confirmed() -> void:
+	SettingsManager.reset_audio_visual_defaults()
+	_sync_from_manager()
 
 
 func _on_controls_pressed() -> void:

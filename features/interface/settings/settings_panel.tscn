@@ -168,3 +168,11 @@ text = "Reset to Defaults"
 unique_name_in_owner = true
 layout_mode = 2
 text = "Back"
+
+[node name="ResetConfirmDialog" type="ConfirmationDialog" parent="." unique_id=274809504]
+unique_name_in_owner = true
+title = "Reset to Defaults?"
+initial_position = 1
+size = Vector2i(420, 140)
+ok_button_text = "Reset"
+dialog_text = "This will restore audio and display settings to their defaults. This can't be undone."

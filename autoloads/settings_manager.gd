@@ -6,6 +6,63 @@ const SAVE_DEBOUNCE := 0.4
 
 enum WindowMode { WINDOWED, BORDERLESS, FULLSCREEN }
 
+## Each remappable action keeps at most one binding per family.
+enum BindFamily { KBM, JOY }
+
+enum ControllerStyle { AUTO, XBOX, PLAYSTATION, GENERIC }
+
+const CONTROLLER_STYLE_NAMES := {
+	ControllerStyle.AUTO: "Auto",
+	ControllerStyle.XBOX: "Xbox",
+	ControllerStyle.PLAYSTATION: "PlayStation",
+	ControllerStyle.GENERIC: "Generic",
+}
+
+const XBOX_BUTTON_NAMES := {
+	JOY_BUTTON_A: "A",
+	JOY_BUTTON_B: "B",
+	JOY_BUTTON_X: "X",
+	JOY_BUTTON_Y: "Y",
+	JOY_BUTTON_LEFT_SHOULDER: "LB",
+	JOY_BUTTON_RIGHT_SHOULDER: "RB",
+	JOY_BUTTON_LEFT_STICK: "L3",
+	JOY_BUTTON_RIGHT_STICK: "R3",
+	JOY_BUTTON_BACK: "View",
+	JOY_BUTTON_START: "Menu",
+	JOY_BUTTON_DPAD_UP: "D-Pad Up",
+	JOY_BUTTON_DPAD_DOWN: "D-Pad Down",
+	JOY_BUTTON_DPAD_LEFT: "D-Pad Left",
+	JOY_BUTTON_DPAD_RIGHT: "D-Pad Right",
+	JOY_BUTTON_GUIDE: "Guide",
+}
+
+const PLAYSTATION_BUTTON_NAMES := {
+	JOY_BUTTON_A: "Cross",
+	JOY_BUTTON_B: "Circle",
+	JOY_BUTTON_X: "Square",
+	JOY_BUTTON_Y: "Triangle",
+	JOY_BUTTON_LEFT_SHOULDER: "L1",
+	JOY_BUTTON_RIGHT_SHOULDER: "R1",
+	JOY_BUTTON_LEFT_STICK: "L3",
+	JOY_BUTTON_RIGHT_STICK: "R3",
+	JOY_BUTTON_BACK: "Share",
+	JOY_BUTTON_START: "Options",
+	JOY_BUTTON_DPAD_UP: "D-Pad Up",
+	JOY_BUTTON_DPAD_DOWN: "D-Pad Down",
+	JOY_BUTTON_DPAD_LEFT: "D-Pad Left",
+	JOY_BUTTON_DPAD_RIGHT: "D-Pad Right",
+	JOY_BUTTON_GUIDE: "PS",
+}
+
+const AXIS_NAMES := {
+	JOY_AXIS_LEFT_X: "Left Stick X",
+	JOY_AXIS_LEFT_Y: "Left Stick Y",
+	JOY_AXIS_RIGHT_X: "Right Stick X",
+	JOY_AXIS_RIGHT_Y: "Right Stick Y",
+	JOY_AXIS_TRIGGER_LEFT: "Left Trigger",
+	JOY_AXIS_TRIGGER_RIGHT: "Right Trigger",
+}
+
 const VCA_PATHS := {
 	"master": "vca:/Master",
 	"music": "vca:/Music",
@@ -22,12 +79,16 @@ const RESOLUTIONS: Array[Vector2i] = [
 ## Key = the action name in Project Settings > Input Map.
 ## Value = the label shown in the controls screen.
 const REMAPPABLE_ACTIONS := {
+	"move_forward": "Move Forward",
+	"move_back": "Move Back",
 	"move_left": "Move Left",
 	"move_right": "Move Right",
-	"move_up": "Move Up",
-	"move_down": "Move Down",
 	"jump": "Jump",
 }
+
+const DEFAULT_MOUSE_SENSITIVITY := 0.5
+const DEFAULT_STICK_SENSITIVITY_X := 0.5
+const DEFAULT_STICK_SENSITIVITY_Y := 0.5
 
 const PREVIEW_EVENTS := {
 	"master": "event:/UI/SliderPreview",
@@ -38,11 +99,17 @@ const PREVIEW_EVENTS := {
 signal settings_changed
 signal audio_ready
 signal keybinds_changed
+signal controller_style_changed
 
 var volumes := {"master": 1.0, "music": 1.0, "sfx": 1.0}
 var window_mode: int = WindowMode.WINDOWED
 var resolution := Vector2i(1920, 1080)
 var vsync := true
+
+var mouse_sensitivity: float = DEFAULT_MOUSE_SENSITIVITY
+var stick_sensitivity_x: float = DEFAULT_STICK_SENSITIVITY_X
+var stick_sensitivity_y: float = DEFAULT_STICK_SENSITIVITY_Y
+var controller_style_override: int = ControllerStyle.AUTO
 
 var _vcas: Dictionary = {}
 var _preview_ok: Dictionary = {}
@@ -50,6 +117,7 @@ var _audio_ready := false
 var _save_timer: Timer
 var _window_apply_token := 0
 var _default_binds: Dictionary = {}
+var _detected_controller_style: int = ControllerStyle.GENERIC
 
 
 func _ready() -> void:
@@ -63,6 +131,9 @@ func _ready() -> void:
 	load_settings()
 	_apply_window()
 	_apply_vsync()
+
+	Input.joy_connection_changed.connect(_on_joy_connection_changed)
+	_detect_controller_style()
 
 
 func _notification(what: int) -> void:
@@ -145,20 +216,86 @@ func set_vsync(enabled: bool) -> void:
 	settings_changed.emit()
 
 
-func reset_to_defaults() -> void:
+func set_mouse_sensitivity(value: float) -> void:
+	mouse_sensitivity = clampf(value, 0.0, 1.0)
+	_request_save()
+	settings_changed.emit()
+
+
+func set_stick_sensitivity_x(value: float) -> void:
+	stick_sensitivity_x = clampf(value, 0.0, 1.0)
+	_request_save()
+	settings_changed.emit()
+
+
+func set_stick_sensitivity_y(value: float) -> void:
+	stick_sensitivity_y = clampf(value, 0.0, 1.0)
+	_request_save()
+	settings_changed.emit()
+
+
+## Pass ControllerStyle.AUTO to go back to auto-detection.
+func set_controller_style(style: int) -> void:
+	controller_style_override = style
+	_request_save()
+	settings_changed.emit()
+	controller_style_changed.emit()
+
+
+func get_effective_controller_style() -> int:
+	if controller_style_override != ControllerStyle.AUTO:
+		return controller_style_override
+	return _detected_controller_style
+
+
+func _on_joy_connection_changed(_device: int, _connected: bool) -> void:
+	_detect_controller_style()
+
+
+func _detect_controller_style() -> void:
+	var previous := _detected_controller_style
+	var joypads := Input.get_connected_joypads()
+	if joypads.is_empty():
+		_detected_controller_style = ControllerStyle.GENERIC
+	else:
+		var joy_name: String = Input.get_joy_name(joypads[0]).to_lower()
+		if "xbox" in joy_name or "xinput" in joy_name:
+			_detected_controller_style = ControllerStyle.XBOX
+		elif "sony" in joy_name or "playstation" in joy_name \
+				or "dualshock" in joy_name or "dualsense" in joy_name \
+				or "ps3" in joy_name or "ps4" in joy_name or "ps5" in joy_name:
+			_detected_controller_style = ControllerStyle.PLAYSTATION
+		else:
+			_detected_controller_style = ControllerStyle.GENERIC
+
+	if previous != _detected_controller_style and controller_style_override == ControllerStyle.AUTO:
+		controller_style_changed.emit()
+
+
+## Settings menu's Reset — audio/display only, see reset_controls_defaults().
+func reset_audio_visual_defaults() -> void:
 	volumes = {"master": 1.0, "music": 1.0, "sfx": 1.0}
 	window_mode = WindowMode.WINDOWED
 	resolution = Vector2i(1920, 1080)
 	vsync = true
-
-	reset_keybinds()
 
 	_apply_all_volumes()
 	_apply_window()
 	_apply_vsync()
 	save_settings()
 	settings_changed.emit()
-	keybinds_changed.emit()
+
+
+## Controls menu's Reset — keybinds/sensitivity/style only, see reset_audio_visual_defaults().
+func reset_controls_defaults() -> void:
+	mouse_sensitivity = DEFAULT_MOUSE_SENSITIVITY
+	stick_sensitivity_x = DEFAULT_STICK_SENSITIVITY_X
+	stick_sensitivity_y = DEFAULT_STICK_SENSITIVITY_Y
+	controller_style_override = ControllerStyle.AUTO
+
+	reset_keybinds()
+	save_settings()
+	settings_changed.emit()
 
 
 # --- Input remapping ---
@@ -172,12 +309,22 @@ func reset_keybinds() -> void:
 
 
 
-## Returns the primary event bound to an action, or null if it has none.
-func get_primary_event(action: String) -> InputEvent:
+## Returns -1 for an event kind we don't bind.
+func get_event_family(event: InputEvent) -> int:
+	if event is InputEventKey or event is InputEventMouseButton:
+		return BindFamily.KBM
+	if event is InputEventJoypadButton or event is InputEventJoypadMotion:
+		return BindFamily.JOY
+	return -1
+
+
+func get_event_for_family(action: String, family: int) -> InputEvent:
 	if not InputMap.has_action(action):
 		return null
-	var events := InputMap.action_get_events(action)
-	return events[0] if not events.is_empty() else null
+	for e in InputMap.action_get_events(action):
+		if get_event_family(e) == family:
+			return e
+	return null
 
 
 ## Human-readable name for a binding, for display on a button.
@@ -194,10 +341,28 @@ func describe_event(event: InputEvent) -> String:
 	if event is InputEventMouseButton:
 		return "Mouse %d" % event.button_index
 	if event is InputEventJoypadButton:
-		return "Pad %d" % event.button_index
+		return _describe_joy_button(event.button_index)
 	if event is InputEventJoypadMotion:
-		return "Axis %d%s" % [event.axis, "+" if event.axis_value > 0.0 else "-"]
+		return _describe_joy_axis(event.axis, event.axis_value)
 	return event.as_text()
+
+
+func _describe_joy_button(button_index: int) -> String:
+	match get_effective_controller_style():
+		ControllerStyle.XBOX:
+			if XBOX_BUTTON_NAMES.has(button_index):
+				return XBOX_BUTTON_NAMES[button_index]
+		ControllerStyle.PLAYSTATION:
+			if PLAYSTATION_BUTTON_NAMES.has(button_index):
+				return PLAYSTATION_BUTTON_NAMES[button_index]
+	return "Pad %d" % button_index
+
+
+func _describe_joy_axis(axis: int, axis_value: float) -> String:
+	if axis == JOY_AXIS_TRIGGER_LEFT or axis == JOY_AXIS_TRIGGER_RIGHT:
+		return AXIS_NAMES.get(axis, "Axis %d" % axis)
+	var base: String = AXIS_NAMES.get(axis, "Axis %d" % axis)
+	return "%s %s" % [base, "+" if axis_value > 0.0 else "-"]
 
 
 ## True if the event is a kind we're willing to store.
@@ -208,8 +373,8 @@ func is_bindable(event: InputEvent) -> bool:
 		or (event is InputEventJoypadMotion and absf(event.axis_value) > 0.5)
 
 
-## Rebinds an action to a single event, clearing that event off any other
-## remappable action so two actions can't share a key.
+## Rebinds only the family the event belongs to, leaving the other family's
+## binding on this action untouched.
 func rebind_action(action: String, event: InputEvent) -> void:
 	if not REMAPPABLE_ACTIONS.has(action):
 		push_error("Action is not remappable: %s" % action)
@@ -217,26 +382,41 @@ func rebind_action(action: String, event: InputEvent) -> void:
 	if not is_bindable(event):
 		return
 
+	var family := get_event_family(event)
 	var incoming := _event_to_dict(event)
+
 	for other in REMAPPABLE_ACTIONS:
 		if other == action:
 			continue
 		var kept: Array = []
+		var changed := false
 		for e in InputMap.action_get_events(other):
-			if _event_to_dict(e) != incoming:
-				kept.append(_event_to_dict(e))
-		if kept.size() != InputMap.action_get_events(other).size():
+			if get_event_family(e) == family and _event_to_dict(e) == incoming:
+				changed = true
+				continue
+			kept.append(_event_to_dict(e))
+		if changed:
 			_set_binds(other, kept)
 
-	_set_binds(action, [incoming])
+	var kept_self: Array = []
+	for e in InputMap.action_get_events(action):
+		if get_event_family(e) != family:
+			kept_self.append(_event_to_dict(e))
+	kept_self.append(incoming)
+	_set_binds(action, kept_self)
+
 	_request_save()
 	keybinds_changed.emit()
 
 
-func clear_action(action: String) -> void:
+func clear_action(action: String, family: int) -> void:
 	if not REMAPPABLE_ACTIONS.has(action):
 		return
-	_set_binds(action, [])
+	var kept: Array = []
+	for e in InputMap.action_get_events(action):
+		if get_event_family(e) != family:
+			kept.append(_event_to_dict(e))
+	_set_binds(action, kept)
 	_request_save()
 	keybinds_changed.emit()
 
@@ -315,18 +495,9 @@ func _apply_all_volumes() -> void:
 func _apply_volume(key: String) -> void:
 	if not _vcas.has(key):
 		return
-	# Squaring maps the linear slider onto something closer to perceived
-	# loudness, so the useful range isn't crammed into the top 20%.
 	_vcas[key].set_volume(pow(volumes[key], 2.0))
 
 
-## Leaving fullscreen is not instant. The OS restores the window over the next
-## frame or two, and size/position/border changes issued in the same frame as
-## the mode change are applied to the window that is still on its way out, so
-## they get overwritten. Each step therefore waits a frame.
-##
-## _window_apply_token cancels an in-flight sequence if the player picks another
-## mode mid-transition, otherwise two coroutines fight over the window.
 func _apply_window() -> void:
 	_window_apply_token += 1
 	var token := _window_apply_token
@@ -354,9 +525,6 @@ func _apply_window() -> void:
 			await get_tree().process_frame
 			if token != _window_apply_token:
 				return
-			# The border has to come back before the size is set, or the size is
-			# applied to a still-borderless window and the title bar pushes the
-			# content down when it finally appears.
 			DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, false)
 			await get_tree().process_frame
 			if token != _window_apply_token:
@@ -369,6 +537,7 @@ func _center_window() -> void:
 	var screen := DisplayServer.window_get_current_screen()
 	var usable := DisplayServer.screen_get_usable_rect(screen)
 	var size := DisplayServer.window_get_size()
+	@warning_ignore("integer_division")  # Window positions are whole pixels anyway.
 	DisplayServer.window_set_position(
 		usable.position + (usable.size - size) / 2
 	)
@@ -397,6 +566,11 @@ func save_settings() -> void:
 	config.set_value("display", "resolution_x", resolution.x)
 	config.set_value("display", "resolution_y", resolution.y)
 	config.set_value("display", "vsync", vsync)
+
+	config.set_value("input", "mouse_sensitivity", mouse_sensitivity)
+	config.set_value("input", "stick_sensitivity_x", stick_sensitivity_x)
+	config.set_value("input", "stick_sensitivity_y", stick_sensitivity_y)
+	config.set_value("input", "controller_style", int(controller_style_override))
 
 	for action in REMAPPABLE_ACTIONS:
 		if not InputMap.has_action(action):
@@ -438,6 +612,26 @@ func load_settings() -> void:
 		int(config.get_value("display", "resolution_y", resolution.y)),
 	)
 	vsync = bool(config.get_value("display", "vsync", vsync))
+
+	mouse_sensitivity = clampf(
+		float(config.get_value("input", "mouse_sensitivity", mouse_sensitivity)), 0.0, 1.0
+	)
+
+	# Migration: older builds saved a single stick_sensitivity for both axes.
+	var legacy_stick: float = float(
+		config.get_value("input", "stick_sensitivity", stick_sensitivity_x)
+	)
+	stick_sensitivity_x = clampf(
+		float(config.get_value("input", "stick_sensitivity_x", legacy_stick)), 0.0, 1.0
+	)
+	stick_sensitivity_y = clampf(
+		float(config.get_value("input", "stick_sensitivity_y", legacy_stick)), 0.0, 1.0
+	)
+
+	controller_style_override = clampi(
+		int(config.get_value("input", "controller_style", controller_style_override)),
+		0, ControllerStyle.size() - 1
+	)
 
 	for action in REMAPPABLE_ACTIONS:
 		if not config.has_section_key("input", action):
