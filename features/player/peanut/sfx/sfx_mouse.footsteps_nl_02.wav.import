@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://dt87cloavwqcl"
-path="res://.godot/imported/sfx_mouse.footsteps_nl_02.wav-37d1c2279410244b981975385f0f426d.sample"
+path="res://.godot/imported/sfx_mouse.footsteps_nl_02.wav-e01953f1a8845811956cf40328050de9.sample"
 
 [deps]
 
-source_file="res://assets/sound/peanut/sfx_mouse.footsteps_nl_02.wav"
-dest_files=["res://.godot/imported/sfx_mouse.footsteps_nl_02.wav-37d1c2279410244b981975385f0f426d.sample"]
+source_file="res://features/player/peanut/sfx/sfx_mouse.footsteps_nl_02.wav"
+dest_files=["res://.godot/imported/sfx_mouse.footsteps_nl_02.wav-e01953f1a8845811956cf40328050de9.sample"]
 
 [params]
 

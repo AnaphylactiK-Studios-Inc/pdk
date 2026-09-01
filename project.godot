@@ -18,6 +18,8 @@ config/icon="res://icon.svg"
 [autoload]
 
 FmodManager="*uid://cds10pm7hwn3p"
+AudioManager="*uid://de2pcabob3yx"
+SettingsManager="*uid://b3noj1x6b2tpw"
 
 [display]
 
