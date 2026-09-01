@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://ddw0wydynyg6e"]
+
+[ext_resource type="Script" uid="uid://bk6tpginntnf8" path="res://features/world/trigger/pressure_plate/pressure_plate.gd" id="1_ra4vf"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_f1lh2"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rg5n0"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_rg5n0"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f1lh2"]
+albedo_color = Color(0.07169702, 0.059331335, 0.03196706, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3iv53"]
+albedo_color = Color(0.042373814, 0.5324545, 0.74679637, 1)
+emission_enabled = true
+emission = Color(0, 0.5525805, 0.55426663, 1)
+emission_energy_multiplier = 4.13
+
+[node name="PressurePlate" type="Node3D" unique_id=1333214972 node_paths=PackedStringArray("unpressed_model", "pressed_model")]
+script = ExtResource("1_ra4vf")
+unpressed_model = NodePath("OffModel")
+pressed_model = NodePath("OnModel")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=1297591154]
+collision_mask = 6
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1662893424]
+transform = Transform3D(1, 0, 0, 0, 0.52324176, 0, 0, 0, 1, 0, 0.2667988, 0)
+shape = SubResource("BoxShape3D_f1lh2")
+
+[node name="OffModel" type="Node3D" parent="." unique_id=1547853132]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="OffModel" unique_id=636773686]
+transform = Transform3D(1, 0, 0, 0, 0.022520883, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="OffModel/StaticBody3D" unique_id=981788350]
+shape = SubResource("BoxShape3D_rg5n0")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="OffModel/StaticBody3D" unique_id=1945541041]
+mesh = SubResource("BoxMesh_rg5n0")
+surface_material_override/0 = SubResource("StandardMaterial3D_f1lh2")
+
+[node name="OnModel" type="Node3D" parent="." unique_id=1340131491]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="OnModel" unique_id=1245395521]
+transform = Transform3D(1, 0, 0, 0, 0.022520883, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="OnModel/StaticBody3D" unique_id=483447616]
+shape = SubResource("BoxShape3D_rg5n0")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="OnModel/StaticBody3D" unique_id=1289534749]
+mesh = SubResource("BoxMesh_rg5n0")
+surface_material_override/0 = SubResource("StandardMaterial3D_3iv53")
