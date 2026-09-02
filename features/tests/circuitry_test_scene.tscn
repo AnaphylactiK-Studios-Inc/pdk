@@ -116,10 +116,10 @@ triggers = [NodePath("../Button")]
 transform = Transform3D(-0.99999994, 0, 2.204347e-09, 0, 1, 0, -1.3909066e-08, 0, -0.15848282, -0.51889443, 0.17129499, 0.35514808)
 triggers = [NodePath("../Button")]
 
-[node name="Peanut2" parent="." unique_id=447074899 instance=ExtResource("2_smxyd")]
+[node name="Peanut" parent="." unique_id=447074899 instance=ExtResource("2_smxyd")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.424883, 0.061950624, -0.69818366)
 
-[node name="Camera3D" type="Camera3D" parent="Peanut2" unique_id=2139937882]
+[node name="Camera3D" type="Camera3D" parent="Peanut" unique_id=2139937882]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -0.025038004, 0.89510566, -1.6447877)
 
 [editable path="Platform"]

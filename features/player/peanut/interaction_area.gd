@@ -74,10 +74,9 @@ func _find_nearest_trigger() -> ManualTrigger:
 func find_manual_trigger(node: Node) -> ManualTrigger:
 	var current := node
 
-	while current != null:
+	while current:
 		if current is ManualTrigger:
 			return current
-
 		current = current.get_parent()
 
 	return null
