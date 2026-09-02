@@ -11,6 +11,7 @@ enum State { GROUNDED, JUMP_START, AIR, LAND }
 
 @onready var model: Node3D = $peanut
 @onready var anim: AnimationPlayer = $peanut/AnimationPlayer
+@onready var interaction_area := $InteractionArea
 
 var state: State = State.GROUNDED
 
@@ -24,6 +25,8 @@ func _ready() -> void:
 		var land := anim.get_animation("land")
 		land.loop_mode = Animation.LOOP_NONE
 		land.length = LAND_LENGTH
+	if anim.has_animation("interact"):
+		anim.get_animation("interact").loop_mode = Animation.LOOP_NONE
 
 
 func _physics_process(delta: float) -> void:
@@ -34,7 +37,11 @@ func _physics_process(delta: float) -> void:
 
 	var input_dir := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	var direction := _camera_relative_direction(input_dir)
-
+	if Input.is_action_just_pressed("interact") and interaction_area.current_trigger:
+		anim.play("interact")
+		interaction_area.interact_pressed()
+	if Input.is_action_just_released("interact"):
+		interaction_area.interact_released()
 	if Input.is_action_just_pressed("jump") and on_floor and (state == State.GROUNDED or state == State.LAND):
 		velocity.y = JUMP_VELOCITY
 		state = State.JUMP_START
@@ -101,5 +108,8 @@ func _update_animation(direction: Vector3) -> void:
 	if state != State.GROUNDED:
 		return
 	var want := "run" if direction else "idle"
+	
+	if anim.current_animation == "interact" and want == "idle":
+		return
 	if anim.current_animation != want:
 		anim.play(want)
