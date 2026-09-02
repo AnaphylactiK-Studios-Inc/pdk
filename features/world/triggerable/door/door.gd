@@ -18,7 +18,10 @@ func _ready() -> void:
 	right_closed_position = right_door.position
 
 	state_changed.connect(_on_state_changed)
-	_on_state_changed(is_on)
+
+	if is_on:
+		left_door.position = left_closed_position + Vector3.LEFT * open_distance
+		right_door.position = right_closed_position + Vector3.RIGHT * open_distance
 
 func _on_state_changed(value: bool) -> void:
 	if value:

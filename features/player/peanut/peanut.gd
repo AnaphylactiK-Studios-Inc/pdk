@@ -70,8 +70,6 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 	
-# Turn raw WASD input into a world-space direction relative to where the camera
-# is looking, so "forward" always means away from the camera as it orbits.
 func _camera_relative_direction(input_dir: Vector2) -> Vector3:
 	if input_dir == Vector2.ZERO:
 		return Vector3.ZERO
@@ -83,9 +81,6 @@ func _camera_relative_direction(input_dir: Vector2) -> Vector3:
 
 	var cam_basis := cam.global_transform.basis
 
-	# Flatten the camera's forward/right onto the ground plane. basis.z points
-	# back toward the camera, so pressing forward (input_dir.y = -1) moves the
-	# character away from it.
 	var forward := cam_basis.z
 	forward.y = 0
 	forward = forward.normalized()

@@ -14,7 +14,9 @@ func _ready() -> void:
 	start_pos = platform.position
 
 	state_changed.connect(_on_state_changed)
-	_on_state_changed(is_on)
+
+	if is_on:
+		platform.position = start_pos + Vector3.UP * move_height
 
 func _on_state_changed(value: bool) -> void:
 	if value:
