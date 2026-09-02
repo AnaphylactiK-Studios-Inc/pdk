@@ -9,6 +9,7 @@ func _ready() -> void:
 	_on_state_changed(is_on)
 
 func interact_pressed() -> void:
+	super.interact_pressed()
 	set_state(!is_on)
 
 func _on_state_changed(value: bool) -> void:

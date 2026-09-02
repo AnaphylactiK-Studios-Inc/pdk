@@ -9,6 +9,8 @@ class_name Door
 var left_closed_position: Vector3
 var right_closed_position: Vector3
 
+var _tween: Tween
+
 func _ready() -> void:
 	super._ready()
 
@@ -25,42 +27,42 @@ func _on_state_changed(value: bool) -> void:
 		_close_doors()
 
 func _open_doors() -> void:
-	var left_open_position := left_closed_position + Vector3.LEFT * open_distance
-	var right_open_position := right_closed_position + Vector3.RIGHT * open_distance
-
-	var tween := create_tween()
-	tween.set_trans(Tween.TRANS_SINE)
-	tween.set_ease(Tween.EASE_IN_OUT)
-
-	tween.parallel().tween_property(
-		left_door,
-		"position",
-		left_open_position,
-		open_time
-	)
-
-	tween.parallel().tween_property(
-		right_door,
-		"position",
-		right_open_position,
-		open_time
+	_move_doors(
+		left_closed_position + Vector3.LEFT * open_distance,
+		right_closed_position + Vector3.RIGHT * open_distance
 	)
 
 func _close_doors() -> void:
-	var tween := create_tween()
-	tween.set_trans(Tween.TRANS_SINE)
-	tween.set_ease(Tween.EASE_IN_OUT)
+	_move_doors(left_closed_position, right_closed_position)
 
-	tween.parallel().tween_property(
+func _move_doors(left_target: Vector3, right_target: Vector3) -> void:
+	if _tween != null and _tween.is_valid():
+		_tween.kill()
+
+	var duration := open_time
+	if open_distance > 0.0:
+		var remaining := left_door.position.distance_to(left_target)
+		duration = open_time * clampf(remaining / open_distance, 0.0, 1.0)
+
+	if is_zero_approx(duration):
+		left_door.position = left_target
+		right_door.position = right_target
+		return
+
+	_tween = create_tween()
+	_tween.set_trans(Tween.TRANS_SINE)
+	_tween.set_ease(Tween.EASE_IN_OUT)
+
+	_tween.parallel().tween_property(
 		left_door,
 		"position",
-		left_closed_position,
-		open_time
+		left_target,
+		duration
 	)
 
-	tween.parallel().tween_property(
+	_tween.parallel().tween_property(
 		right_door,
 		"position",
-		right_closed_position,
-		open_time
+		right_target,
+		duration
 	)

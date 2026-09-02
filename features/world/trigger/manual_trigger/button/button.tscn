@@ -35,7 +35,8 @@ shape = SubResource("CylinderShape3D_nx1pg")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=466948986]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.042707443, 0)
-collision_layer = 2
+collision_layer = 8
+collision_mask = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=130235330]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.025442839, 0)

@@ -18,6 +18,7 @@ is_on = true
 [node name="OffModel" parent="." unique_id=272648798 instance=ExtResource("1_nptyo")]
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=381923186]
+collision_layer = 9
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1120893935]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00030517578, 0.0221169, 0.0007324219)
