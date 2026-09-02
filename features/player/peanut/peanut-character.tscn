@@ -1,13 +1,18 @@
 [gd_scene format=3 uid="uid://di57l68jpvua"]
 
-[ext_resource type="Script" uid="uid://b8jojar8n1eap" path="res://scripts/player/peanut.gd" id="1_4v4dh"]
-[ext_resource type="PackedScene" uid="uid://beb7tnflv36fi" path="res://assets/characters/peanut/model/peanut.tscn" id="2_wwoe8"]
+[ext_resource type="Script" uid="uid://b8jojar8n1eap" path="res://features/player/peanut/peanut.gd" id="1_4v4dh"]
+[ext_resource type="PackedScene" uid="uid://beb7tnflv36fi" path="res://features/player/peanut/model/peanut.tscn" id="2_wwoe8"]
+[ext_resource type="Script" uid="uid://b74mp8n8io2ar" path="res://features/player/peanut/interaction_area.gd" id="3_llxv3"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ruy7h"]
 radius = 0.11279297
 height = 0.4402771
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_f1lh2"]
+size = Vector3(1.15271, 0.4058838, 0.515625)
+
 [node name="Peanut" type="CharacterBody3D" unique_id=447074899]
+collision_layer = 2
 floor_stop_on_slope = false
 script = ExtResource("1_4v4dh")
 
@@ -17,3 +22,11 @@ transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=557861621]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.20766103, 0)
 shape = SubResource("CapsuleShape3D_ruy7h")
+
+[node name="InteractionArea" type="Area3D" parent="." unique_id=830078152]
+collision_mask = 8
+script = ExtResource("3_llxv3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionArea" unique_id=287891294]
+transform = Transform3D(0.3667572, 0, 0, 0, 1.089144, 0, 0, 0, 1.0933565, 0.0058195665, 0.23376381, 0.20631453)
+shape = SubResource("BoxShape3D_f1lh2")

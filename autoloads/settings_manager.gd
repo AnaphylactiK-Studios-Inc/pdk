@@ -84,6 +84,7 @@ const REMAPPABLE_ACTIONS := {
 	"move_left": "Move Left",
 	"move_right": "Move Right",
 	"jump": "Jump",
+	"interact": "Interact",
 }
 
 const DEFAULT_MOUSE_SENSITIVITY := 0.5

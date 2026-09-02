@@ -1,0 +1,129 @@
+[gd_scene format=3 uid="uid://cmj8nhsuy3b7h"]
+
+[ext_resource type="PackedScene" uid="uid://dbnd2cyiklnfh" path="res://features/world/trigger/manual_trigger/lever/lever.tscn" id="1_by4lx"]
+[ext_resource type="Texture2D" uid="uid://bp5ejxar7ql82" path="res://assets/2d/PLACEHOLDER_clear_sky.png" id="1_dytx0"]
+[ext_resource type="PackedScene" uid="uid://ccditdaywowtc" path="res://features/world/trigger/manual_trigger/button/button.tscn" id="2_ob8ju"]
+[ext_resource type="PackedScene" uid="uid://di57l68jpvua" path="res://features/player/peanut/peanut-character.tscn" id="2_smxyd"]
+[ext_resource type="PackedScene" uid="uid://d3mmdskg8uv0o" path="res://features/world/triggerable/wire/wire.tscn" id="5_yirpm"]
+[ext_resource type="PackedScene" uid="uid://ddw0wydynyg6e" path="res://features/world/trigger/pressure_plate/pressure_plate.tscn" id="6_hhd2h"]
+[ext_resource type="PackedScene" uid="uid://bao7vydfblf0f" path="res://features/world/triggerable/door/door.tscn" id="6_max6g"]
+[ext_resource type="PackedScene" uid="uid://5a65xaleut14" path="res://features/world/triggerable/platform/platform.tscn" id="7_8fde8"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_yirpm"]
+panorama = ExtResource("1_dytx0")
+filter = false
+
+[sub_resource type="Sky" id="Sky_f6pb0"]
+sky_material = SubResource("PanoramaSkyMaterial_yirpm")
+
+[sub_resource type="Environment" id="Environment_max6g"]
+background_mode = 2
+sky = SubResource("Sky_f6pb0")
+fog_light_energy = 1.44
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fyfm1"]
+albedo_color = Color(0.6004616, 0.8076863, 0.4930253, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_8fde8"]
+material = SubResource("StandardMaterial3D_fyfm1")
+size = Vector2(25, 25)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_22fu7"]
+size = Vector3(25, 0.80892336, 25)
+
+[sub_resource type="VoxelGIData" id="VoxelGIData_yd7ox"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_rg5n0"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_myha2"]
+
+[node name="CircuitryTestScene" type="Node3D" unique_id=767040196]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1793835094]
+environment = SubResource("Environment_max6g")
+
+[node name="Plane" type="StaticBody3D" parent="." unique_id=300973135]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Plane" unique_id=742984944]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.06172037, -0.107052326, 0.061229944)
+mesh = SubResource("PlaneMesh_8fde8")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Plane" unique_id=670391606]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.49507728, 0)
+shape = SubResource("BoxShape3D_22fu7")
+
+[node name="VoxelGI" type="VoxelGI" parent="." unique_id=64284892]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.6310425, 0, 0)
+subdiv = 0
+size = Vector3(50, 25, 50)
+data = SubResource("VoxelGIData_yd7ox")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1131083438]
+transform = Transform3D(1, 0, 0, 0, -0.010973634, 0.9999398, 0, -0.9999398, -0.010973634, 2.6310425, 8.02878, 0)
+light_color = Color(0.79607844, 0.9137255, 1, 1)
+light_specular = 1.14
+shadow_enabled = true
+
+[node name="Platform" parent="." unique_id=1531490433 node_paths=PackedStringArray("triggers") instance=ExtResource("7_8fde8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.27086735, -0.046543777, 2.6822412)
+triggers = [NodePath("Platform/PressurePlate")]
+
+[node name="Platform" parent="Platform" index="0" unique_id=1628791351]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.4633017, 0, -1.2656467)
+
+[node name="PressurePlate" parent="Platform/Platform" index="2" unique_id=1333214972 instance=ExtResource("6_hhd2h")]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, -0.020524979, 0.061260335, 0.0021044016)
+
+[node name="Wire" parent="." unique_id=1965212947 node_paths=PackedStringArray("triggers") instance=ExtResource("5_yirpm")]
+transform = Transform3D(2.9802322e-08, 0, -0.34671646, 0, 1, 0, 1, 0, 1.0332956e-08, -0.27652246, -0.084872775, 1.0459964)
+triggers = [NodePath("../Lever")]
+
+[node name="Lever" parent="." unique_id=708373182 instance=ExtResource("1_by4lx")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0.09833372, -0.11006938, 1.0552639)
+is_on = false
+
+[node name="Door" parent="." unique_id=2140460678 node_paths=PackedStringArray("triggers") instance=ExtResource("6_max6g")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5893482, 0.40938443, 2.8793132)
+triggers = [NodePath("../WallSegments/Button")]
+
+[node name="WallSegments" type="StaticBody3D" parent="." unique_id=1689608159]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 2.689487, 0.38906264, 3.3163314)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="WallSegments" unique_id=652273894]
+transform = Transform3D(1, 0, 0, 0, 1.5046426, 0, 0, 0, 1, 0, 0.14713705, 0)
+mesh = SubResource("BoxMesh_rg5n0")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WallSegments" unique_id=1577127217]
+transform = Transform3D(1, 0, 0, 0, 1.5046426, 0, 0, 0, 1, 0, 0.14713705, 0)
+shape = SubResource("BoxShape3D_myha2")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="WallSegments" unique_id=814143755]
+transform = Transform3D(1, 0, 0, 0, 2.2639494, 0, 0, 0, 1, 0, -0.23837152, 2.1921725)
+mesh = SubResource("BoxMesh_rg5n0")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="WallSegments" unique_id=845997089]
+transform = Transform3D(1, 0, 0, 0, 2.2639494, 0, 0, 0, 1, 0, -0.23837152, 2.1921725)
+shape = SubResource("BoxShape3D_myha2")
+
+[node name="Button" parent="WallSegments" unique_id=1336324132 instance=ExtResource("2_ob8ju")]
+transform = Transform3D(-8.742278e-08, -2, 0, 2, -8.742278e-08, 0, 0, 0, 2, -0.489882, -0.22905071, 0.20993829)
+
+[node name="Wire" parent="WallSegments" unique_id=1850777998 node_paths=PackedStringArray("triggers") instance=ExtResource("5_yirpm")]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, -0.14855002, 0, 0.99999994, -6.4933277e-09, -0.527792, 0.03765762, 0.20905685)
+triggers = [NodePath("../Button")]
+
+[node name="Wire2" parent="WallSegments" unique_id=902598797 node_paths=PackedStringArray("triggers") instance=ExtResource("5_yirpm")]
+transform = Transform3D(-0.99999994, 0, 2.204347e-09, 0, 1, 0, -1.3909066e-08, 0, -0.15848282, -0.51889443, 0.17129499, 0.35514808)
+triggers = [NodePath("../Button")]
+
+[node name="Peanut" parent="." unique_id=447074899 instance=ExtResource("2_smxyd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.424883, 0.061950624, -0.69818366)
+
+[node name="Camera3D" type="Camera3D" parent="Peanut" unique_id=2139937882]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -0.025038004, 0.89510566, -1.6447877)
+
+[editable path="Platform"]
+[editable path="Wire"]
+[editable path="Lever"]
+[editable path="WallSegments/Wire"]
+[editable path="WallSegments/Wire2"]
