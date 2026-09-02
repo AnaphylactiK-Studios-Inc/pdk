@@ -39,9 +39,6 @@ func _physics_process(delta: float) -> void:
 	var direction := _camera_relative_direction(input_dir)
 	if Input.is_action_just_pressed("interact") and interaction_area.current_trigger:
 		anim.play("interact")
-		interaction_area.interact_pressed()
-	if Input.is_action_just_released("interact"):
-		interaction_area.interact_released()
 	if Input.is_action_just_pressed("jump") and on_floor and (state == State.GROUNDED or state == State.LAND):
 		velocity.y = JUMP_VELOCITY
 		state = State.JUMP_START
