@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://bp5ejxar7ql82" path="res://assets/2d/PLACEHOLDER_clear_sky.png" id="1_fyfm1"]
 [ext_resource type="PackedScene" uid="uid://di57l68jpvua" path="res://assets/characters/peanut/peanut-character.tscn" id="2_q6bgh"]
+[ext_resource type="PackedScene" uid="uid://ck1qmn7v3xbra" path="res://features/player/peanut/peanut-camera.tscn" id="3_camrig"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_f6pb0"]
 panorama = ExtResource("1_fyfm1")
@@ -59,8 +60,6 @@ material = SubResource("StandardMaterial3D_ruy7h")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1330181748]
 environment = SubResource("Environment_wt2qj")
 
-[node name="Camera3D" type="Camera3D" parent="." unique_id=1257721206]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8257134, 8.411822)
 
 [node name="Plane" type="StaticBody3D" parent="." unique_id=1545627014]
 
@@ -115,3 +114,5 @@ light_specular = 1.14
 shadow_enabled = true
 
 [node name="Peanut" parent="." unique_id=447074899 instance=ExtResource("2_q6bgh")]
+
+[node name="PeanutCamera" parent="." instance=ExtResource("3_camrig")]

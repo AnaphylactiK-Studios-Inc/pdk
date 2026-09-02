@@ -19,6 +19,8 @@ const BIND_BUTTON_WIDTH := 160
 @onready var stick_sensitivity_y_slider: HSlider = %StickSensitivityYSlider
 @onready var stick_sensitivity_y_value: Label = %StickSensitivityYValue
 @onready var controller_style_option: OptionButton = %ControllerStyleOption
+@onready var sprint_toggle_button: CheckButton = %SprintToggleButton
+@onready var crawl_toggle_button: CheckButton = %CrawlToggleButton
 
 var _listening_action := ""
 var _active_family: int = SettingsManager.BindFamily.KBM
@@ -36,6 +38,8 @@ func _ready() -> void:
 	mouse_sensitivity_slider.value_changed.connect(_on_mouse_sensitivity_changed)
 	stick_sensitivity_x_slider.value_changed.connect(_on_stick_sensitivity_x_changed)
 	stick_sensitivity_y_slider.value_changed.connect(_on_stick_sensitivity_y_changed)
+	sprint_toggle_button.toggled.connect(_on_sprint_toggle_changed)
+	crawl_toggle_button.toggled.connect(_on_crawl_toggle_changed)
 	_populate_controller_style_dropdown()
 	controller_style_option.item_selected.connect(_on_controller_style_selected)
 
@@ -205,6 +209,8 @@ func _sync_sensitivity_from_manager() -> void:
 	mouse_sensitivity_slider.value = SettingsManager.mouse_sensitivity
 	stick_sensitivity_x_slider.value = SettingsManager.stick_sensitivity_x
 	stick_sensitivity_y_slider.value = SettingsManager.stick_sensitivity_y
+	sprint_toggle_button.button_pressed = SettingsManager.sprint_toggle
+	crawl_toggle_button.button_pressed = SettingsManager.crawl_toggle
 	_update_sensitivity_labels()
 
 	var style_index: int = controller_style_option.get_item_index(
@@ -220,6 +226,9 @@ func _update_sensitivity_labels() -> void:
 	mouse_sensitivity_value.text = "%d%%" % roundi(mouse_sensitivity_slider.value * 100.0)
 	stick_sensitivity_x_value.text = "%d%%" % roundi(stick_sensitivity_x_slider.value * 100.0)
 	stick_sensitivity_y_value.text = "%d%%" % roundi(stick_sensitivity_y_slider.value * 100.0)
+	# The switch reads as its own label: what the button is set to right now.
+	sprint_toggle_button.text = "Toggle" if sprint_toggle_button.button_pressed else "Hold"
+	crawl_toggle_button.text = "Toggle" if crawl_toggle_button.button_pressed else "Hold"
 
 
 func _on_mouse_sensitivity_changed(value: float) -> void:
@@ -241,6 +250,20 @@ func _on_stick_sensitivity_y_changed(value: float) -> void:
 	if _syncing:
 		return
 	SettingsManager.set_stick_sensitivity_y(value)
+
+
+func _on_sprint_toggle_changed(enabled: bool) -> void:
+	_update_sensitivity_labels()
+	if _syncing:
+		return
+	SettingsManager.set_sprint_toggle(enabled)
+
+
+func _on_crawl_toggle_changed(enabled: bool) -> void:
+	_update_sensitivity_labels()
+	if _syncing:
+		return
+	SettingsManager.set_crawl_toggle(enabled)
 
 
 func _on_controller_style_selected(index: int) -> void:

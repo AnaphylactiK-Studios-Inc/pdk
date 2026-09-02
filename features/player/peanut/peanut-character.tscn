@@ -7,7 +7,7 @@
 radius = 0.11279297
 height = 0.4402771
 
-[node name="Peanut" type="CharacterBody3D" unique_id=447074899]
+[node name="Peanut" type="CharacterBody3D" unique_id=447074899 groups=["peanut"]]
 floor_stop_on_slope = false
 script = ExtResource("1_4v4dh")
 

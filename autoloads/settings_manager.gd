@@ -63,6 +63,16 @@ const AXIS_NAMES := {
 	JOY_AXIS_TRIGGER_RIGHT: "Right Trigger",
 }
 
+const MOUSE_BUTTON_NAMES := {
+	MOUSE_BUTTON_LEFT: "Left Mouse",
+	MOUSE_BUTTON_RIGHT: "Right Mouse",
+	MOUSE_BUTTON_MIDDLE: "Middle Mouse",
+	MOUSE_BUTTON_WHEEL_UP: "Mouse Wheel Up",
+	MOUSE_BUTTON_WHEEL_DOWN: "Mouse Wheel Down",
+	MOUSE_BUTTON_XBUTTON1: "Mouse 4",
+	MOUSE_BUTTON_XBUTTON2: "Mouse 5",
+}
+
 const VCA_PATHS := {
 	"master": "vca:/Master",
 	"music": "vca:/Music",
@@ -84,7 +94,15 @@ const REMAPPABLE_ACTIONS := {
 	"move_left": "Move Left",
 	"move_right": "Move Right",
 	"jump": "Jump",
+	"sprint": "Sprint",
+	"dash": "Dash",
+	"crawl": "Sneak / Crawl",
 }
+
+## Hold-to-sprint suits a keyboard; toggle-to-crawl suits a controller, so the
+## defaults differ and either can be flipped in the controls menu.
+const DEFAULT_SPRINT_TOGGLE := false
+const DEFAULT_CRAWL_TOGGLE := true
 
 const DEFAULT_MOUSE_SENSITIVITY := 0.5
 const DEFAULT_STICK_SENSITIVITY_X := 0.5
@@ -110,6 +128,8 @@ var mouse_sensitivity: float = DEFAULT_MOUSE_SENSITIVITY
 var stick_sensitivity_x: float = DEFAULT_STICK_SENSITIVITY_X
 var stick_sensitivity_y: float = DEFAULT_STICK_SENSITIVITY_Y
 var controller_style_override: int = ControllerStyle.AUTO
+var sprint_toggle: bool = DEFAULT_SPRINT_TOGGLE
+var crawl_toggle: bool = DEFAULT_CRAWL_TOGGLE
 
 var _vcas: Dictionary = {}
 var _preview_ok: Dictionary = {}
@@ -234,6 +254,18 @@ func set_stick_sensitivity_y(value: float) -> void:
 	settings_changed.emit()
 
 
+func set_sprint_toggle(enabled: bool) -> void:
+	sprint_toggle = enabled
+	_request_save()
+	settings_changed.emit()
+
+
+func set_crawl_toggle(enabled: bool) -> void:
+	crawl_toggle = enabled
+	_request_save()
+	settings_changed.emit()
+
+
 ## Pass ControllerStyle.AUTO to go back to auto-detection.
 func set_controller_style(style: int) -> void:
 	controller_style_override = style
@@ -292,6 +324,8 @@ func reset_controls_defaults() -> void:
 	stick_sensitivity_x = DEFAULT_STICK_SENSITIVITY_X
 	stick_sensitivity_y = DEFAULT_STICK_SENSITIVITY_Y
 	controller_style_override = ControllerStyle.AUTO
+	sprint_toggle = DEFAULT_SPRINT_TOGGLE
+	crawl_toggle = DEFAULT_CRAWL_TOGGLE
 
 	reset_keybinds()
 	save_settings()
@@ -339,7 +373,7 @@ func describe_event(event: InputEvent) -> String:
 			DisplayServer.keyboard_get_keycode_from_physical(code)
 		)
 	if event is InputEventMouseButton:
-		return "Mouse %d" % event.button_index
+		return MOUSE_BUTTON_NAMES.get(event.button_index, "Mouse %d" % event.button_index)
 	if event is InputEventJoypadButton:
 		return _describe_joy_button(event.button_index)
 	if event is InputEventJoypadMotion:
@@ -571,6 +605,8 @@ func save_settings() -> void:
 	config.set_value("input", "stick_sensitivity_x", stick_sensitivity_x)
 	config.set_value("input", "stick_sensitivity_y", stick_sensitivity_y)
 	config.set_value("input", "controller_style", int(controller_style_override))
+	config.set_value("input", "sprint_toggle", sprint_toggle)
+	config.set_value("input", "crawl_toggle", crawl_toggle)
 
 	for action in REMAPPABLE_ACTIONS:
 		if not InputMap.has_action(action):
@@ -632,6 +668,9 @@ func load_settings() -> void:
 		int(config.get_value("input", "controller_style", controller_style_override)),
 		0, ControllerStyle.size() - 1
 	)
+
+	sprint_toggle = bool(config.get_value("input", "sprint_toggle", sprint_toggle))
+	crawl_toggle = bool(config.get_value("input", "crawl_toggle", crawl_toggle))
 
 	for action in REMAPPABLE_ACTIONS:
 		if not config.has_section_key("input", action):
