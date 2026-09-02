@@ -57,6 +57,7 @@ const LAND_LENGTH := 0.5
 @onready var model: Node3D = $peanut
 @onready var anim: AnimationPlayer = $peanut/AnimationPlayer
 @onready var collider: CollisionShape3D = $CollisionShape3D
+@onready var interaction_area := $InteractionArea
 
 var state: State = State.GROUNDED
 var gait: Gait = Gait.WALK
@@ -85,6 +86,11 @@ func _ready() -> void:
 		var land := anim.get_animation("land")
 		land.loop_mode = Animation.LOOP_NONE
 		land.length = LAND_LENGTH
+	if anim.has_animation("interact"):
+		anim.get_animation("interact").loop_mode = Animation.LOOP_NONE
+
+	interaction_area.interact_started.connect(_on_interact_started)
+	interaction_area.rotation.y = model.rotation.y
 
 	# Keeps the character from sliding down slopes when standing still
 	floor_snap_length = 0.3
@@ -336,6 +342,7 @@ func _face_movement(delta: float, wish_dir: Vector3) -> void:
 	model.rotation.y = lerp_angle(
 		model.rotation.y, target_yaw, 1.0 - exp(-turn_sharpness * delta)
 	)
+	interaction_area.rotation.y = model.rotation.y
 
 
 # --- Dash ---
@@ -416,6 +423,10 @@ func _update_animation(wish_dir: Vector3) -> void:
 	if state != State.GROUNDED:
 		return
 
+	# Let the interact clip finish instead of being cut off by idle/run.
+	if anim.current_animation == "interact" and not _clip_finished():
+		return
+
 	var speed := Vector2(velocity.x, velocity.z).length()
 	var moving := wish_dir != Vector3.ZERO or speed > 0.1
 
@@ -442,6 +453,11 @@ func _play(clip: String, fallback: String = "") -> void:
 		want = fallback
 	if anim.current_animation != want:
 		anim.play(want)
+
+
+func _on_interact_started(_trigger: ManualTrigger) -> void:
+	anim.speed_scale = 1.0
+	_play("interact")
 
 
 # --- Steps ---

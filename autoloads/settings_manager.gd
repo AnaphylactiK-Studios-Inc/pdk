@@ -97,6 +97,7 @@ const REMAPPABLE_ACTIONS := {
 	"sprint": "Sprint",
 	"dash": "Dash",
 	"crawl": "Sneak / Crawl",
+	"interact": "Interact",
 }
 
 ## Hold-to-sprint suits a keyboard; toggle-to-crawl suits a controller, so the
