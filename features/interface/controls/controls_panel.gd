@@ -98,9 +98,6 @@ func _build_rows() -> void:
 		action_list.add_child(row)
 		_bind_buttons[action] = button
 
-	# _build_rows() frees and recreates every row's button, so whatever held
-	# focus before this call (an old row, or nothing) is gone: without this,
-	# arrow-key/gamepad navigation would dead-end here until the mouse is used.
 	if not _bind_buttons.is_empty():
 		(_bind_buttons.values()[0] as Button).grab_focus()
 
@@ -144,7 +141,6 @@ func _input(event: InputEvent) -> void:
 	if _listening_action == "":
 		return
 
-	# Stick and trigger axes never report is_pressed(), so handle them first.
 	if event is InputEventJoypadMotion:
 		if _active_family != SettingsManager.BindFamily.JOY:
 			return

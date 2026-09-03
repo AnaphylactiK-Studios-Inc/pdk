@@ -26,29 +26,35 @@ const LAND_LENGTH := 0.5
 @export var turn_sharpness := 18.0
 
 @export_group("Jump")
-@export var jump_velocity := 4.5
+@export var jump_velocity := 4.7
 @export var coyote_time := 0.12  # Time after leaving ground that a jump is still allowed
-@export var jump_buffer_time := 0.12
+@export var jump_buffer_time := 0.15
 ## Fraction of upward speed kept when jump is released early. Lower is snappier.
-@export_range(0.0, 1.0) var jump_release_damping := 0.45
-@export var fall_gravity_multiplier := 1.4
-@export var terminal_velocity := 18.0
+@export_range(0.0, 1.0) var jump_release_damping := 0.55
+@export var fall_gravity_multiplier := 1.3
+@export var terminal_velocity := 16.0
 
 @export_group("Dash")
 @export var dash_speed := 9.0
 @export var dash_duration := 0.18
 @export var dash_cooldown := 0.55
-## Dashes allowed between leaving the ground and landing again.
-@export var air_dash_count := 1
 @export_range(0.0, 1.0) var dash_vertical_damping := 0.0
 
 @export_group("Crawl")
 ## Collision height while crawling
 @export_range(0.2, 1.0) var crawl_height_ratio := 0.5
-@export_range(0.0, 1.0) var crawl_dash_scale := 0.7
+@export_range(0.0, 1.0) var crawl_dash_scale := 0.4
+
+@export_group("Grounding")
+## How far below her origin to look for the floor when planting the model, and
+## the furthest the model will ever be dropped.
+@export var foot_probe_length := 0.18
+## How fast the model settles onto the probed floor height.
+@export var foot_plant_sharpness := 20.0
+@export var foot_offset := 0.0
 
 @export_group("Steps")
-@export var step_length := 0.55
+@export var step_length := 0.5
 @export_range(0.1, 1.0) var crawl_step_scale := 0.6
 @export var crawl_noise := 0.15
 @export var walk_noise := 1.0
@@ -58,6 +64,7 @@ const LAND_LENGTH := 0.5
 @onready var anim: AnimationPlayer = $peanut/AnimationPlayer
 @onready var collider: CollisionShape3D = $CollisionShape3D
 @onready var interaction_area := $InteractionArea
+@onready var dash_dust: GPUParticles3D = $DashDust
 
 var state: State = State.GROUNDED
 var gait: Gait = Gait.WALK
@@ -68,13 +75,13 @@ var _jump_buffer_timer := 0.0
 var _dash_timer := 0.0
 var _dash_cooldown_timer := 0.0
 var _dash_direction := Vector3.ZERO
-var _air_dashes_left := 0
 var _sprint_input := false
 var _sprint_latched := false
 var _step_distance := 0.0
 var _stand_height := 0.0
 var _stand_offset := 0.0
 var _capsule: CapsuleShape3D
+var _foot_drop := 0.0
 
 
 func _ready() -> void:
@@ -103,8 +110,6 @@ func _ready() -> void:
 		_stand_height = _capsule.height
 		_stand_offset = collider.position.y
 
-	_air_dashes_left = air_dash_count
-
 
 func _physics_process(delta: float) -> void:
 	var on_floor := is_on_floor()
@@ -126,7 +131,7 @@ func _physics_process(delta: float) -> void:
 		_move_dashing(delta)
 	else:
 		_apply_gravity(delta, on_floor)
-		_try_jump(on_floor)
+		_try_jump()
 		_move_walking(delta, wish_dir, strength, on_floor)
 
 	_face_movement(delta, wish_dir)
@@ -135,6 +140,7 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 
+	_plant_feet(delta)
 	_update_steps(delta)
 
 
@@ -168,7 +174,6 @@ func _tick_timers(delta: float, on_floor: bool) -> void:
 
 	if on_floor:
 		_coyote_timer = coyote_time
-		_air_dashes_left = air_dash_count
 	else:
 		_coyote_timer = maxf(_coyote_timer - delta, 0.0)
 
@@ -294,7 +299,7 @@ func _apply_gravity(delta: float, on_floor: bool) -> void:
 	velocity.y = maxf(velocity.y, -terminal_velocity)
 
 
-func _try_jump(on_floor: bool) -> void:
+func _try_jump() -> void:
 	# Releasing early cuts the jump short, giving one button two heights.
 	if not Input.is_action_pressed("jump") and velocity.y > 0.0 and state != State.GROUNDED:
 		velocity.y *= jump_release_damping
@@ -353,11 +358,9 @@ func _try_start_dash(wish_dir: Vector3) -> bool:
 	if state == State.DASH or _dash_cooldown_timer > 0.0:
 		return false
 
-	var grounded := is_on_floor() or _coyote_timer > 0.0
-	if not grounded:
-		if _air_dashes_left <= 0:
-			return false
-		_air_dashes_left -= 1
+	# Ground-only dash. Coyote time counts, so walking off a lip doesn't eat it.
+	if not is_on_floor() and _coyote_timer <= 0.0:
+		return false
 
 	# Dash where she is pointed if there is no input to read.
 	_dash_direction = wish_dir
@@ -369,8 +372,18 @@ func _try_start_dash(wish_dir: Vector3) -> bool:
 	state = State.DASH
 	velocity.y *= dash_vertical_damping
 	_play("dash", "run")
+	_start_dash_dust()
 	dash_started.emit(_dash_direction)
 	return true
+
+
+## The emitter sprays along its own +Z, so aim that opposite the dash and the
+## dust trails off her heels. Restarting clears the last dash's puff, which
+## otherwise lingers into a quick second dash.
+func _start_dash_dust() -> void:
+	dash_dust.rotation.y = atan2(-_dash_direction.x, -_dash_direction.z)
+	dash_dust.restart()
+	dash_dust.emitting = true
 
 
 func _move_dashing(delta: float) -> void:
@@ -390,6 +403,7 @@ func _move_dashing(delta: float) -> void:
 	velocity.x = _dash_direction.x * carry
 	velocity.z = _dash_direction.z * carry
 	state = State.GROUNDED if is_on_floor() else State.AIR
+	dash_dust.emitting = false
 	dash_finished.emit()
 
 
@@ -458,6 +472,32 @@ func _play(clip: String, fallback: String = "") -> void:
 func _on_interact_started(_trigger: ManualTrigger) -> void:
 	anim.speed_scale = 1.0
 	_play("interact")
+
+
+## A capsule meets a slope tangentially, so its lowest point never reaches the
+## surface the player can see: on an incline the body rides
+## radius * (1 / cos(angle) - 1) above the ground directly beneath it, and that
+## gap is what reads as Peanut hovering. Probing straight down and dropping the
+## model by the difference plants her feet without disturbing the collision the
+## rest of the movement code is built on.
+func _plant_feet(delta: float) -> void:
+	var target := 0.0
+
+	if is_on_floor():
+		var from := global_position + Vector3.UP * 0.1
+		var params := PhysicsRayQueryParameters3D.create(
+			from, from + Vector3.DOWN * (0.1 + foot_probe_length)
+		)
+		params.collision_mask = collision_mask
+		params.exclude = [get_rid()]
+
+		var hit := get_world_3d().direct_space_state.intersect_ray(params)
+		if not hit.is_empty():
+			# Only ever lower her: raising the model would push her into ledges.
+			target = clampf(hit.position.y - global_position.y, -foot_probe_length, 0.0)
+
+	_foot_drop = lerpf(_foot_drop, target, 1.0 - exp(-foot_plant_sharpness * delta))
+	model.position.y = _foot_drop + foot_offset
 
 
 # --- Steps ---

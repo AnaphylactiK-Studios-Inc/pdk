@@ -75,6 +75,9 @@ func _ready() -> void:
 		global_position = _pivot_position()
 	_apply_rotation()
 
+	# Follow after the target has moved, whatever order the scene lists them in.
+	process_physics_priority = 100
+
 	set_captured(capture_mouse)
 
 
@@ -100,8 +103,16 @@ func _unhandled_input(event: InputEvent) -> void:
 		set_captured(true)
 
 
+## Look runs every drawn frame so mouse aim stays as responsive as the display.
 func _process(delta: float) -> void:
 	_apply_look(delta)
+
+
+## Following runs on the physics tick instead, because the goal it chases only
+## changes on the physics tick. Smoothing toward a stepped goal at render rate
+## leaves the camera still drifting on the frames where Peanut is frozen, which
+## reads as Peanut shimmering against the background.
+func _physics_process(delta: float) -> void:
 	_follow(delta)
 
 

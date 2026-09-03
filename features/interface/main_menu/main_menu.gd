@@ -1,7 +1,5 @@
 extends MarginContainer
 
-## The scene to load when the player presses Start.
-## Drag a gameplay scene onto this property in the Inspector once one exists.
 @export var game_scene: PackedScene
 @export var settings_scene: PackedScene
 
@@ -9,8 +7,6 @@ extends MarginContainer
 @onready var settings_button: Button = %SettingsButton
 @onready var quit_button: Button = %QuitButton
 
-## Overlays live on their own CanvasLayer so this MarginContainer doesn't try to
-## lay them out, and so they always draw above the menu regardless of tree order.
 var _overlay_layer: CanvasLayer
 var _settings_instance: Node = null
 
@@ -24,7 +20,6 @@ func _ready() -> void:
 	settings_button.pressed.connect(_on_settings_pressed)
 	quit_button.pressed.connect(_on_quit_pressed)
 
-	# Focus the first button so the menu can be used with a keyboard or gamepad.
 	start_button.grab_focus()
 
 
@@ -43,11 +38,9 @@ func _on_settings_pressed() -> void:
 		push_warning("Main menu has no settings scene assigned.")
 		return
 	if is_instance_valid(_settings_instance):
-		return  # Already open; a double-click shouldn't stack two panels.
+		return
 
 	var settings := settings_scene.instantiate()
-	# Connect before add_child: add_child runs _ready, and if the panel ever
-	# decides to close itself there, a connection made afterwards misses it.
 	settings.closed.connect(_on_settings_closed)
 	_settings_instance = settings
 	_overlay_layer.add_child(settings)
@@ -64,8 +57,6 @@ func _on_settings_closed() -> void:
 	settings_button.grab_focus()
 
 
-## While an overlay is up, the menu buttons shouldn't be reachable by Tab or by
-## a gamepad stick. The overlay's own full-rect Control blocks the mouse.
 func _set_menu_interactive(enabled: bool) -> void:
 	var mode := Control.FOCUS_ALL if enabled else Control.FOCUS_NONE
 	for button in [start_button, settings_button, quit_button]:

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://c10ektgg21of2"]
 
 [ext_resource type="Texture2D" uid="uid://bp5ejxar7ql82" path="res://assets/2d/PLACEHOLDER_clear_sky.png" id="1_fyfm1"]
-[ext_resource type="PackedScene" uid="uid://di57l68jpvua" path="res://assets/characters/peanut/peanut-character.tscn" id="2_q6bgh"]
+[ext_resource type="PackedScene" uid="uid://di57l68jpvua" path="res://features/player/peanut/peanut-character.tscn" id="2_q6bgh"]
 [ext_resource type="PackedScene" uid="uid://ck1qmn7v3xbra" path="res://features/player/peanut/peanut-camera.tscn" id="3_camrig"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_f6pb0"]
@@ -23,8 +23,8 @@ albedo_color = Color(0.6004616, 0.8076863, 0.4930253, 1)
 material = SubResource("StandardMaterial3D_fyfm1")
 size = Vector2(25, 25)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_ruy7h"]
-size = Vector3(25, 0.8, 25)
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_g40fh"]
+data = PackedVector3Array(12.5, 0, 12.5, -12.5, 0, 12.5, 12.5, 0, -12.5, -12.5, 0, 12.5, -12.5, 0, -12.5, 12.5, 0, -12.5)
 
 [sub_resource type="PrismMesh" id="PrismMesh_f6pb0"]
 left_to_right = -2.0
@@ -60,16 +60,16 @@ material = SubResource("StandardMaterial3D_ruy7h")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1330181748]
 environment = SubResource("Environment_wt2qj")
 
-
 [node name="Plane" type="StaticBody3D" parent="." unique_id=1545627014]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.12435068, 0)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Plane" unique_id=60390862]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.05565834, -0.09581804, 0.06862259)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.055, 0, 0.064)
 mesh = SubResource("PlaneMesh_wt2qj")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Plane" unique_id=1969410800]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4995389, 0)
-shape = SubResource("BoxShape3D_ruy7h")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Plane" unique_id=1957889659]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.055, 0, 0.064)
+shape = SubResource("ConcavePolygonShape3D_g40fh")
 
 [node name="Ramp" type="StaticBody3D" parent="." unique_id=1266584052]
 
@@ -114,5 +114,6 @@ light_specular = 1.14
 shadow_enabled = true
 
 [node name="Peanut" parent="." unique_id=447074899 instance=ExtResource("2_q6bgh")]
+foot_probe_length = 0.2
 
-[node name="PeanutCamera" parent="." instance=ExtResource("3_camrig")]
+[node name="PeanutCamera" parent="." unique_id=1179963057 instance=ExtResource("3_camrig")]
