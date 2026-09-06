@@ -1,0 +1,178 @@
+[gd_scene format=3 uid="uid://cuk0o36ga2smy"]
+
+[ext_resource type="Script" uid="uid://dv2e262pgrm64" path="res://features/interface/settings/settings_panel.gd" id="1_703c1"]
+[ext_resource type="PackedScene" uid="uid://d1gnuqqf81rom" path="res://features/interface/controls/controls_panel.tscn" id="2_oqxsi"]
+
+[node name="SettingsPanel" type="Control" unique_id=1993019916]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_703c1")
+controls_scene = ExtResource("2_oqxsi")
+
+[node name="Dim" type="ColorRect" parent="." unique_id=313352921]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.39215687)
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=2058663339]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="CenterContainer" unique_id=2073649246]
+layout_mode = 2
+
+[node name="Margin" type="MarginContainer" parent="CenterContainer/Panel" unique_id=987130222]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="VBox" type="VBoxContainer" parent="CenterContainer/Panel/Margin" unique_id=284377046]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="SettingsLabel" type="Label" parent="CenterContainer/Panel/Margin/VBox" unique_id=1189051792]
+layout_mode = 2
+text = "Settings"
+horizontal_alignment = 1
+
+[node name="Separator" type="HSeparator" parent="CenterContainer/Panel/Margin/VBox" unique_id=1526986661]
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="CenterContainer/Panel/Margin/VBox" unique_id=1109315916]
+layout_mode = 2
+columns = 2
+
+[node name="MasterLabel" type="Label" parent="CenterContainer/Panel/Margin/VBox/GridContainer" unique_id=825037173]
+layout_mode = 2
+text = "Master"
+
+[node name="Master" type="HBoxContainer" parent="CenterContainer/Panel/Margin/VBox/GridContainer" unique_id=1485813574]
+layout_mode = 2
+
+[node name="MasterSlider" type="HSlider" parent="CenterContainer/Panel/Margin/VBox/GridContainer/Master" unique_id=1905603331]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+
+[node name="MasterValue" type="Label" parent="CenterContainer/Panel/Margin/VBox/GridContainer/Master" unique_id=386577751]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(56, 0)
+layout_mode = 2
+text = "0%"
+horizontal_alignment = 2
+
+[node name="MusicLabel" type="Label" parent="CenterContainer/Panel/Margin/VBox/GridContainer" unique_id=2137104366]
+layout_mode = 2
+text = "Music"
+
+[node name="Music" type="HBoxContainer" parent="CenterContainer/Panel/Margin/VBox/GridContainer" unique_id=1934222657]
+layout_mode = 2
+
+[node name="MusicSlider" type="HSlider" parent="CenterContainer/Panel/Margin/VBox/GridContainer/Music" unique_id=1878128861]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+
+[node name="MusicValue" type="Label" parent="CenterContainer/Panel/Margin/VBox/GridContainer/Music" unique_id=1449778867]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(56, 0)
+layout_mode = 2
+text = "0%"
+horizontal_alignment = 2
+
+[node name="SFXLabel" type="Label" parent="CenterContainer/Panel/Margin/VBox/GridContainer" unique_id=882802878]
+layout_mode = 2
+text = "SFX"
+
+[node name="Sfx" type="HBoxContainer" parent="CenterContainer/Panel/Margin/VBox/GridContainer" unique_id=1657473420]
+layout_mode = 2
+
+[node name="SfxSlider" type="HSlider" parent="CenterContainer/Panel/Margin/VBox/GridContainer/Sfx" unique_id=826307885]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+
+[node name="SfxValue" type="Label" parent="CenterContainer/Panel/Margin/VBox/GridContainer/Sfx" unique_id=776284426]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(56, 0)
+layout_mode = 2
+text = "0%"
+horizontal_alignment = 2
+
+[node name="WindowModeLabel" type="Label" parent="CenterContainer/Panel/Margin/VBox/GridContainer" unique_id=1733442409]
+layout_mode = 2
+text = "Window Mode"
+
+[node name="WindowModeOption" type="OptionButton" parent="CenterContainer/Panel/Margin/VBox/GridContainer" unique_id=1241857271]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ResolutionLabel" type="Label" parent="CenterContainer/Panel/Margin/VBox/GridContainer" unique_id=1183054952]
+layout_mode = 2
+text = "Resolution"
+
+[node name="ResolutionOption" type="OptionButton" parent="CenterContainer/Panel/Margin/VBox/GridContainer" unique_id=1262418012]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="VSyncLabel" type="Label" parent="CenterContainer/Panel/Margin/VBox/GridContainer" unique_id=1942340329]
+layout_mode = 2
+text = "V-Sync"
+
+[node name="VsyncCheck" type="CheckButton" parent="CenterContainer/Panel/Margin/VBox/GridContainer" unique_id=1419274423]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Spacer3" type="Control" parent="CenterContainer/Panel/Margin/VBox/GridContainer" unique_id=1793270003]
+layout_mode = 2
+
+[node name="Separator2" type="HSeparator" parent="CenterContainer/Panel/Margin/VBox" unique_id=577114443]
+layout_mode = 2
+
+[node name="Buttons" type="HBoxContainer" parent="CenterContainer/Panel/Margin/VBox" unique_id=456656690]
+layout_mode = 2
+
+[node name="ControlsButton" type="Button" parent="CenterContainer/Panel/Margin/VBox/Buttons" unique_id=2087442319]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Controls"
+
+[node name="ResetButton" type="Button" parent="CenterContainer/Panel/Margin/VBox/Buttons" unique_id=623020876]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Reset to Defaults"
+
+[node name="BackButton" type="Button" parent="CenterContainer/Panel/Margin/VBox/Buttons" unique_id=274809503]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Back"
+
+[node name="ResetConfirmDialog" type="ConfirmationDialog" parent="." unique_id=274809504]
+unique_name_in_owner = true
+title = "Reset to Defaults?"
+initial_position = 1
+size = Vector2i(420, 140)
+ok_button_text = "Reset"
+dialog_text = "This will restore audio and display settings to their defaults. This can't be undone."

@@ -11,6 +11,7 @@ enum State { GROUNDED, JUMP_START, AIR, LAND }
 
 @onready var model: Node3D = $peanut
 @onready var anim: AnimationPlayer = $peanut/AnimationPlayer
+@onready var interaction_area := $InteractionArea
 
 var state: State = State.GROUNDED
 
@@ -24,6 +25,8 @@ func _ready() -> void:
 		var land := anim.get_animation("land")
 		land.loop_mode = Animation.LOOP_NONE
 		land.length = LAND_LENGTH
+	if anim.has_animation("interact"):
+		anim.get_animation("interact").loop_mode = Animation.LOOP_NONE
 
 
 func _physics_process(delta: float) -> void:
@@ -34,7 +37,8 @@ func _physics_process(delta: float) -> void:
 
 	var input_dir := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	var direction := _camera_relative_direction(input_dir)
-
+	if Input.is_action_just_pressed("interact") and interaction_area.current_trigger:
+		anim.play("interact")
 	if Input.is_action_just_pressed("jump") and on_floor and (state == State.GROUNDED or state == State.LAND):
 		velocity.y = JUMP_VELOCITY
 		state = State.JUMP_START
@@ -66,8 +70,6 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 	
-# Turn raw WASD input into a world-space direction relative to where the camera
-# is looking, so "forward" always means away from the camera as it orbits.
 func _camera_relative_direction(input_dir: Vector2) -> Vector3:
 	if input_dir == Vector2.ZERO:
 		return Vector3.ZERO
@@ -79,9 +81,6 @@ func _camera_relative_direction(input_dir: Vector2) -> Vector3:
 
 	var cam_basis := cam.global_transform.basis
 
-	# Flatten the camera's forward/right onto the ground plane. basis.z points
-	# back toward the camera, so pressing forward (input_dir.y = -1) moves the
-	# character away from it.
 	var forward := cam_basis.z
 	forward.y = 0
 	forward = forward.normalized()
@@ -101,5 +100,8 @@ func _update_animation(direction: Vector3) -> void:
 	if state != State.GROUNDED:
 		return
 	var want := "run" if direction else "idle"
+	
+	if anim.current_animation == "interact" and want == "idle":
+		return
 	if anim.current_animation != want:
 		anim.play(want)

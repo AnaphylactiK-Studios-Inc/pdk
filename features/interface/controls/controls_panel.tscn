@@ -1,0 +1,193 @@
+[gd_scene format=3 uid="uid://d1gnuqqf81rom"]
+
+[ext_resource type="Script" uid="uid://c4072je0niw23" path="res://features/interface/controls/controls_panel.gd" id="1_w4an8"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_device_tabs"]
+
+[node name="ControlsPanel" type="Control" unique_id=1107907594]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_w4an8")
+
+[node name="Dim" type="ColorRect" parent="." unique_id=724730376]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.39215687)
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1038631623]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="CenterContainer" unique_id=1386538055]
+layout_mode = 2
+
+[node name="Margin" type="MarginContainer" parent="CenterContainer/Panel" unique_id=1339174497]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="VBox" type="VBoxContainer" parent="CenterContainer/Panel/Margin" unique_id=47850947]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="SettingsLabel" type="Label" parent="CenterContainer/Panel/Margin/VBox" unique_id=1131038586]
+layout_mode = 2
+text = "Controls"
+horizontal_alignment = 1
+
+[node name="Separator4" type="HSeparator" parent="CenterContainer/Panel/Margin/VBox" unique_id=196386071]
+layout_mode = 2
+
+[node name="DeviceTabs" type="HBoxContainer" parent="CenterContainer/Panel/Margin/VBox" unique_id=1131038587]
+layout_mode = 2
+alignment = 1
+
+[node name="KbmTabButton" type="Button" parent="CenterContainer/Panel/Margin/VBox/DeviceTabs" unique_id=1131038588]
+unique_name_in_owner = true
+layout_mode = 2
+toggle_mode = true
+button_pressed = true
+button_group = SubResource("ButtonGroup_device_tabs")
+text = "Keyboard & Mouse"
+
+[node name="ControllerTabButton" type="Button" parent="CenterContainer/Panel/Margin/VBox/DeviceTabs" unique_id=1131038589]
+unique_name_in_owner = true
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_device_tabs")
+text = "Controller"
+
+[node name="Separator" type="HSeparator" parent="CenterContainer/Panel/Margin/VBox" unique_id=986415061]
+layout_mode = 2
+
+[node name="HintLabel" type="Label" parent="CenterContainer/Panel/Margin/VBox" unique_id=257315948]
+unique_name_in_owner = true
+layout_mode = 2
+horizontal_alignment = 1
+
+[node name="Scroll" type="ScrollContainer" parent="CenterContainer/Panel/Margin/VBox" unique_id=1563808345]
+custom_minimum_size = Vector2(420, 240)
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="ActionList" type="VBoxContainer" parent="CenterContainer/Panel/Margin/VBox/Scroll" unique_id=1857017387]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Separator3" type="HSeparator" parent="CenterContainer/Panel/Margin/VBox" unique_id=1131038590]
+layout_mode = 2
+
+[node name="SensitivityGrid" type="GridContainer" parent="CenterContainer/Panel/Margin/VBox" unique_id=1131038591]
+layout_mode = 2
+columns = 2
+
+[node name="MouseSensitivityLabel" type="Label" parent="CenterContainer/Panel/Margin/VBox/SensitivityGrid" unique_id=1131038592]
+layout_mode = 2
+text = "Mouse Sensitivity"
+
+[node name="MouseSensitivity" type="HBoxContainer" parent="CenterContainer/Panel/Margin/VBox/SensitivityGrid" unique_id=1131038593]
+layout_mode = 2
+
+[node name="MouseSensitivitySlider" type="HSlider" parent="CenterContainer/Panel/Margin/VBox/SensitivityGrid/MouseSensitivity" unique_id=1131038594]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+
+[node name="MouseSensitivityValue" type="Label" parent="CenterContainer/Panel/Margin/VBox/SensitivityGrid/MouseSensitivity" unique_id=1131038595]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(56, 0)
+layout_mode = 2
+text = "0%"
+horizontal_alignment = 2
+
+[node name="StickSensitivityXLabel" type="Label" parent="CenterContainer/Panel/Margin/VBox/SensitivityGrid" unique_id=1131038596]
+layout_mode = 2
+text = "Stick Sensitivity (X)"
+
+[node name="StickSensitivityX" type="HBoxContainer" parent="CenterContainer/Panel/Margin/VBox/SensitivityGrid" unique_id=1131038597]
+layout_mode = 2
+
+[node name="StickSensitivityXSlider" type="HSlider" parent="CenterContainer/Panel/Margin/VBox/SensitivityGrid/StickSensitivityX" unique_id=1131038598]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+
+[node name="StickSensitivityXValue" type="Label" parent="CenterContainer/Panel/Margin/VBox/SensitivityGrid/StickSensitivityX" unique_id=1131038599]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(56, 0)
+layout_mode = 2
+text = "0%"
+horizontal_alignment = 2
+
+[node name="StickSensitivityYLabel" type="Label" parent="CenterContainer/Panel/Margin/VBox/SensitivityGrid" unique_id=1131038602]
+layout_mode = 2
+text = "Stick Sensitivity (Y)"
+
+[node name="StickSensitivityY" type="HBoxContainer" parent="CenterContainer/Panel/Margin/VBox/SensitivityGrid" unique_id=1131038603]
+layout_mode = 2
+
+[node name="StickSensitivityYSlider" type="HSlider" parent="CenterContainer/Panel/Margin/VBox/SensitivityGrid/StickSensitivityY" unique_id=1131038604]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+
+[node name="StickSensitivityYValue" type="Label" parent="CenterContainer/Panel/Margin/VBox/SensitivityGrid/StickSensitivityY" unique_id=1131038605]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(56, 0)
+layout_mode = 2
+text = "0%"
+horizontal_alignment = 2
+
+[node name="ControllerStyleLabel" type="Label" parent="CenterContainer/Panel/Margin/VBox/SensitivityGrid" unique_id=1131038600]
+layout_mode = 2
+text = "Controller Style"
+
+[node name="ControllerStyleOption" type="OptionButton" parent="CenterContainer/Panel/Margin/VBox/SensitivityGrid" unique_id=1131038601]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Separator2" type="HSeparator" parent="CenterContainer/Panel/Margin/VBox" unique_id=1769676471]
+layout_mode = 2
+
+[node name="Buttons" type="HBoxContainer" parent="CenterContainer/Panel/Margin/VBox" unique_id=1043486317]
+layout_mode = 2
+
+[node name="ResetButton" type="Button" parent="CenterContainer/Panel/Margin/VBox/Buttons" unique_id=623976198]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Reset Controls"
+
+[node name="BackButton" type="Button" parent="CenterContainer/Panel/Margin/VBox/Buttons" unique_id=1906343286]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Back"
+
+[node name="ResetConfirmDialog" type="ConfirmationDialog" parent="." unique_id=1131038606]
+unique_name_in_owner = true
+title = "Reset Controls?"
+initial_position = 1
+size = Vector2i(420, 140)
+ok_button_text = "Reset"
+dialog_text = "This will restore all key, mouse, and controller bindings, plus sensitivity and controller style, to their defaults. This can't be undone."
