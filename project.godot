@@ -8,6 +8,10 @@
 
 config_version=5
 
+[Fmod]
+
+General/banks_path="res://assets/audio/pdk-fmod/Build/Desktop"
+
 [application]
 
 config/name="Peanut & Dreadnought Killer"

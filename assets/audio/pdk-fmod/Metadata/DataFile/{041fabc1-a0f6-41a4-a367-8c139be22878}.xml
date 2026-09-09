@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="DataFile" id="{041fabc1-a0f6-41a4-a367-8c139be22878}">
+		<property name="assetPath">
+			<value>SFX/Interactable/Wall Break.asset</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{20670ee6-fb87-4c1e-b11f-78751c72d542}</destination>
+		</relationship>
+	</object>
+</objects>

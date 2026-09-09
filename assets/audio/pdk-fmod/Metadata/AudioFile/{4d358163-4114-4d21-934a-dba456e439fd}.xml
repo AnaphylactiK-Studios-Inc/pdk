@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{4d358163-4114-4d21-934a-dba456e439fd}">
+		<property name="assetPath">
+			<value>SFX/Mech/sfx_large.gunshot_nl-005.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>1.2336875</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{20670ee6-fb87-4c1e-b11f-78751c72d542}</destination>
+		</relationship>
+	</object>
+</objects>
