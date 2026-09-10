@@ -24,7 +24,6 @@ func initialize_grid() -> void:
 	for x in range(width):
 		for z in range(height):
 			var grid_position := Vector2i(x, z)
-
 			var cell: GridCell
 
 			if old_cells.has(grid_position):
@@ -46,12 +45,11 @@ func get_cell(grid_position: Vector2i) -> GridCell:
 	if not is_valid_position(grid_position):
 		return null
 
-	var index := grid_position.x * height + grid_position.y
+	for cell in cells:
+		if cell != null and cell.grid_position == grid_position:
+			return cell
 
-	if index >= cells.size():
-		return null
-
-	return cells[index]
+	return null
 
 func world_to_grid(world_position: Vector3) -> Vector2i:
 	var local_position := to_local(world_position)
