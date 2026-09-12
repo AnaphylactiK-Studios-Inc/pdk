@@ -5,7 +5,7 @@
 			<value>sfx_pntFootsteps_nl</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{62ebb606-3810-4b84-b906-0cd66ac4e794}</destination>
@@ -53,7 +53,7 @@
 			<destination>{efb00275-574f-4d35-9843-36056eb4c09a}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{2c75734b-69c2-4165-a93b-75210b8d86fc}</destination>
+			<destination>{aa8d474d-a203-49db-9feb-20387ae5216c}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{d117c36c-9d25-4bd1-9c46-6b52a58a7147}" />
@@ -127,6 +127,7 @@
 		<relationship name="effects">
 			<destination>{5a038dae-9ad3-4373-a613-564786183fde}</destination>
 			<destination>{13acf97d-bfbd-46e2-a3ab-218abe3dc5c3}</destination>
+			<destination>{864b1041-ff76-4969-82f8-5b7e69c034f3}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{be4ca24a-d734-4e4e-be35-356ecd73cf8a}" />
@@ -187,6 +188,7 @@
 			<value>0</value>
 		</property>
 	</object>
+	<object class="SpatialiserEffect" id="{864b1041-ff76-4969-82f8-5b7e69c034f3}" />
 	<object class="AutomationPoint" id="{695a7097-6c46-4534-a58c-7b0b4e9a73b7}">
 		<property name="position">
 			<value>0.0097708333333333328</value>

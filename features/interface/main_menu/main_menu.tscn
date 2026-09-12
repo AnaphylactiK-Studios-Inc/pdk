@@ -44,3 +44,9 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 48
 text = "Quit"
+
+[node name="BGM" type="FmodEventEmitter2D" parent="." unique_id=693303257]
+event_name = "event:/Music/mus_4-4_theme1sketch_lp"
+event_guid = "{a21889a9-9e86-4721-8ebd-1f874b2e2be8}"
+autoplay = true
+position = Vector2(-2, 7)

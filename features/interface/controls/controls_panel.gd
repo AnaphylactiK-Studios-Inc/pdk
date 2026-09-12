@@ -43,11 +43,15 @@ func _ready() -> void:
 	SettingsManager.controller_style_changed.connect(_refresh_labels)
 	SettingsManager.settings_changed.connect(_sync_sensitivity_from_manager)
 
+	back_button.set_meta(MenuAudio.ROLE_META, &"none")
+	MenuAudio.wire(self)
+
 	_set_active_tab(SettingsManager.BindFamily.KBM)
 	_sync_sensitivity_from_manager()
 
 
 func close() -> void:
+	MenuAudio.back()
 	closed.emit()
 
 
@@ -94,11 +98,10 @@ func _build_rows() -> void:
 		action_list.add_child(row)
 		_bind_buttons[action] = button
 
-	# _build_rows() frees and recreates every row's button, so whatever held
-	# focus before this call (an old row, or nothing) is gone: without this,
-	# arrow-key/gamepad navigation would dead-end here until the mouse is used.
+	MenuAudio.wire(action_list)
+
 	if not _bind_buttons.is_empty():
-		(_bind_buttons.values()[0] as Button).grab_focus()
+		MenuAudio.focus_silently(_bind_buttons.values()[0] as Button)
 
 
 func _refresh_labels() -> void:
@@ -133,20 +136,20 @@ func _stop_listening() -> void:
 	hint_label.text = "Select a binding, then press a key or button."
 	_refresh_labels()
 	if _bind_buttons.has(action):
-		(_bind_buttons[action] as Button).grab_focus()
+		MenuAudio.focus_silently(_bind_buttons[action] as Button)
 
 
 func _input(event: InputEvent) -> void:
 	if _listening_action == "":
 		return
 
-	# Stick and trigger axes never report is_pressed(), so handle them first.
 	if event is InputEventJoypadMotion:
 		if _active_family != SettingsManager.BindFamily.JOY:
 			return
 		if absf(event.axis_value) > 0.5:
 			get_viewport().set_input_as_handled()
 			SettingsManager.rebind_action(_listening_action, event)
+			MenuAudio.confirm()
 			_stop_listening()
 		return
 
@@ -157,23 +160,28 @@ func _input(event: InputEvent) -> void:
 		match event.keycode:
 			KEY_ESCAPE:
 				get_viewport().set_input_as_handled()
+				MenuAudio.back()
 				_stop_listening()
 				return
 			KEY_DELETE, KEY_BACKSPACE:
 				get_viewport().set_input_as_handled()
 				SettingsManager.clear_action(_listening_action, _active_family)
+				MenuAudio.click()
 				_stop_listening()
 				return
 
 	if not SettingsManager.is_bindable(event):
+		MenuAudio.blocked()
 		return
 
 	# Ignore input from the family that isn't the active tab.
 	if SettingsManager.get_event_family(event) != _active_family:
+		MenuAudio.blocked()
 		return
 
 	get_viewport().set_input_as_handled()
 	SettingsManager.rebind_action(_listening_action, event)
+	MenuAudio.confirm()
 	_stop_listening()
 
 
@@ -201,6 +209,7 @@ func _populate_controller_style_dropdown() -> void:
 
 func _sync_sensitivity_from_manager() -> void:
 	_syncing = true
+	MenuAudio.quiet()
 
 	mouse_sensitivity_slider.value = SettingsManager.mouse_sensitivity
 	stick_sensitivity_x_slider.value = SettingsManager.stick_sensitivity_x

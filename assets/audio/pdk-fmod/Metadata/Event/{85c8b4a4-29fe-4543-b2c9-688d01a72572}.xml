@@ -5,7 +5,7 @@
 			<value>sfx_pntJump_nl</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{62ebb606-3810-4b84-b906-0cd66ac4e794}</destination>
@@ -53,7 +53,7 @@
 			<destination>{519b526a-df1e-440c-bc1b-88befee12cb3}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{2c75734b-69c2-4165-a93b-75210b8d86fc}</destination>
+			<destination>{aa8d474d-a203-49db-9feb-20387ae5216c}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{8abacdaf-0c3e-4b03-96b6-1b2405561e04}" />
@@ -127,6 +127,7 @@
 	<object class="MixerBusEffectChain" id="{1fd05658-c789-48e4-a205-7c2643d43a8a}">
 		<relationship name="effects">
 			<destination>{50e806af-6d79-475a-a5fb-34cf39e9c14f}</destination>
+			<destination>{c8a03144-f9ef-40c4-b71d-376097c656a4}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{ce0ccf55-767b-4056-9e57-97aadcbd90d5}" />
@@ -178,6 +179,7 @@
 	</object>
 	<object class="MixerBusPanner" id="{e2c64dbe-c622-4cc1-bdb6-eeacaa93782b}" />
 	<object class="MixerBusFader" id="{50e806af-6d79-475a-a5fb-34cf39e9c14f}" />
+	<object class="SpatialiserEffect" id="{c8a03144-f9ef-40c4-b71d-376097c656a4}" />
 	<object class="AutomationPoint" id="{6d10e320-4fba-40d1-ab46-98ecee676acd}">
 		<property name="position">
 			<value>0</value>
