@@ -9,6 +9,10 @@ var selected_grid: Grid
 var grid_visual: MeshInstance3D
 var cell_visuals: Node3D
 
+var is_painting: bool = false
+var paint_value: bool = false
+var painted_cells: Dictionary = {}
+
 func _enter_tree() -> void:
 	create_toolbar()
 
@@ -65,7 +69,6 @@ func create_toolbar() -> void:
 	toolbar = HBoxContainer.new()
 	toolbar.name = "GridEditorToolbar"
 	
-	# Grid mode dropdown
 	var label := Label.new()
 	label.text = "Grid Mode:"
 	toolbar.add_child(label)
@@ -86,7 +89,6 @@ func create_toolbar() -> void:
 
 	toolbar.add_child(mode_button)
 	
-	# Toggle all grid cells "On" button
 	var toggle_on_button := Button.new()
 	toggle_on_button.name = "ToggleAllOnButton"
 	toggle_on_button.text = "Toggle All On"
@@ -97,7 +99,6 @@ func create_toolbar() -> void:
 
 	toolbar.add_child(toggle_on_button)
 	
-	# Toggle all grid cells "Off" button
 	var toggle_off_button := Button.new()
 	toggle_off_button.name = "ToggleAllOffButton"
 	toggle_off_button.text = "Toggle All Off"
@@ -108,7 +109,6 @@ func create_toolbar() -> void:
 
 	toolbar.add_child(toggle_off_button)
 
-	# Refresh button
 	var refresh_button := Button.new()
 	refresh_button.name = "RefreshButton"
 	refresh_button.text = "Refresh"
@@ -260,8 +260,6 @@ func update_cell_visuals() -> void:
 			update_cell_visual(Vector2i(x, z))
 
 func add_cell_fill(parent: Node3D) -> void:
-	# Fill the cell with a transparent light blue to signify 
-	# that the property is toggled True
 	var fill := MeshInstance3D.new()
 	fill.name = "Fill"
 
@@ -296,10 +294,44 @@ func _forward_3d_gui_input(
 		return EditorPlugin.AFTER_GUI_INPUT_PASS
 
 	if event is InputEventMouseButton:
-		if (
-			event.button_index == MOUSE_BUTTON_LEFT
-			and event.pressed
-		):
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			if event.pressed:
+				painted_cells.clear()
+
+				var grid_position := get_grid_position_from_mouse(
+					camera,
+					event.position
+				)
+
+				if selected_grid.is_valid_position(grid_position):
+					var cell := selected_grid.get_cell(grid_position)
+
+					if cell != null:
+						var property := mode_button.get_item_id(
+							mode_button.selected
+						)
+
+						paint_value = not cell.has_property(
+							property
+						)
+
+						is_painting = true
+
+						paint_cell(
+							camera,
+							event.position
+						)
+
+						return EditorPlugin.AFTER_GUI_INPUT_STOP
+
+			else:
+				is_painting = false
+				painted_cells.clear()
+
+				return EditorPlugin.AFTER_GUI_INPUT_STOP
+
+	if event is InputEventMouseMotion:
+		if is_painting:
 			paint_cell(
 				camera,
 				event.position
@@ -309,10 +341,10 @@ func _forward_3d_gui_input(
 
 	return EditorPlugin.AFTER_GUI_INPUT_PASS
 
-func paint_cell(
+func get_grid_position_from_mouse(
 	camera: Camera3D,
 	mouse_position: Vector2
-) -> void:
+) -> Vector2i:
 	var ray_origin := camera.project_ray_origin(
 		mouse_position
 	)
@@ -322,7 +354,7 @@ func paint_cell(
 	)
 
 	if abs(ray_direction.y) < 0.001:
-		return
+		return Vector2i(-1, -1)
 
 	var grid_y := selected_grid.global_position.y
 
@@ -331,15 +363,24 @@ func paint_cell(
 	) / ray_direction.y
 
 	if distance < 0:
-		return
+		return Vector2i(-1, -1)
 
 	var hit_position := (
 		ray_origin
 		+ ray_direction * distance
 	)
 
-	var grid_position := selected_grid.world_to_grid(
+	return selected_grid.world_to_grid(
 		hit_position
+	)
+
+func paint_cell(
+	camera: Camera3D,
+	mouse_position: Vector2
+) -> void:
+	var grid_position := get_grid_position_from_mouse(
+		camera,
+		mouse_position
 	)
 
 	if not selected_grid.is_valid_position(grid_position):
@@ -350,9 +391,77 @@ func paint_cell(
 	if cell == null:
 		return
 
-	print("Cell %s Selected" % cell.grid_position)
+	var cell_key := "%d_%d" % [
+		grid_position.x,
+		grid_position.y
+	]
 
-	toggle_cell(grid_position)
+	if painted_cells.has(cell_key):
+		return
+
+	painted_cells[cell_key] = true
+
+	set_cell_value(
+		grid_position,
+		paint_value
+	)
+
+func set_cell_value(
+	grid_position: Vector2i,
+	value: bool
+) -> void:
+	var cell := selected_grid.get_cell(grid_position)
+
+	if cell == null:
+		return
+
+	var property := mode_button.get_item_id(
+		mode_button.selected
+	)
+
+	var old_properties := cell.properties.duplicate()
+	var new_properties := cell.properties.duplicate()
+
+	var property_key := CellProperty.get_key(property)
+
+	new_properties[property_key] = value
+
+	if old_properties == new_properties:
+		return
+
+	var undo_redo := get_undo_redo()
+
+	undo_redo.create_action(
+		"Paint Grid Cell"
+	)
+
+	undo_redo.add_do_property(
+		cell,
+		"properties",
+		new_properties
+	)
+
+	undo_redo.add_undo_property(
+		cell,
+		"properties",
+		old_properties
+	)
+
+	undo_redo.add_do_method(
+		self,
+		"update_cell_visual",
+		grid_position
+	)
+
+	undo_redo.add_undo_method(
+		self,
+		"update_cell_visual",
+		grid_position
+	)
+
+	undo_redo.commit_action()
+
+	get_editor_interface().mark_scene_as_unsaved()
 
 func toggle_cell(grid_position: Vector2i) -> void:
 	var cell := selected_grid.get_cell(grid_position)
