@@ -328,7 +328,7 @@ func _forward_3d_gui_input(
 				is_painting = false
 				painted_cells.clear()
 
-				return EditorPlugin.AFTER_GUI_INPUT_STOP
+				return EditorPlugin.AFTER_GUI_INPUT_PASS
 
 	if event is InputEventMouseMotion:
 		if is_painting:
