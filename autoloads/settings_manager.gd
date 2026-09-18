@@ -63,10 +63,10 @@ const AXIS_NAMES := {
 	JOY_AXIS_TRIGGER_RIGHT: "Right Trigger",
 }
 
-const VCA_PATHS := {
-	"master": "vca:/Master",
-	"music": "vca:/Music",
-	"sfx": "vca:/SFX",
+const BUS_PATHS := {
+	"master": ["bus:/"],
+	"music": ["bus:/Music"],
+	"sfx": ["bus:/SFX"],
 }
 
 const RESOLUTIONS: Array[Vector2i] = [
@@ -76,8 +76,6 @@ const RESOLUTIONS: Array[Vector2i] = [
 	Vector2i(2560, 1440),
 ]
 
-## Key = the action name in Project Settings > Input Map.
-## Value = the label shown in the controls screen.
 const REMAPPABLE_ACTIONS := {
 	"move_forward": "Move Forward",
 	"move_back": "Move Back",
@@ -92,9 +90,9 @@ const DEFAULT_STICK_SENSITIVITY_X := 0.5
 const DEFAULT_STICK_SENSITIVITY_Y := 0.5
 
 const PREVIEW_EVENTS := {
-	"master": "event:/UI/SliderPreview",
-	"music": "",  # music is already audible; previewing over it is noise
-	"sfx": "event:/UI/SliderPreview",
+	"master": "event:/SFX/UI/sfx_UI_select_nl",
+	"music": "",
+	"sfx": "event:/SFX/UI/sfx_UI_select_nl",
 }
 
 signal settings_changed
@@ -112,7 +110,7 @@ var stick_sensitivity_x: float = DEFAULT_STICK_SENSITIVITY_X
 var stick_sensitivity_y: float = DEFAULT_STICK_SENSITIVITY_Y
 var controller_style_override: int = ControllerStyle.AUTO
 
-var _vcas: Dictionary = {}
+var _buses: Dictionary = {}
 var _preview_ok: Dictionary = {}
 var _audio_ready := false
 var _save_timer: Timer
@@ -149,22 +147,25 @@ func bind_audio() -> void:
 	if _audio_ready:
 		return
 
-	for key in VCA_PATHS:
-		var vca: FmodVCA = FmodServer.get_vca(VCA_PATHS[key])
-		if vca == null:
-			push_warning("FMOD VCA not found: %s" % VCA_PATHS[key])
-			continue
-		_vcas[key] = vca
+	for key in BUS_PATHS:
+		var resolved: Array[FmodBus] = []
+		for path in BUS_PATHS[key]:
+			if not FmodServer.check_bus_path(path):
+				push_warning("FMOD bus not found: %s" % path)
+				continue
+			resolved.append(FmodServer.get_bus(path))
+		if not resolved.is_empty():
+			_buses[key] = resolved
 
-	if _vcas.is_empty():
-		print_verbose("SettingsManager: no FMOD VCAs resolved, audio not bound.")
+	if _buses.is_empty():
+		print_verbose("SettingsManager: no FMOD buses resolved, audio not bound.")
 		return
 
 	for key in PREVIEW_EVENTS:
 		var path: String = PREVIEW_EVENTS[key]
 		if path.is_empty():
 			continue
-		if FmodServer.get_event(path) == null:
+		if not FmodServer.check_event_path(path):
 			push_warning("FMOD preview event not found, preview disabled: %s" % path)
 			continue
 		_preview_ok[key] = true
@@ -273,7 +274,7 @@ func _detect_controller_style() -> void:
 		controller_style_changed.emit()
 
 
-## Settings menu's Reset — audio/display only, see reset_controls_defaults().
+## Settings menu's Reset (audio/visual only)
 func reset_audio_visual_defaults() -> void:
 	volumes = {"master": 1.0, "music": 1.0, "sfx": 1.0}
 	window_mode = WindowMode.WINDOWED
@@ -287,7 +288,7 @@ func reset_audio_visual_defaults() -> void:
 	settings_changed.emit()
 
 
-## Controls menu's Reset — keybinds/sensitivity/style only, see reset_audio_visual_defaults().
+## Controls menu's Reset (controls and keybinds)
 func reset_controls_defaults() -> void:
 	mouse_sensitivity = DEFAULT_MOUSE_SENSITIVITY
 	stick_sensitivity_x = DEFAULT_STICK_SENSITIVITY_X
@@ -301,7 +302,6 @@ func reset_controls_defaults() -> void:
 
 # --- Input remapping ---
 
-## Restores every remappable action to the bindings the project shipped with.
 func reset_keybinds() -> void:
 	for action in _default_binds:
 		_set_binds(action, (_default_binds[action] as Array).duplicate(true))
@@ -309,8 +309,6 @@ func reset_keybinds() -> void:
 	keybinds_changed.emit()
 
 
-
-## Returns -1 for an event kind we don't bind.
 func get_event_family(event: InputEvent) -> int:
 	if event is InputEventKey or event is InputEventMouseButton:
 		return BindFamily.KBM
@@ -328,7 +326,6 @@ func get_event_for_family(action: String, family: int) -> InputEvent:
 	return null
 
 
-## Human-readable name for a binding, for display on a button.
 func describe_event(event: InputEvent) -> String:
 	if event == null:
 		return "Unbound"
@@ -374,8 +371,6 @@ func is_bindable(event: InputEvent) -> bool:
 		or (event is InputEventJoypadMotion and absf(event.axis_value) > 0.5)
 
 
-## Rebinds only the family the event belongs to, leaving the other family's
-## binding on this action untouched.
 func rebind_action(action: String, event: InputEvent) -> void:
 	if not REMAPPABLE_ACTIONS.has(action):
 		push_error("Action is not remappable: %s" % action)
@@ -494,9 +489,11 @@ func _apply_all_volumes() -> void:
 
 
 func _apply_volume(key: String) -> void:
-	if not _vcas.has(key):
+	if not _buses.has(key):
 		return
-	_vcas[key].set_volume(pow(volumes[key], 2.0))
+	var gain := pow(volumes[key], 2.0)
+	for bus in _buses[key]:
+		bus.set_volume(gain)
 
 
 func _apply_window() -> void:

@@ -46,8 +46,13 @@ func _ready() -> void:
 
 	SettingsManager.settings_changed.connect(_sync_from_manager)
 
+	# The back button closes the panel, and close() plays the back sound, so it
+	# shouldn't also click.
+	back_button.set_meta(MenuAudio.ROLE_META, &"none")
+	MenuAudio.wire(self)
+
 	_sync_from_manager()
-	master_slider.grab_focus()
+	MenuAudio.focus_silently(master_slider)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -60,6 +65,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func close() -> void:
+	MenuAudio.back()
 	closed.emit()
 
 
@@ -79,6 +85,9 @@ func _populate_dropdowns() -> void:
 
 func _sync_from_manager() -> void:
 	_syncing = true
+	# Sliders and dropdowns move under their own power here; that isn't the
+	# player navigating.
+	MenuAudio.quiet()
 
 	master_slider.value = SettingsManager.volumes["master"]
 	music_slider.value = SettingsManager.volumes["music"]
@@ -157,6 +166,7 @@ func _on_reset_confirmed() -> void:
 
 func _on_controls_pressed() -> void:
 	if controls_scene == null:
+		MenuAudio.blocked()
 		push_warning("Settings panel has no controls scene assigned.")
 		return
 	if is_instance_valid(_controls_instance):
@@ -172,4 +182,5 @@ func _on_controls_closed() -> void:
 	if is_instance_valid(_controls_instance):
 		_controls_instance.queue_free()
 	_controls_instance = null
-	controls_button.grab_focus()
+	# The controls panel already played its own close sound.
+	MenuAudio.focus_silently(controls_button)

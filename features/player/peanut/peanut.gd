@@ -6,14 +6,23 @@ const JUMP_VELOCITY = 4.5
 const ROTATION_SPEED = 20.0
 const LAND_LENGTH = 0.5
 
+const FOOTSTEP_EVENT := "event:/SFX/PC/Peanut/sfx_pntFootsteps_nl"
+const JUMP_EVENT := "event:/SFX/PC/Peanut/sfx_pntJump_nl"
+
 # Jump phases
 enum State { GROUNDED, JUMP_START, AIR, LAND }
+
+## How many footsteps fall in one loop of the run clip, spaced evenly.
+@export_range(1, 16) var footsteps_per_cycle := 4
 
 @onready var model: Node3D = $peanut
 @onready var anim: AnimationPlayer = $peanut/AnimationPlayer
 @onready var interaction_area := $InteractionArea
 
 var state: State = State.GROUNDED
+
+var _last_step_slot := -1
+var _was_on_floor := true
 
 
 func _ready() -> void:
@@ -32,6 +41,10 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	var on_floor := is_on_floor()
 
+	if on_floor and not _was_on_floor:
+		AudioManager.play_one_shot_attached(FOOTSTEP_EVENT, self)
+	_was_on_floor = on_floor
+
 	if not on_floor:
 		velocity += get_gravity() * delta
 
@@ -43,6 +56,7 @@ func _physics_process(delta: float) -> void:
 		velocity.y = JUMP_VELOCITY
 		state = State.JUMP_START
 		anim.play("jump_start")
+		AudioManager.play_one_shot_attached(JUMP_EVENT, self)
 	elif on_floor and velocity.y <= 0.0 and (state == State.JUMP_START or state == State.AIR):
 		if direction:
 			state = State.GROUNDED
@@ -67,6 +81,7 @@ func _physics_process(delta: float) -> void:
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 
 	_update_animation(direction)
+	_update_footsteps(on_floor)
 
 	move_and_slide()
 	
@@ -94,6 +109,26 @@ func _camera_relative_direction(input_dir: Vector2) -> Vector3:
 
 func _clip_finished() -> bool:
 	return anim.current_animation_position >= anim.current_animation_length
+
+
+## Drives footsteps off the run clip's playback position
+func _update_footsteps(on_floor: bool) -> void:
+	if not on_floor or state != State.GROUNDED or anim.current_animation != "run":
+		_last_step_slot = -1
+		return
+
+	var length := anim.current_animation_length
+	if length <= 0.0 or footsteps_per_cycle < 1:
+		return
+
+	var phase := fposmod(anim.current_animation_position / length, 1.0)
+	var slot := mini(int(phase * footsteps_per_cycle), footsteps_per_cycle - 1)
+	if slot == _last_step_slot:
+		return
+
+	if _last_step_slot >= 0:
+		AudioManager.play_one_shot_attached(FOOTSTEP_EVENT, self)
+	_last_step_slot = slot
 
 
 func _update_animation(direction: Vector3) -> void:
