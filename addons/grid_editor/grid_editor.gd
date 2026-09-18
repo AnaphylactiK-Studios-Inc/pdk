@@ -164,11 +164,11 @@ func create_grid_visual() -> void:
 			Vector3(
 				x_position,
 				0,
-				selected_grid.height * selected_grid.cell_size
+				selected_grid.length * selected_grid.cell_size
 			)
 		)
 
-	for z in range(selected_grid.height + 1):
+	for z in range(selected_grid.length + 1):
 		var z_position := z * selected_grid.cell_size
 
 		mesh.surface_add_vertex(
@@ -195,7 +195,7 @@ func create_cell_visuals() -> void:
 	selected_grid.add_child(cell_visuals)
 
 	for x in range(selected_grid.width):
-		for z in range(selected_grid.height):
+		for z in range(selected_grid.length):
 			create_cell_visual(Vector2i(x, z))
 
 func create_cell_visual(grid_position: Vector2i) -> void:
@@ -256,7 +256,7 @@ func update_cell_visuals() -> void:
 		return
 
 	for x in range(selected_grid.width):
-		for z in range(selected_grid.height):
+		for z in range(selected_grid.length):
 			update_cell_visual(Vector2i(x, z))
 
 func add_cell_fill(parent: Node3D) -> void:

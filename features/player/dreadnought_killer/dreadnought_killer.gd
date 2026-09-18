@@ -1,20 +1,21 @@
 extends CharacterBody3D
 
-@export var grid: Grid
 @export var grid_walkability: GridWalkability
 @export var grid_position: Vector2i = Vector2i.ZERO
 
 @export var move_time: float = 0.5
 @export var rotation_time: float = 0.15
 
+var _grid: Grid
 var _moving: bool = false
 var _rotating: bool = false
 
 func _ready() -> void:
-	if grid == null:
+	_grid = grid_walkability.grid
+	if _grid == null:
 		return
 
-	global_position = grid.grid_to_world(grid_position)
+	global_position = _grid.grid_to_world(grid_position)
 
 func _physics_process(_delta: float) -> void:
 	if not _moving:
@@ -72,7 +73,7 @@ func try_move(direction: Vector2i) -> void:
 
 	grid_position = target_grid_position
 
-	var target_world_position: Vector3 = grid.grid_to_world(
+	var target_world_position: Vector3 = _grid.grid_to_world(
 		grid_position
 	)
 

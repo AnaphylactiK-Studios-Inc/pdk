@@ -3,13 +3,13 @@ extends Node3D
 class_name Grid
 
 @export var width: int = 10
-@export var height: int = 10
+@export var length: int = 10
 @export var cell_size: float = 4.0
 
 @export var cells: Array[GridCell] = []
 
 func _ready() -> void:
-	if cells.size() != width * height:
+	if cells.size() != width * length:
 		initialize_grid()
 
 func initialize_grid() -> void:
@@ -22,7 +22,7 @@ func initialize_grid() -> void:
 	cells.clear()
 
 	for x in range(width):
-		for z in range(height):
+		for z in range(length):
 			var grid_position := Vector2i(x, z)
 			var cell: GridCell
 
@@ -38,7 +38,7 @@ func initialize_grid() -> void:
 func is_valid_position(grid_position: Vector2i) -> bool:
 	return (
 		grid_position.x >= 0 and grid_position.x < width
-		and grid_position.y >= 0 and grid_position.y < height
+		and grid_position.y >= 0 and grid_position.y < length
 	)
 
 func get_cell(grid_position: Vector2i) -> GridCell:
