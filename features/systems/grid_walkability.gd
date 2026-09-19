@@ -3,6 +3,9 @@ class_name GridWalkability
 
 @export var grid: Grid
 
+func has_grid() -> bool:
+	return grid != null
+
 func is_walkable(grid_position: Vector2i) -> bool:
 	if grid == null:
 		return false
@@ -21,14 +24,17 @@ func can_enter(grid_position: Vector2i) -> bool:
 func get_adjacent_cells(
 	grid_position: Vector2i
 ) -> Array[Vector2i]:
+	var valid_cells: Array[Vector2i] = []
+
+	if grid == null:
+		return valid_cells
+
 	var adjacent_cells: Array[Vector2i] = [
 		grid_position + Vector2i.UP,
 		grid_position + Vector2i.DOWN,
 		grid_position + Vector2i.LEFT,
 		grid_position + Vector2i.RIGHT
 	]
-
-	var valid_cells: Array[Vector2i] = []
 
 	for position in adjacent_cells:
 		if grid.is_valid_position(position):

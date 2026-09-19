@@ -12,13 +12,20 @@ func initialize() -> void:
 		properties[CellProperty.get_key(property)] = false
 
 func has_property(property: CellProperty.Type) -> bool:
-	return properties.get(
-		CellProperty.get_key(property), 
-		false
-	)
+	var key := CellProperty.get_key(property)
+
+	if key.is_empty():
+		return false
+
+	return properties.get(key, false) == true
 
 func set_property(
 	property: CellProperty.Type,
 	value: bool
 ) -> void:
-	properties[CellProperty.get_key(property)] = value
+	var key := CellProperty.get_key(property)
+
+	if key.is_empty():
+		return
+
+	properties[key] = value
