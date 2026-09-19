@@ -66,8 +66,6 @@ func initialize_grid() -> void:
 				cell.grid_position = grid_position
 				cell.initialize()
 
-			# Without this, two instances of a scene containing this grid
-			# share the same cell resources and painting one edits both.
 			cell.resource_local_to_scene = true
 
 			cells.append(cell)

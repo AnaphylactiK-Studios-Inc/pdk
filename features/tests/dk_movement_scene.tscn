@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://d4ma553e6a15i"]
 
 [ext_resource type="PackedScene" uid="uid://dkg07bfxu6vge" path="res://features/player/dreadnought_killer/dk-character.tscn" id="1_ivghs"]
+[ext_resource type="PackedScene" path="res://features/interface/minimap/minimap.tscn" id="5_minimap"]
 [ext_resource type="Script" uid="uid://cw2rfi0upx15w" path="res://features/player/dreadnought_killer/dreadnought_killer.gd" id="2_jdwd6"]
 [ext_resource type="Script" uid="uid://bdsje42de0ult" path="res://features/world/grid/grid.gd" id="3_i8sgu"]
 [ext_resource type="Script" uid="uid://ddyb31645hgwq" path="res://features/systems/grid_walkability.gd" id="3_qnea6"]
@@ -1863,5 +1864,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_o1dcx")
 transform = Transform3D(20.38342, 0, 0, 0, 15.635648, 0, 0, 0, 14.551342, 21.70186, 6.4233475, 35.472374)
 mesh = SubResource("BoxMesh_qnea6")
 surface_material_override/0 = SubResource("StandardMaterial3D_qnea6")
+
+[node name="Minimap" parent="." instance=ExtResource("5_minimap")]
 
 [editable path="DkCharacter"]

@@ -8,12 +8,16 @@ extends Area3D
 
 const QUARTER_TURN := PI * 0.5
 
+const GRID_PLAYER_GROUP := "grid_player"
+
 var _grid: Grid
 var _active: bool = false
 var _moving: bool = false
 var _rotating: bool = false
 
 func _ready() -> void:
+	add_to_group(GRID_PLAYER_GROUP)
+
 	if grid_walkability == null:
 		push_error(
 			"DreadnoughtKiller: grid_walkability is unassigned; "
