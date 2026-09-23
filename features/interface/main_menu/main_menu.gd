@@ -21,10 +21,13 @@ func _ready() -> void:
 	quit_button.pressed.connect(_on_quit_pressed)
 
 	start_button.grab_focus()
+	MenuAudio.wire(self)
+	MenuAudio.focus_silently(start_button)
 
 
 func _on_start_pressed() -> void:
 	if game_scene == null:
+		MenuAudio.blocked()
 		push_warning("Main menu has no game scene assigned yet.")
 		return
 
@@ -35,10 +38,11 @@ func _on_start_pressed() -> void:
 
 func _on_settings_pressed() -> void:
 	if settings_scene == null:
+		MenuAudio.blocked()
 		push_warning("Main menu has no settings scene assigned.")
 		return
 	if is_instance_valid(_settings_instance):
-		return
+		return  
 
 	var settings := settings_scene.instantiate()
 	settings.closed.connect(_on_settings_closed)
@@ -54,7 +58,7 @@ func _on_settings_closed() -> void:
 	_settings_instance = null
 
 	_set_menu_interactive(true)
-	settings_button.grab_focus()
+	MenuAudio.focus_silently(settings_button)
 
 
 func _set_menu_interactive(enabled: bool) -> void:

@@ -3,7 +3,8 @@ extends CharacterBody3D
 enum Gait { CRAWL, WALK, SPRINT }
 enum State { GROUNDED, JUMP_START, AIR, LAND, DASH }
 
-## Emitted when a foot lands. FMOD will hook this for footstep audio.
+## Emitted when a foot lands, after the footstep one-shot has been fired.
+## Stealth and AI hearing hang off this.
 signal stepped(world_position: Vector3, noise: float)
 signal dash_started(direction: Vector3)
 signal dash_finished()
@@ -59,6 +60,8 @@ const LAND_LENGTH := 0.5
 @export var crawl_noise := 0.15
 @export var walk_noise := 1.0
 @export var sprint_noise := 1.8
+const FOOTSTEP_EVENT := "event:/SFX/PC/Peanut/sfx_pntFootsteps_nl"
+const JUMP_EVENT := "event:/SFX/PC/Peanut/sfx_pntJump_nl"
 
 @onready var model: Node3D = $peanut
 @onready var anim: AnimationPlayer = $peanut/AnimationPlayer
@@ -312,6 +315,7 @@ func _try_jump() -> void:
 	velocity.y = jump_velocity
 	state = State.JUMP_START
 	_play("jump_start")
+	AudioManager.play_one_shot_attached(JUMP_EVENT, self)
 
 	if crawling and _has_headroom():
 		crawling = false
@@ -417,6 +421,7 @@ func _update_state(on_floor: bool, wish_dir: Vector3) -> void:
 		state = State.AIR
 		_play("jump_mid_air")
 	elif on_floor and velocity.y <= 0.0 and (state == State.JUMP_START or state == State.AIR):
+		AudioManager.play_one_shot_attached(FOOTSTEP_EVENT, self)
 		if wish_dir:
 			state = State.GROUNDED
 		else:
@@ -521,4 +526,5 @@ func _update_steps(delta: float) -> void:
 
 	_step_distance -= stride
 
+	AudioManager.play_one_shot_attached(FOOTSTEP_EVENT, self)
 	stepped.emit(global_position, noise_level())

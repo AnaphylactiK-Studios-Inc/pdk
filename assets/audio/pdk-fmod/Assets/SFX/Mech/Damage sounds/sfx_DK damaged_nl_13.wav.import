@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://chkefe130gh2r"
+path="res://.godot/imported/sfx_DK damaged_nl_13.wav-4acf2c10b4cc8b8f8c218498d2e0fd14.sample"
+
+[deps]
+
+source_file="res://assets/audio/pdk-fmod/Assets/SFX/Mech/Damage sounds/sfx_DK damaged_nl_13.wav"
+dest_files=["res://.godot/imported/sfx_DK damaged_nl_13.wav-4acf2c10b4cc8b8f8c218498d2e0fd14.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

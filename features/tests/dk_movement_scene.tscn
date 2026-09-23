@@ -1,0 +1,1870 @@
+[gd_scene format=3 uid="uid://d4ma553e6a15i"]
+
+[ext_resource type="PackedScene" uid="uid://dkg07bfxu6vge" path="res://features/player/dreadnought_killer/dk-character.tscn" id="1_ivghs"]
+[ext_resource type="PackedScene" path="res://features/interface/minimap/minimap.tscn" id="5_minimap"]
+[ext_resource type="Script" uid="uid://cw2rfi0upx15w" path="res://features/player/dreadnought_killer/dreadnought_killer.gd" id="2_jdwd6"]
+[ext_resource type="Script" uid="uid://bdsje42de0ult" path="res://features/world/grid/grid.gd" id="3_i8sgu"]
+[ext_resource type="Script" uid="uid://ddyb31645hgwq" path="res://features/systems/grid_walkability.gd" id="3_qnea6"]
+[ext_resource type="Script" uid="uid://cnmo45epcnbgj" path="res://features/world/grid/grid_cell.gd" id="4_qnpyv"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_rg5n0"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_53by7"]
+albedo_color = Color(0.8448276, 0.87162125, 0.4291343, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_inqxf"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o1dcx"]
+albedo_color = Color(0.27670535, 0.27000335, 0.29214475, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_qnea6"]
+size = Vector3(0.9255371, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qnea6"]
+albedo_color = Color(0.2784314, 0.27058825, 0.2901961, 1)
+
+[sub_resource type="Resource" id="Resource_qnea6"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_53by7"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(0, 1)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_o1dcx"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(0, 2)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_e8ac1"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(0, 3)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_e5plj"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(0, 4)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_o6qbk"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(0, 5)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_236ma"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(0, 6)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_gmni2"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(0, 7)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_685pu"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(0, 8)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_8kgal"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(0, 9)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_nxf4d"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(1, 0)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_jaeyu"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(1, 1)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_5ff5j"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(1, 2)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_qegg5"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(1, 3)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_ajbox"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(1, 4)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_p1qxs"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(1, 5)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_stx2j"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(1, 6)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_r0l5y"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(1, 7)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_nllta"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(1, 8)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_t6u3k"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(1, 9)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_ljtms"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(2, 0)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_121cg"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(2, 1)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_r72so"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(2, 2)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_dgmv4"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(2, 3)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_ft2c7"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(2, 4)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_mrnqq"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(2, 5)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_7p3w1"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(2, 6)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_ab8bb"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(2, 7)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_qbw4l"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(2, 8)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_jftbc"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(2, 9)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_ocvo2"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(3, 0)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_w744q"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(3, 1)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_nxk4f"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(3, 2)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_b3v6w"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(3, 3)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_jye3h"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(3, 4)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_of72f"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(3, 5)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_twac0"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(3, 6)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_s0jbj"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(3, 7)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": false
+}
+
+[sub_resource type="Resource" id="Resource_jmsol"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(3, 8)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": false
+}
+
+[sub_resource type="Resource" id="Resource_fjayu"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(3, 9)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": false
+}
+
+[sub_resource type="Resource" id="Resource_m7xwv"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(4, 0)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_87j7y"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(4, 1)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_cp27j"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(4, 2)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_e1baf"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(4, 3)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_xthxn"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(4, 4)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_cmvk5"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(4, 5)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_xqret"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(4, 6)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_2y5ni"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(4, 7)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": false
+}
+
+[sub_resource type="Resource" id="Resource_8uphq"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(4, 8)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": false
+}
+
+[sub_resource type="Resource" id="Resource_feavi"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(4, 9)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": false
+}
+
+[sub_resource type="Resource" id="Resource_c1meh"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(5, 0)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": false
+}
+
+[sub_resource type="Resource" id="Resource_atluq"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(5, 1)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": false
+}
+
+[sub_resource type="Resource" id="Resource_kss1t"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(5, 2)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": false
+}
+
+[sub_resource type="Resource" id="Resource_203d0"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(5, 3)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": false
+}
+
+[sub_resource type="Resource" id="Resource_rbb7i"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(5, 4)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_55c4v"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(5, 5)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_y70ou"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(5, 6)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_p6hd5"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(5, 7)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": false
+}
+
+[sub_resource type="Resource" id="Resource_6lfcd"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(5, 8)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": false
+}
+
+[sub_resource type="Resource" id="Resource_sv21v"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(5, 9)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": false
+}
+
+[sub_resource type="Resource" id="Resource_ifh5n"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(6, 0)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": false
+}
+
+[sub_resource type="Resource" id="Resource_qyu0o"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(6, 1)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": false
+}
+
+[sub_resource type="Resource" id="Resource_1jesj"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(6, 2)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": false
+}
+
+[sub_resource type="Resource" id="Resource_b36ea"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(6, 3)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": false
+}
+
+[sub_resource type="Resource" id="Resource_padb1"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(6, 4)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_5xa5e"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(6, 5)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_5vkby"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(6, 6)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_da1y3"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(6, 7)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": false
+}
+
+[sub_resource type="Resource" id="Resource_7vnbj"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(6, 8)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": false
+}
+
+[sub_resource type="Resource" id="Resource_18h70"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(6, 9)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": false
+}
+
+[sub_resource type="Resource" id="Resource_i8mop"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(7, 0)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": false
+}
+
+[sub_resource type="Resource" id="Resource_3lj3n"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(7, 1)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": false
+}
+
+[sub_resource type="Resource" id="Resource_qok8o"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(7, 2)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": false
+}
+
+[sub_resource type="Resource" id="Resource_bjqc5"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(7, 3)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": false
+}
+
+[sub_resource type="Resource" id="Resource_rjgde"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(7, 4)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_mbas0"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(7, 5)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_6mtsi"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(7, 6)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_6k0ow"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(7, 7)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": false
+}
+
+[sub_resource type="Resource" id="Resource_8i4xf"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(7, 8)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": false
+}
+
+[sub_resource type="Resource" id="Resource_2o3kl"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(7, 9)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": false
+}
+
+[sub_resource type="Resource" id="Resource_6epuy"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(8, 0)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": false
+}
+
+[sub_resource type="Resource" id="Resource_rsvye"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(8, 1)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": false
+}
+
+[sub_resource type="Resource" id="Resource_yqlb2"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(8, 2)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": false
+}
+
+[sub_resource type="Resource" id="Resource_gwcdf"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(8, 3)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": false
+}
+
+[sub_resource type="Resource" id="Resource_dvpat"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(8, 4)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_g30v7"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(8, 5)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_sbk51"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(8, 6)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_b8plj"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(8, 7)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_lx8p8"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(8, 8)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_g6rdm"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(8, 9)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_c3u1t"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(9, 0)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": false
+}
+
+[sub_resource type="Resource" id="Resource_qkfxq"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(9, 1)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": false
+}
+
+[sub_resource type="Resource" id="Resource_m01vi"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(9, 2)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": false
+}
+
+[sub_resource type="Resource" id="Resource_n0rni"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(9, 3)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": false
+}
+
+[sub_resource type="Resource" id="Resource_hq332"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(9, 4)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_8klgd"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(9, 5)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_ankgw"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(9, 6)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_s3cpu"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(9, 7)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_nqmcp"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(9, 8)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_fs87d"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(9, 9)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_2xir2"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(10, 0)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_spsnu"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(10, 1)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_qe2bi"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(10, 2)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_si1qa"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(10, 3)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_xiyii"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(10, 4)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_wpfoj"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(10, 5)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_hh4iv"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(10, 6)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_er0d4"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(10, 7)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_apdhh"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(10, 8)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_lr6yk"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(10, 9)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_w8s2o"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(11, 0)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_gx2tb"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(11, 1)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_x36u6"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(11, 2)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_b3ebu"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(11, 3)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_yv84b"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(11, 4)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_vgi0d"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(11, 5)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_nbuyw"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(11, 6)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_tssit"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(11, 7)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_hw071"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(11, 8)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_53mys"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(11, 9)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_jv4tw"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(12, 0)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_5cj64"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(12, 1)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_86tco"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(12, 2)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_k2hsp"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(12, 3)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_yg0f5"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(12, 4)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_q3q73"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(12, 5)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_087km"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(12, 6)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_ful70"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(12, 7)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_m8o3b"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(12, 8)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_vb5ej"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(12, 9)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_rersh"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(13, 0)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_c10r4"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(13, 1)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_41uro"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(13, 2)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_58rne"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(13, 3)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_bjmeu"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(13, 4)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_6u6nb"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(13, 5)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_w7wpy"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(13, 6)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_64iei"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(13, 7)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_dcf5r"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(13, 8)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_ryfud"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(13, 9)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_bdwcn"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(14, 0)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_ng47f"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(14, 1)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_bqrhr"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(14, 2)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_eaud0"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(14, 3)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_3e2ea"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(14, 4)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_62pxs"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(14, 5)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_kf7d2"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(14, 6)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_w2t34"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(14, 7)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_maosc"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(14, 8)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_ca7xc"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(14, 9)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_s61cv"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(15, 0)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_tdwd5"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(15, 1)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_2ckfw"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(15, 2)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_oo3kr"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(15, 3)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_ayybo"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(15, 4)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_p6ya2"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(15, 5)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_77dhq"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(15, 6)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_dx0fb"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(15, 7)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_lsw50"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(15, 8)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_3gbks"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(15, 9)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_7gkjk"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(16, 0)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_vbuxu"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(16, 1)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_byt2s"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(16, 2)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_imqe6"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(16, 3)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_kpbsy"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(16, 4)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_417lx"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(16, 5)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_36q1a"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(16, 6)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_ok6tg"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(16, 7)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_lfjtf"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(16, 8)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_hv6ie"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(16, 9)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_h2scg"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(17, 0)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_kiwkq"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(17, 1)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_2mmsl"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(17, 2)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_sp2v4"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(17, 3)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_thj8n"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(17, 4)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_frdtp"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(17, 5)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_6qnmv"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(17, 6)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_h2r3m"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(17, 7)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_0nc68"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(17, 8)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_oqeti"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(17, 9)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_eb7a7"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(18, 0)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_5mn0m"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(18, 1)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_djqjt"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(18, 2)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_iktdk"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(18, 3)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_hfn4s"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(18, 4)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_er0qg"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(18, 5)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_vj77s"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(18, 6)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_2l4hb"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(18, 7)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_pj8wj"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(18, 8)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_kaa4g"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(18, 9)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_cyl3q"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(19, 0)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_o6on0"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(19, 1)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_f3nwq"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(19, 2)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_3cf56"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(19, 3)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_eixlw"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(19, 4)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_x8l6i"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(19, 5)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_701ta"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(19, 6)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_syupb"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(19, 7)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_n042o"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(19, 8)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[sub_resource type="Resource" id="Resource_aposd"]
+resource_local_to_scene = true
+script = ExtResource("4_qnpyv")
+grid_position = Vector2i(19, 9)
+properties = {
+"ENEMY_SPAWN": false,
+"WALKABLE": true
+}
+
+[node name="DkMovementScene" type="Node3D" unique_id=243647898]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=873643342]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 84.72801, 126.30284, 26.857677)
+light_energy = 0.4
+shadow_enabled = true
+sky_mode = 1
+
+[node name="Grid" type="Node3D" parent="." unique_id=878143085]
+script = ExtResource("3_i8sgu")
+width = 20
+cells = Array[ExtResource("4_qnpyv")]([SubResource("Resource_qnea6"), SubResource("Resource_53by7"), SubResource("Resource_o1dcx"), SubResource("Resource_e8ac1"), SubResource("Resource_e5plj"), SubResource("Resource_o6qbk"), SubResource("Resource_236ma"), SubResource("Resource_gmni2"), SubResource("Resource_685pu"), SubResource("Resource_8kgal"), SubResource("Resource_nxf4d"), SubResource("Resource_jaeyu"), SubResource("Resource_5ff5j"), SubResource("Resource_qegg5"), SubResource("Resource_ajbox"), SubResource("Resource_p1qxs"), SubResource("Resource_stx2j"), SubResource("Resource_r0l5y"), SubResource("Resource_nllta"), SubResource("Resource_t6u3k"), SubResource("Resource_ljtms"), SubResource("Resource_121cg"), SubResource("Resource_r72so"), SubResource("Resource_dgmv4"), SubResource("Resource_ft2c7"), SubResource("Resource_mrnqq"), SubResource("Resource_7p3w1"), SubResource("Resource_ab8bb"), SubResource("Resource_qbw4l"), SubResource("Resource_jftbc"), SubResource("Resource_ocvo2"), SubResource("Resource_w744q"), SubResource("Resource_nxk4f"), SubResource("Resource_b3v6w"), SubResource("Resource_jye3h"), SubResource("Resource_of72f"), SubResource("Resource_twac0"), SubResource("Resource_s0jbj"), SubResource("Resource_jmsol"), SubResource("Resource_fjayu"), SubResource("Resource_m7xwv"), SubResource("Resource_87j7y"), SubResource("Resource_cp27j"), SubResource("Resource_e1baf"), SubResource("Resource_xthxn"), SubResource("Resource_cmvk5"), SubResource("Resource_xqret"), SubResource("Resource_2y5ni"), SubResource("Resource_8uphq"), SubResource("Resource_feavi"), SubResource("Resource_c1meh"), SubResource("Resource_atluq"), SubResource("Resource_kss1t"), SubResource("Resource_203d0"), SubResource("Resource_rbb7i"), SubResource("Resource_55c4v"), SubResource("Resource_y70ou"), SubResource("Resource_p6hd5"), SubResource("Resource_6lfcd"), SubResource("Resource_sv21v"), SubResource("Resource_ifh5n"), SubResource("Resource_qyu0o"), SubResource("Resource_1jesj"), SubResource("Resource_b36ea"), SubResource("Resource_padb1"), SubResource("Resource_5xa5e"), SubResource("Resource_5vkby"), SubResource("Resource_da1y3"), SubResource("Resource_7vnbj"), SubResource("Resource_18h70"), SubResource("Resource_i8mop"), SubResource("Resource_3lj3n"), SubResource("Resource_qok8o"), SubResource("Resource_bjqc5"), SubResource("Resource_rjgde"), SubResource("Resource_mbas0"), SubResource("Resource_6mtsi"), SubResource("Resource_6k0ow"), SubResource("Resource_8i4xf"), SubResource("Resource_2o3kl"), SubResource("Resource_6epuy"), SubResource("Resource_rsvye"), SubResource("Resource_yqlb2"), SubResource("Resource_gwcdf"), SubResource("Resource_dvpat"), SubResource("Resource_g30v7"), SubResource("Resource_sbk51"), SubResource("Resource_b8plj"), SubResource("Resource_lx8p8"), SubResource("Resource_g6rdm"), SubResource("Resource_c3u1t"), SubResource("Resource_qkfxq"), SubResource("Resource_m01vi"), SubResource("Resource_n0rni"), SubResource("Resource_hq332"), SubResource("Resource_8klgd"), SubResource("Resource_ankgw"), SubResource("Resource_s3cpu"), SubResource("Resource_nqmcp"), SubResource("Resource_fs87d"), SubResource("Resource_2xir2"), SubResource("Resource_spsnu"), SubResource("Resource_qe2bi"), SubResource("Resource_si1qa"), SubResource("Resource_xiyii"), SubResource("Resource_wpfoj"), SubResource("Resource_hh4iv"), SubResource("Resource_er0d4"), SubResource("Resource_apdhh"), SubResource("Resource_lr6yk"), SubResource("Resource_w8s2o"), SubResource("Resource_gx2tb"), SubResource("Resource_x36u6"), SubResource("Resource_b3ebu"), SubResource("Resource_yv84b"), SubResource("Resource_vgi0d"), SubResource("Resource_nbuyw"), SubResource("Resource_tssit"), SubResource("Resource_hw071"), SubResource("Resource_53mys"), SubResource("Resource_jv4tw"), SubResource("Resource_5cj64"), SubResource("Resource_86tco"), SubResource("Resource_k2hsp"), SubResource("Resource_yg0f5"), SubResource("Resource_q3q73"), SubResource("Resource_087km"), SubResource("Resource_ful70"), SubResource("Resource_m8o3b"), SubResource("Resource_vb5ej"), SubResource("Resource_rersh"), SubResource("Resource_c10r4"), SubResource("Resource_41uro"), SubResource("Resource_58rne"), SubResource("Resource_bjmeu"), SubResource("Resource_6u6nb"), SubResource("Resource_w7wpy"), SubResource("Resource_64iei"), SubResource("Resource_dcf5r"), SubResource("Resource_ryfud"), SubResource("Resource_bdwcn"), SubResource("Resource_ng47f"), SubResource("Resource_bqrhr"), SubResource("Resource_eaud0"), SubResource("Resource_3e2ea"), SubResource("Resource_62pxs"), SubResource("Resource_kf7d2"), SubResource("Resource_w2t34"), SubResource("Resource_maosc"), SubResource("Resource_ca7xc"), SubResource("Resource_s61cv"), SubResource("Resource_tdwd5"), SubResource("Resource_2ckfw"), SubResource("Resource_oo3kr"), SubResource("Resource_ayybo"), SubResource("Resource_p6ya2"), SubResource("Resource_77dhq"), SubResource("Resource_dx0fb"), SubResource("Resource_lsw50"), SubResource("Resource_3gbks"), SubResource("Resource_7gkjk"), SubResource("Resource_vbuxu"), SubResource("Resource_byt2s"), SubResource("Resource_imqe6"), SubResource("Resource_kpbsy"), SubResource("Resource_417lx"), SubResource("Resource_36q1a"), SubResource("Resource_ok6tg"), SubResource("Resource_lfjtf"), SubResource("Resource_hv6ie"), SubResource("Resource_h2scg"), SubResource("Resource_kiwkq"), SubResource("Resource_2mmsl"), SubResource("Resource_sp2v4"), SubResource("Resource_thj8n"), SubResource("Resource_frdtp"), SubResource("Resource_6qnmv"), SubResource("Resource_h2r3m"), SubResource("Resource_0nc68"), SubResource("Resource_oqeti"), SubResource("Resource_eb7a7"), SubResource("Resource_5mn0m"), SubResource("Resource_djqjt"), SubResource("Resource_iktdk"), SubResource("Resource_hfn4s"), SubResource("Resource_er0qg"), SubResource("Resource_vj77s"), SubResource("Resource_2l4hb"), SubResource("Resource_pj8wj"), SubResource("Resource_kaa4g"), SubResource("Resource_cyl3q"), SubResource("Resource_o6on0"), SubResource("Resource_f3nwq"), SubResource("Resource_3cf56"), SubResource("Resource_eixlw"), SubResource("Resource_x8l6i"), SubResource("Resource_701ta"), SubResource("Resource_syupb"), SubResource("Resource_n042o"), SubResource("Resource_aposd")])
+metadata/_custom_type_script = "uid://bdsje42de0ult"
+
+[node name="Walkability" type="Node" parent="." unique_id=1457693666 node_paths=PackedStringArray("grid")]
+script = ExtResource("3_qnea6")
+grid = NodePath("../Grid")
+metadata/_custom_type_script = "uid://ddyb31645hgwq"
+
+[node name="DkCharacter" parent="." unique_id=284637548 node_paths=PackedStringArray("grid_walkability") instance=ExtResource("1_ivghs")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 53.561687, 1.442646, 38.05778)
+script = ExtResource("2_jdwd6")
+grid_walkability = NodePath("../Walkability")
+grid_position = Vector2i(13, 9)
+
+[node name="Camera3D" type="Camera3D" parent="DkCharacter" unique_id=157225116]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.414425, -0.46806812)
+
+[node name="Floor" type="MeshInstance3D" parent="." unique_id=1900554920]
+transform = Transform3D(87.364975, 0, 0, 0, 0.87184745, 0, 0, 0, 40.524902, 43.976124, -0.50180817, 19.98499)
+mesh = SubResource("BoxMesh_rg5n0")
+surface_material_override/0 = SubResource("StandardMaterial3D_53by7")
+
+[node name="Building" type="MeshInstance3D" parent="." unique_id=453300988]
+transform = Transform3D(17.70242, 0, 0, 0, 15.635648, 0, 0, 0, 14.551342, 29.949654, 5.9500275, 7.6277866)
+mesh = SubResource("BoxMesh_inqxf")
+surface_material_override/0 = SubResource("StandardMaterial3D_o1dcx")
+
+[node name="Building2" type="MeshInstance3D" parent="." unique_id=438481062]
+transform = Transform3D(20.38342, 0, 0, 0, 15.635648, 0, 0, 0, 14.551342, 21.70186, 6.4233475, 35.472374)
+mesh = SubResource("BoxMesh_qnea6")
+surface_material_override/0 = SubResource("StandardMaterial3D_qnea6")
+
+[node name="Minimap" parent="." instance=ExtResource("5_minimap")]
+
+[editable path="DkCharacter"]

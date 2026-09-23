@@ -8,6 +8,10 @@
 
 config_version=5
 
+[Fmod]
+
+General/banks_path="res://assets/audio/pdk-fmod/Build/Desktop"
+
 [application]
 
 config/name="Peanut & Dreadnought Killer"
@@ -18,8 +22,8 @@ config/icon="res://icon.svg"
 [autoload]
 
 FmodManager="*uid://cds10pm7hwn3p"
-AudioManager="*uid://de2pcabob3yx"
 SettingsManager="*uid://b3noj1x6b2tpw"
+AudioManager="*uid://de2pcabob3yx"
 
 [display]
 
@@ -28,7 +32,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/fmod/plugin.cfg")
+enabled=PackedStringArray("res://addons/fmod/plugin.cfg", "res://addons/grid_editor/plugin.cfg")
 
 [input]
 
