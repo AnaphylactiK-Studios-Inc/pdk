@@ -93,6 +93,9 @@ const REMAPPABLE_ACTIONS := {
 	"move_right": "Move Right",
 	"jump": "Jump",
 	"sprint": "Sprint",
+	# Always toggles, whatever the Sprint mode switch says, so a player can
+	# keep hold-to-sprint on one button and toggle-to-sprint on another.
+	"sprint_toggle": "Sprint (Toggle)",
 	"dash": "Dash",
 	"crawl": "Sneak / Crawl",
 	"interact": "Interact",

@@ -78,6 +78,7 @@ var _jump_buffer_timer := 0.0
 var _dash_timer := 0.0
 var _dash_cooldown_timer := 0.0
 var _dash_direction := Vector3.ZERO
+var _air_dash_available := true
 var _sprint_input := false
 var _sprint_latched := false
 var _step_distance := 0.0
@@ -106,7 +107,6 @@ func _ready() -> void:
 	floor_snap_length = 0.3
 	floor_max_angle = deg_to_rad(50.0)
 
-	# Duplicate the shared sub-resource so crawling doesn't resize every Peanut.
 	if collider.shape is CapsuleShape3D:
 		_capsule = collider.shape.duplicate()
 		collider.shape = _capsule
@@ -123,7 +123,7 @@ func _physics_process(delta: float) -> void:
 	var strength := minf(input.length(), 1.0)
 	var wish_dir := _camera_relative_direction(input)
 
-	_sprint_input = _read_sprint(strength)
+	_sprint_input = _read_sprint(strength, on_floor)
 	_update_crawl(on_floor)
 	_update_gait(strength)
 
@@ -177,6 +177,7 @@ func _tick_timers(delta: float, on_floor: bool) -> void:
 
 	if on_floor:
 		_coyote_timer = coyote_time
+		_air_dash_available = true
 	else:
 		_coyote_timer = maxf(_coyote_timer - delta, 0.0)
 
@@ -224,7 +225,6 @@ func _apply_stance_height() -> void:
 	collider.position.y = _stand_offset - (_stand_height - height) * 0.5
 
 
-## True if there is room to stand up where she is right now.
 func _has_headroom() -> bool:
 	if _capsule == null:
 		return true
@@ -244,16 +244,21 @@ func _has_headroom() -> bool:
 	return get_world_3d().direct_space_state.intersect_shape(params, 1).is_empty()
 
 
-## Hold-to-run, or toggle-to-run if the player picked that in the controls menu.
-func _read_sprint(strength: float) -> bool:
-	if not SettingsManager.sprint_toggle:
-		return Input.is_action_pressed("sprint")
+func _read_sprint(strength: float, on_floor: bool) -> bool:
+	var held := false
+	if SettingsManager.sprint_toggle:
+		if Input.is_action_just_pressed("sprint"):
+			_sprint_latched = not _sprint_latched
+	else:
+		held = Input.is_action_pressed("sprint")
 
-	if Input.is_action_just_pressed("sprint"):
+	if Input.is_action_just_pressed("sprint_toggle"):
 		_sprint_latched = not _sprint_latched
 	if strength <= 0.0:
-		_sprint_latched = false  # Coming to a stop drops the latch.
-	return _sprint_latched
+		_sprint_latched = false
+	if on_floor and Input.is_action_just_pressed("crawl"):
+		_sprint_latched = false
+	return held or _sprint_latched
 
 
 func _update_gait(strength: float) -> void:
@@ -275,7 +280,6 @@ func top_speed() -> float:
 			return walk_speed
 
 
-## How much noise she is currently making, for stealth and AI hearing.
 func noise_level() -> float:
 	if velocity.length() < 0.05:
 		return 0.0
@@ -295,7 +299,6 @@ func _apply_gravity(delta: float, on_floor: bool) -> void:
 		return
 
 	var gravity := get_gravity()
-	# A heavier fall than rise keeps the jump arc from feeling floaty.
 	if velocity.y < 0.0:
 		gravity *= fall_gravity_multiplier
 	velocity += gravity * delta
@@ -334,7 +337,6 @@ func _move_walking(delta: float, wish_dir: Vector3, strength: float, on_floor: b
 	else:
 		rate = air_acceleration if accelerating else air_friction
 
-	# Framerate-independent exponential approach.
 	horizontal = horizontal.lerp(target, 1.0 - exp(-rate * delta))
 	if not accelerating and horizontal.length() < 0.05:
 		horizontal = Vector3.ZERO
@@ -362,11 +364,11 @@ func _try_start_dash(wish_dir: Vector3) -> bool:
 	if state == State.DASH or _dash_cooldown_timer > 0.0:
 		return false
 
-	# Ground-only dash. Coyote time counts, so walking off a lip doesn't eat it.
 	if not is_on_floor() and _coyote_timer <= 0.0:
-		return false
+		if not _air_dash_available:
+			return false
+		_air_dash_available = false
 
-	# Dash where she is pointed if there is no input to read.
 	_dash_direction = wish_dir
 	if _dash_direction == Vector3.ZERO:
 		_dash_direction = Vector3(sin(model.rotation.y), 0.0, cos(model.rotation.y))
@@ -498,7 +500,6 @@ func _plant_feet(delta: float) -> void:
 
 		var hit := get_world_3d().direct_space_state.intersect_ray(params)
 		if not hit.is_empty():
-			# Only ever lower her: raising the model would push her into ledges.
 			target = clampf(hit.position.y - global_position.y, -foot_probe_length, 0.0)
 
 	_foot_drop = lerpf(_foot_drop, target, 1.0 - exp(-foot_plant_sharpness * delta))
@@ -519,7 +520,6 @@ func _update_steps(delta: float) -> void:
 
 	_step_distance += speed * delta
 
-	# Crawling covers less ground per step.
 	var stride := step_length * (crawl_step_scale if crawling else 1.0)
 	if _step_distance < stride:
 		return
