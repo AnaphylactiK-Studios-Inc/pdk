@@ -1,14 +1,13 @@
 [gd_resource type="StandardMaterial3D" format=3 uid="uid://bqct1ft6740mv"]
 
-[ext_resource type="Texture2D" uid="uid://bptyxkgl81pco" path="res://assets/characters/peanut/peanut_1.png" id="1_bajkt"]
-[ext_resource type="Texture2D" uid="uid://od5g4envnkmx" path="res://assets/characters/peanut/peanut_0.png" id="2_d1usa"]
-[ext_resource type="Texture2D" uid="uid://c851wj0u3skjh" path="res://assets/characters/peanut/peanut_2.png" id="3_t6iik"]
+[ext_resource type="Texture2D" uid="uid://bptyxkgl81pco" path="res://features/player/peanut/model/peanut_1.png" id="1_bajkt"]
+[ext_resource type="Texture2D" uid="uid://od5g4envnkmx" path="res://features/player/peanut/model/peanut_0.png" id="2_d1usa"]
+[ext_resource type="Texture2D" uid="uid://c851wj0u3skjh" path="res://features/player/peanut/model/peanut_2.png" id="3_t6iik"]
 
 [resource]
 resource_name = "Peanut_MAT"
 vertex_color_use_as_albedo = true
 albedo_texture = ExtResource("1_bajkt")
-metallic = 1.0
 metallic_texture = ExtResource("2_d1usa")
 roughness_texture = ExtResource("3_t6iik")
 emission = Color(1, 1, 1, 1)

@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://ck1qmn7v3xbra"]
+
+[ext_resource type="Script" uid="uid://d03s4u5kwd4x0" path="res://features/player/peanut/peanut_camera.gd" id="1_camrig"]
+
+[node name="PeanutCamera" type="Node3D"]
+script = ExtResource("1_camrig")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.9781476, 0.2079117, 0, -0.2079117, 0.9781476, 0, 0, 0)
+spring_length = 2.2
+margin = 0.08
+
+[node name="ArmEnd" type="Node3D" parent="SpringArm3D"]
+
+[node name="Camera3D" type="Camera3D" parent="SpringArm3D/ArmEnd"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18, 0, 0)
+current = true
+fov = 60.0
+near = 0.02

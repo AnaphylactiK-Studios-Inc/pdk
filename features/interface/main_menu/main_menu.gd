@@ -20,6 +20,7 @@ func _ready() -> void:
 	settings_button.pressed.connect(_on_settings_pressed)
 	quit_button.pressed.connect(_on_quit_pressed)
 
+	start_button.grab_focus()
 	MenuAudio.wire(self)
 	MenuAudio.focus_silently(start_button)
 
@@ -60,8 +61,6 @@ func _on_settings_closed() -> void:
 	MenuAudio.focus_silently(settings_button)
 
 
-## While an overlay is up, the menu buttons shouldn't be reachable by Tab or by
-## a gamepad stick. The overlay's own full-rect Control blocks the mouse.
 func _set_menu_interactive(enabled: bool) -> void:
 	var mode := Control.FOCUS_ALL if enabled else Control.FOCUS_NONE
 	for button in [start_button, settings_button, quit_button]:
