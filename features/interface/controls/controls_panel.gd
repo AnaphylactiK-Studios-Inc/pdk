@@ -3,6 +3,7 @@ extends Control
 signal closed
 
 const BIND_BUTTON_WIDTH := 160
+const SECTION_HEADER_COLOR := Color(0.55, 0.62, 0.75)
 
 @onready var kbm_tab_button: Button = %KbmTabButton
 @onready var controller_tab_button: Button = %ControllerTabButton
@@ -82,7 +83,16 @@ func _build_rows() -> void:
 		child.queue_free()
 	_bind_buttons.clear()
 
+	var last_context := "-"
 	for action in SettingsManager.REMAPPABLE_ACTIONS:
+		var context := SettingsManager.get_action_context(action)
+		if context != last_context:
+			last_context = context
+			var header := Label.new()
+			header.text = SettingsManager.CONTEXT_NAMES.get(context, context)
+			header.add_theme_color_override("font_color", SECTION_HEADER_COLOR)
+			action_list.add_child(header)
+
 		var row := HBoxContainer.new()
 		row.add_theme_constant_override("separation", 16)
 
