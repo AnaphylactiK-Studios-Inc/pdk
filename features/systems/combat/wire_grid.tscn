@@ -1,0 +1,44 @@
+[gd_scene format=4 uid="uid://s8bneeg18rsc"]
+
+[ext_resource type="Script" uid="uid://beivd1p0s7jrp" path="res://features/systems/combat/wire_grid/wire_grid.gd" id="1_6b5qj"]
+[ext_resource type="Texture2D" uid="uid://d2r40m2a848p6" path="res://assets/2d/wire_grid_puzzle/wire_tilemap.png" id="1_rtsj5"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6b5qj"]
+texture = ExtResource("1_rtsj5")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+0:0/0/custom_data_0 = 10
+1:0/0 = 0
+1:0/0/custom_data_0 = 15
+2:0/0 = 0
+2:0/0/custom_data_0 = 3
+3:0/0 = 0
+3:0/0/custom_data_0 = 11
+4:0/0 = 0
+0:1/0 = 0
+0:1/0/custom_data_0 = 10
+0:1/0/custom_data_1 = true
+1:1/0 = 0
+1:1/0/custom_data_0 = 15
+1:1/0/custom_data_1 = true
+2:1/0 = 0
+2:1/0/custom_data_0 = 3
+2:1/0/custom_data_1 = true
+3:1/0 = 0
+3:1/0/custom_data_0 = 11
+3:1/0/custom_data_1 = true
+
+[sub_resource type="TileSet" id="TileSet_rg5n0"]
+tile_size = Vector2i(32, 32)
+custom_data_layer_0/name = "Wire Connections"
+custom_data_layer_0/type = 2
+custom_data_layer_1/name = "Is On"
+custom_data_layer_1/type = 1
+sources/1 = SubResource("TileSetAtlasSource_6b5qj")
+
+[node name="WireGrid" type="Node2D" unique_id=295775422]
+
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1251724837]
+tile_map_data = PackedByteArray("AAAAAAAAAQABAAAAAAACAAEAAQABAAAAAAABAAEAAQACAAAAAAABAAAAAQADAAAAAAACAAAAAQAEAAAAAAAAAAEAAQAAAAAAAAABAAIAAQAAAAAAAAACAAIAAQAAAAAAAAAAAAIAAQACAAAAAAA=")
+tile_set = SubResource("TileSet_rg5n0")
+script = ExtResource("1_6b5qj")
