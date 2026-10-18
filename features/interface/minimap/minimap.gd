@@ -1,10 +1,13 @@
 extends CanvasLayer
 
 const PLAYER_GROUP := "grid_player"
+const PEANUT_GROUP := "peanut"
 
 @export_group("Wiring")
 @export var grid_walkability: GridWalkability
 @export var player: Node3D
+## Left empty, the minimap takes the first node in the "peanut" group.
+@export var peanut: Node3D
 
 @export_group("Layout")
 @export var max_size: Vector2 = Vector2(180.0, 180.0)
@@ -19,6 +22,8 @@ const PLAYER_GROUP := "grid_player"
 @export var player_color: Color = Color(1.0, 0.86, 0.35, 1.0)
 ## Keeps the marker readable where it overlaps a bright walkable tile.
 @export var player_outline_color: Color = Color(0.09, 0.07, 0.03, 0.9)
+@export var peanut_color: Color = Color(0.95, 0.45, 0.75, 1.0)
+@export var peanut_outline_color: Color = Color(0.1, 0.03, 0.07, 0.9)
 ## Shrinks each drawn tile so neighbouring cells read as separate squares.
 @export var cell_inset: float = 1.0
 
@@ -29,6 +34,7 @@ var _map_pixels: Vector2 = Vector2.ZERO
 
 var _last_player_cell: Vector2 = Vector2.INF
 var _last_player_facing: float = INF
+var _last_peanut_cell: Vector2 = Vector2.INF
 
 func _ready() -> void:
 	_view = $MinimapView
@@ -74,6 +80,9 @@ func resolve_references() -> void:
 	if player == null:
 		player = _find_player()
 
+	if peanut == null:
+		peanut = _find_peanut()
+
 	visible = true
 
 func _scene_root() -> Node:
@@ -104,6 +113,13 @@ func _find_player() -> Node3D:
 	var candidates := get_tree().get_nodes_in_group(PLAYER_GROUP)
 
 	for candidate in candidates:
+		if candidate is Node3D:
+			return candidate as Node3D
+
+	return null
+
+func _find_peanut() -> Node3D:
+	for candidate in get_tree().get_nodes_in_group(PEANUT_GROUP):
 		if candidate is Node3D:
 			return candidate as Node3D
 
@@ -149,12 +165,14 @@ func _process(_delta: float) -> void:
 
 	var cell := get_player_cell()
 	var facing := get_player_facing()
+	var peanut_cell := get_peanut_cell()
 
-	if cell.is_equal_approx(_last_player_cell) and is_equal_approx(facing, _last_player_facing):
+	if cell.is_equal_approx(_last_player_cell) 			and is_equal_approx(facing, _last_player_facing) 			and peanut_cell.is_equal_approx(_last_peanut_cell):
 		return
 
 	_last_player_cell = cell
 	_last_player_facing = facing
+	_last_peanut_cell = peanut_cell
 
 	_view.queue_redraw()
 
@@ -163,6 +181,14 @@ func get_player_cell() -> Vector2:
 		return Vector2.INF
 
 	var local := _grid.to_local(player.global_position)
+
+	return Vector2(local.x, local.z) / _grid.cell_size
+
+func get_peanut_cell() -> Vector2:
+	if peanut == null or _grid == null or not peanut.is_inside_tree():
+		return Vector2.INF
+
+	var local := _grid.to_local(peanut.global_position)
 
 	return Vector2(local.x, local.z) / _grid.cell_size
 
@@ -215,6 +241,7 @@ func _on_view_draw() -> void:
 				true
 			)
 
+	_draw_peanut_marker(origin)
 	_draw_player_marker(origin)
 
 func _draw_player_marker(origin: Vector2) -> void:
@@ -246,6 +273,23 @@ func _draw_player_marker(origin: Vector2) -> void:
 	outline.append(points[0])
 
 	_view.draw_polyline(outline, player_outline_color, 1.0)
+
+func _draw_peanut_marker(origin: Vector2) -> void:
+	var cell := get_peanut_cell()
+
+	if not _is_finite(cell):
+		return
+
+	var radius := maxf(_cell_pixels * 0.4, 3.5)
+
+	# Pinned to the map edge while Peanut is off the grid, so she's never lost
+	var centre := (origin + cell * _cell_pixels).clamp(
+		origin + Vector2(radius, radius),
+		origin + _map_pixels - Vector2(radius, radius)
+	)
+
+	_view.draw_circle(centre, radius, peanut_color)
+	_view.draw_arc(centre, radius, 0.0, TAU, 16, peanut_outline_color, 1.0)
 
 func _is_finite(value: Vector2) -> bool:
 	return is_finite(value.x) and is_finite(value.y)

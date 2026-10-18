@@ -160,6 +160,24 @@ layout_mode = 2
 text = "0%"
 horizontal_alignment = 2
 
+[node name="SprintModeLabel" type="Label" parent="CenterContainer/Panel/Margin/VBox/SensitivityGrid" unique_id=1131038610]
+layout_mode = 2
+text = "Sprint"
+
+[node name="SprintToggleButton" type="CheckButton" parent="CenterContainer/Panel/Margin/VBox/SensitivityGrid" unique_id=1131038611]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Hold"
+
+[node name="CrawlModeLabel" type="Label" parent="CenterContainer/Panel/Margin/VBox/SensitivityGrid" unique_id=1131038612]
+layout_mode = 2
+text = "Sneak / Crawl"
+
+[node name="CrawlToggleButton" type="CheckButton" parent="CenterContainer/Panel/Margin/VBox/SensitivityGrid" unique_id=1131038613]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Toggle"
+
 [node name="ControllerStyleLabel" type="Label" parent="CenterContainer/Panel/Margin/VBox/SensitivityGrid" unique_id=1131038600]
 layout_mode = 2
 text = "Controller Style"

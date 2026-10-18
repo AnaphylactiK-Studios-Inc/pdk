@@ -10,6 +10,13 @@ const QUARTER_TURN := PI * 0.5
 
 const GRID_PLAYER_GROUP := "grid_player"
 
+const CONTROL_HINTS := [
+	{"label": "Move", "actions": ["move_forward", "move_left", "move_back", "move_right"]},
+	{"label": "Turn Left", "actions": ["grid_rotate_left"]},
+	{"label": "Turn Right", "actions": ["grid_rotate_right"]},
+	{"label": "Switch Character", "actions": ["switch_character"]},
+]
+
 var _grid: Grid
 var _active: bool = false
 var _moving: bool = false
@@ -17,6 +24,7 @@ var _rotating: bool = false
 
 func _ready() -> void:
 	add_to_group(GRID_PLAYER_GROUP)
+	add_to_group(ControlsHint.SOURCE_GROUP)
 
 	if grid_walkability == null:
 		push_error(
@@ -80,6 +88,12 @@ func _physics_process(_delta: float) -> void:
 		move_right()
 	elif Input.is_action_pressed("move_left"):
 		move_left()
+
+func is_controls_active() -> bool:
+	return _active and can_process()
+
+func get_control_hints() -> Array:
+	return CONTROL_HINTS
 
 func is_busy() -> bool:
 	return _moving or _rotating
