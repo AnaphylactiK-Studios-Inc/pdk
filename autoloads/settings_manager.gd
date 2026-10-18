@@ -91,14 +91,36 @@ const REMAPPABLE_ACTIONS := {
 	"move_back": "Move Back",
 	"move_left": "Move Left",
 	"move_right": "Move Right",
+	"switch_character": "Switch Character",
 	"jump": "Jump",
 	"sprint": "Sprint",
-	# Always toggles, whatever the Sprint mode switch says, so a player can
-	# keep hold-to-sprint on one button and toggle-to-sprint on another.
-	"sprint_toggle": "Sprint (Toggle)",
+	"toggle_sprint": "Sprint (Toggle)",
 	"dash": "Dash",
 	"crawl": "Sneak / Crawl",
 	"interact": "Interact",
+	"grid_rotate_left": "Turn Left",
+	"grid_rotate_right": "Turn Right",
+}
+
+## Which character each remappable action belongs to; anything unlisted is
+## shared by both. Only one character has control at a time, so a bind only
+## has to be unique among actions that can be live together, and Peanut and
+## Dreadnought Killer are free to reuse each other's buttons.
+const ACTION_CONTEXTS := {
+	"jump": "peanut",
+	"sprint": "peanut",
+	"toggle_sprint": "peanut",
+	"dash": "peanut",
+	"crawl": "peanut",
+	"interact": "peanut",
+	"grid_rotate_left": "dreadnought_killer",
+	"grid_rotate_right": "dreadnought_killer",
+}
+
+const CONTEXT_NAMES := {
+	"": "Both Characters",
+	"peanut": "Peanut",
+	"dreadnought_killer": "Dreadnought Killer",
 }
 
 ## Hold-to-sprint suits a keyboard; toggle-to-crawl suits a controller, so the
@@ -110,6 +132,12 @@ const DEFAULT_MOUSE_SENSITIVITY := 0.5
 const DEFAULT_STICK_SENSITIVITY_X := 0.5
 const DEFAULT_STICK_SENSITIVITY_Y := 0.5
 
+## How far the mouse or a stick has to move before it counts as the player
+## picking that device up, so a resting mouse or a drifting stick can't flip
+## on-screen prompts back and forth.
+const MOUSE_WAKE_PIXELS := 3.0
+const STICK_WAKE_DEADZONE := 0.4
+
 const PREVIEW_EVENTS := {
 	"master": "event:/SFX/UI/sfx_UI_select_nl",
 	"music": "",
@@ -120,6 +148,7 @@ signal settings_changed
 signal audio_ready
 signal keybinds_changed
 signal controller_style_changed
+signal input_family_changed
 
 var volumes := {"master": 1.0, "music": 1.0, "sfx": 1.0}
 var window_mode: int = WindowMode.WINDOWED
@@ -132,6 +161,7 @@ var stick_sensitivity_y: float = DEFAULT_STICK_SENSITIVITY_Y
 var controller_style_override: int = ControllerStyle.AUTO
 var sprint_toggle: bool = DEFAULT_SPRINT_TOGGLE
 var crawl_toggle: bool = DEFAULT_CRAWL_TOGGLE
+var active_input_family: int = BindFamily.KBM
 
 var _buses: Dictionary = {}
 var _preview_ok: Dictionary = {}
@@ -156,6 +186,28 @@ func _ready() -> void:
 
 	Input.joy_connection_changed.connect(_on_joy_connection_changed)
 	_detect_controller_style()
+
+	if not Input.get_connected_joypads().is_empty():
+		active_input_family = BindFamily.JOY
+
+
+func _input(event: InputEvent) -> void:
+	var family := get_event_family(event)
+	if event is InputEventMouseMotion:
+		if (event as InputEventMouseMotion).relative.length() < MOUSE_WAKE_PIXELS:
+			return
+		family = BindFamily.KBM
+	elif event is InputEventJoypadMotion:
+		if absf((event as InputEventJoypadMotion).axis_value) < STICK_WAKE_DEADZONE:
+			return
+	_set_active_input_family(family)
+
+
+func _set_active_input_family(family: int) -> void:
+	if family == -1 or family == active_input_family:
+		return
+	active_input_family = family
+	input_family_changed.emit()
 
 
 func _notification(what: int) -> void:
@@ -285,8 +337,10 @@ func get_effective_controller_style() -> int:
 	return _detected_controller_style
 
 
-func _on_joy_connection_changed(_device: int, _connected: bool) -> void:
+func _on_joy_connection_changed(_device: int, connected: bool) -> void:
 	_detect_controller_style()
+	if not connected and Input.get_connected_joypads().is_empty():
+		_set_active_input_family(BindFamily.KBM)
 
 
 func _detect_controller_style() -> void:
@@ -419,7 +473,7 @@ func rebind_action(action: String, event: InputEvent) -> void:
 	var incoming := _event_to_dict(event)
 
 	for other in REMAPPABLE_ACTIONS:
-		if other == action:
+		if other == action or not actions_share_context(action, other):
 			continue
 		var kept: Array = []
 		var changed := false
@@ -440,6 +494,16 @@ func rebind_action(action: String, event: InputEvent) -> void:
 
 	_request_save()
 	keybinds_changed.emit()
+
+
+func get_action_context(action: String) -> String:
+	return ACTION_CONTEXTS.get(action, "")
+
+
+func actions_share_context(a: String, b: String) -> bool:
+	var context_a := get_action_context(a)
+	var context_b := get_action_context(b)
+	return context_a == "" or context_b == "" or context_a == context_b
 
 
 func clear_action(action: String, family: int) -> void:
@@ -648,7 +712,7 @@ func load_settings() -> void:
 		int(config.get_value("display", "resolution_x", resolution.x)),
 		int(config.get_value("display", "resolution_y", resolution.y)),
 	)
-	vsync = bool(config.get_value("display", "vsync", vsync))
+	vsync = _get_bool(config, "display", "vsync", vsync)
 
 	mouse_sensitivity = clampf(
 		float(config.get_value("input", "mouse_sensitivity", mouse_sensitivity)), 0.0, 1.0
@@ -670,11 +734,19 @@ func load_settings() -> void:
 		0, ControllerStyle.size() - 1
 	)
 
-	sprint_toggle = bool(config.get_value("input", "sprint_toggle", sprint_toggle))
-	crawl_toggle = bool(config.get_value("input", "crawl_toggle", crawl_toggle))
+	sprint_toggle = _get_bool(config, "input", "sprint_toggle", sprint_toggle)
+	crawl_toggle = _get_bool(config, "input", "crawl_toggle", crawl_toggle)
 
 	for action in REMAPPABLE_ACTIONS:
 		if not config.has_section_key("input", action):
 			continue
-		var dicts: Array = config.get_value("input", action, [])
-		_set_binds(action, dicts)
+		var dicts: Variant = config.get_value("input", action, [])
+		if dicts is Array:
+			_set_binds(action, dicts)
+
+
+func _get_bool(config: ConfigFile, section: String, key: String, default: bool) -> bool:
+	var value: Variant = config.get_value(section, key, default)
+	if value is bool or value is int or value is float:
+		return bool(value)
+	return default

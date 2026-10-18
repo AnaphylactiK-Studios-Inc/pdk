@@ -12,6 +12,12 @@ func _ready() -> void:
 	body_exited.connect(_on_body_exited)
 
 
+func set_enabled(enabled: bool) -> void:
+	set_process_unhandled_input(enabled)
+	if not enabled and _is_holding:
+		_release()
+
+
 func _physics_process(_delta: float) -> void:
 	if _is_holding:
 		return

@@ -12,6 +12,18 @@ signal crawl_changed(crawling: bool)
 
 const LAND_LENGTH := 0.5
 
+const CONTROL_HINTS := [
+	{"label": "Move", "actions": ["move_forward", "move_left", "move_back", "move_right"]},
+	{"label": "Look", "actions": ["look_up", "look_down", "look_left", "look_right"], "kbm": "Mouse"},
+	{"label": "Jump", "actions": ["jump"]},
+	{"label": "Sprint", "actions": ["sprint"]},
+	{"label": "Sprint (Toggle)", "actions": ["toggle_sprint"]},
+	{"label": "Dash", "actions": ["dash"]},
+	{"label": "Crawl", "actions": ["crawl"]},
+	{"label": "Interact", "actions": ["interact"]},
+	{"label": "Switch Character", "actions": ["switch_character"]},
+]
+
 @export_group("Speed")
 @export var walk_speed := 3.0
 @export var sprint_speed := 5.0
@@ -72,6 +84,7 @@ const JUMP_EVENT := "event:/SFX/PC/Peanut/sfx_pntJump_nl"
 var state: State = State.GROUNDED
 var gait: Gait = Gait.WALK
 var crawling := false
+var has_control := true
 
 var _coyote_timer := 0.0
 var _jump_buffer_timer := 0.0
@@ -89,6 +102,8 @@ var _foot_drop := 0.0
 
 
 func _ready() -> void:
+	add_to_group(ControlsHint.SOURCE_GROUP)
+
 	if anim.has_animation("jump_mid_air"):
 		anim.get_animation("jump_mid_air").loop_mode = Animation.LOOP_LINEAR
 	if anim.has_animation("jump_start"):
@@ -119,7 +134,9 @@ func _physics_process(delta: float) -> void:
 
 	_tick_timers(delta, on_floor)
 
-	var input := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
+	var input := Vector2.ZERO
+	if has_control:
+		input = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	var strength := minf(input.length(), 1.0)
 	var wish_dir := _camera_relative_direction(input)
 
@@ -145,6 +162,23 @@ func _physics_process(delta: float) -> void:
 
 	_plant_feet(delta)
 	_update_steps(delta)
+
+
+func is_controls_active() -> bool:
+	return has_control and can_process()
+
+
+func set_has_control(value: bool) -> void:
+	has_control = value
+	interaction_area.set_enabled(value)
+
+
+func can_hand_off() -> bool:
+	return is_on_floor() and state != State.DASH
+
+
+func get_control_hints() -> Array:
+	return CONTROL_HINTS
 
 
 ## Input direction in world space, relative to where the camera is looking.
@@ -181,20 +215,31 @@ func _tick_timers(delta: float, on_floor: bool) -> void:
 	else:
 		_coyote_timer = maxf(_coyote_timer - delta, 0.0)
 
-	if Input.is_action_just_pressed("jump"):
+	if _just_pressed("jump"):
 		_jump_buffer_timer = jump_buffer_time
+
+
+func _pressed(action: StringName) -> bool:
+	return has_control and Input.is_action_pressed(action)
+
+
+func _just_pressed(action: StringName) -> bool:
+	return has_control and Input.is_action_just_pressed(action)
 
 
 # --- Stance and gait ---
 
 func _update_crawl(on_floor: bool) -> void:
+	if not has_control:
+		return
+
 	var want_crawl := crawling
 
 	if SettingsManager.crawl_toggle:
-		if Input.is_action_just_pressed("crawl"):
+		if _just_pressed("crawl"):
 			want_crawl = not crawling
 	else:
-		want_crawl = Input.is_action_pressed("crawl")
+		want_crawl = _pressed("crawl")
 
 	# Sprinting out of a crawl is the natural way to stand back up.
 	if want_crawl and _sprint_input:
@@ -247,16 +292,16 @@ func _has_headroom() -> bool:
 func _read_sprint(strength: float, on_floor: bool) -> bool:
 	var held := false
 	if SettingsManager.sprint_toggle:
-		if Input.is_action_just_pressed("sprint"):
+		if _just_pressed("sprint"):
 			_sprint_latched = not _sprint_latched
 	else:
-		held = Input.is_action_pressed("sprint")
+		held = _pressed("sprint")
 
-	if Input.is_action_just_pressed("sprint_toggle"):
+	if _just_pressed("toggle_sprint"):
 		_sprint_latched = not _sprint_latched
 	if strength <= 0.0:
 		_sprint_latched = false
-	if on_floor and Input.is_action_just_pressed("crawl"):
+	if on_floor and _just_pressed("crawl"):
 		_sprint_latched = false
 	return held or _sprint_latched
 
@@ -307,7 +352,7 @@ func _apply_gravity(delta: float, on_floor: bool) -> void:
 
 func _try_jump() -> void:
 	# Releasing early cuts the jump short, giving one button two heights.
-	if not Input.is_action_pressed("jump") and velocity.y > 0.0 and state != State.GROUNDED:
+	if not _pressed("jump") and velocity.y > 0.0 and state != State.GROUNDED:
 		velocity.y *= jump_release_damping
 
 	if _jump_buffer_timer <= 0.0 or _coyote_timer <= 0.0:
@@ -359,7 +404,7 @@ func _face_movement(delta: float, wish_dir: Vector3) -> void:
 # --- Dash ---
 
 func _try_start_dash(wish_dir: Vector3) -> bool:
-	if not Input.is_action_just_pressed("dash"):
+	if not _just_pressed("dash"):
 		return false
 	if state == State.DASH or _dash_cooldown_timer > 0.0:
 		return false
