@@ -1,4 +1,4 @@
-extends Node2D
+extends CanvasLayer
 class_name WirePuzzle
 
 @export var marker: WireGridMarker
