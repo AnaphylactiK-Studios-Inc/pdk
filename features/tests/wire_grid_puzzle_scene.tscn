@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://di57l68jpvua" path="res://features/player/peanut/peanut-character.tscn" id="8_d356f"]
 [ext_resource type="PackedScene" uid="uid://ck1qmn7v3xbra" path="res://features/player/peanut/peanut-camera.tscn" id="9_sioyh"]
 [ext_resource type="Script" uid="uid://bwdd3jao2a60p" path="res://features/player/character_switcher/character_switcher.gd" id="10_yt6p3"]
-[ext_resource type="PackedScene" uid="uid://gf7bbabceqa7" path="res://features/systems/combat/wire_grid/wire_grid.tscn" id="11_yvqma"]
+[ext_resource type="PackedScene" uid="uid://c3jtmtr37tnc0" path="res://features/systems/combat/wire_grid/wire_grid.tscn" id="11_yvqma"]
 
 [sub_resource type="Resource" id="Resource_qnea6"]
 resource_local_to_scene = true
@@ -1895,6 +1895,7 @@ peanut_camera = NodePath("../PeanutCamera")
 dreadnought_killer = NodePath("../DkCharacter")
 dreadnought_killer_camera = NodePath("../DkCharacter/Camera3D")
 
-[node name="WireGridPuzzle" parent="." unique_id=1581390659 instance=ExtResource("11_yvqma")]
+[node name="WireGridPuzzle" parent="." unique_id=1581390659 node_paths=PackedStringArray("character_switcher") instance=ExtResource("11_yvqma")]
+character_switcher = NodePath("../CharacterSwitcher")
 
 [editable path="DkCharacter"]
