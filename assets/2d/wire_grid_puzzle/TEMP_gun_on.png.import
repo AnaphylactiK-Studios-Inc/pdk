@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b4wmtis863tu2"
-path="res://.godot/imported/gun_on.png-5f10c1f0a0deb409e0a245f6d6e6ff09.ctex"
+path="res://.godot/imported/TEMP_gun_on.png-3c06d0fcd008fc2260a3d3dfa193b353.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/2d/wire_grid_puzzle/gun_on.png"
-dest_files=["res://.godot/imported/gun_on.png-5f10c1f0a0deb409e0a245f6d6e6ff09.ctex"]
+source_file="res://assets/2d/wire_grid_puzzle/TEMP_gun_on.png"
+dest_files=["res://.godot/imported/TEMP_gun_on.png-3c06d0fcd008fc2260a3d3dfa193b353.ctex"]
 
 [params]
 

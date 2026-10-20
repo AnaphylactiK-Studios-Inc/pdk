@@ -7,67 +7,35 @@ var pathfinder := WirePathfinder.new()
 var connection_tiles: Dictionary = {}
 var tile_usage: Dictionary = {}
 
-const TOP := 1
-const RIGHT := 2
-const BOTTOM := 4
-const LEFT := 8
-
 func _init(target_grid: WireGrid):
 	grid = target_grid
 
-func generate():
+func generate() -> Array[Vector2i]:
 	if grid.source == null or grid.destination == null:
 		push_error("WireGrid requires a source and destination endpoint.")
-		return
+		return []
 
 	if not build_connection_lookup():
-		return
+		return []
 
-	generate_wire()
+	return generate_wire()
 
 func build_connection_lookup() -> bool:
 	connection_tiles.clear()
 	tile_usage.clear()
 
-	var source_id := grid.tile_set.get_source_id(0)
-	var atlas := grid.tile_set.get_source(source_id) as TileSetAtlasSource
-
-	if atlas == null:
-		push_error("No TileSetAtlasSource found.")
-		return false
-
-	for i in range(atlas.get_tiles_count()):
-		var tile_id := atlas.get_tile_id(i)
-		var tile_data := atlas.get_tile_data(tile_id, 0)
-
-		if tile_data == null:
-			continue
-
-		var is_on: bool = tile_data.get_custom_data("IsOn")
-
-		if is_on:
-			continue
-
-		var base_connections: int = tile_data.get_custom_data("Connections")
-		var rotated_connections := base_connections
+	for tile_id: Vector2i in grid.off_tile_connections:
+		var rotated_connections: int = grid.off_tile_connections[tile_id]
+		var seen_connections := {}
 
 		tile_usage[tile_id] = 0
 
 		for rotation in range(4):
-			for required_connections in range(16):
-				if (rotated_connections & required_connections) != required_connections:
-					continue
+			if not seen_connections.has(rotated_connections):
+				seen_connections[rotated_connections] = true
+				add_connection_options(tile_id, rotation, rotated_connections)
 
-				if not connection_tiles.has(required_connections):
-					connection_tiles[required_connections] = []
-
-				connection_tiles[required_connections].append({
-					"tile_id": tile_id,
-					"rotation": rotation,
-					"rotated_connections": rotated_connections
-				})
-
-			rotated_connections = rotate_connections(rotated_connections)
+			rotated_connections = WireGrid.rotate_connections(rotated_connections)
 
 	if connection_tiles.is_empty():
 		push_error("No valid wire tiles found.")
@@ -75,28 +43,44 @@ func build_connection_lookup() -> bool:
 
 	return true
 
-func generate_wire():
+func add_connection_options(tile_id: Vector2i, rotation: int, rotated_connections: int):
+	for required_connections in range(1, 16):
+		if (rotated_connections & required_connections) != required_connections:
+			continue
+
+		if not connection_tiles.has(required_connections):
+			connection_tiles[required_connections] = []
+
+		connection_tiles[required_connections].append({
+			"tile_id": tile_id,
+			"rotation": rotation,
+			"rotated_connections": rotated_connections
+		})
+
+func generate_wire() -> Array[Vector2i]:
 	grid.clear()
 
-	var source_id := grid.tile_set.get_source_id(0)
+	var source_id := grid.atlas_source_id
 	var start_pos: Vector2i = grid.source.coordinate
 	var end_pos: Vector2i = grid.destination.coordinate
 
 	var path: Array[Vector2i] = pathfinder.generate_path(
 		grid.size,
 		grid.waypoint_count,
-		start_pos,
-		end_pos
+		grid.get_adjacent_cell(start_pos),
+		grid.get_adjacent_cell(end_pos)
 	)
 
 	if path.is_empty():
 		push_warning("WirePathfinder did not generate a path.")
-		return
+		return path
 
 	place_path(path, source_id, start_pos, end_pos)
 	fill_remaining_cells(path, source_id)
 	scramble_path(path)
-	
+
+	return path
+
 func place_path(
 	path: Array[Vector2i],
 	source_id: int,
@@ -108,14 +92,14 @@ func place_path(
 		var required_connections := 0
 
 		if i == 0:
-			required_connections |= get_direction(cell, start_pos)
+			required_connections |= WireGrid.get_direction(cell, start_pos)
 		else:
-			required_connections |= get_direction(cell, path[i - 1])
+			required_connections |= WireGrid.get_direction(cell, path[i - 1])
 
 		if i == path.size() - 1:
-			required_connections |= get_direction(cell, end_pos)
+			required_connections |= WireGrid.get_direction(cell, end_pos)
 		else:
-			required_connections |= get_direction(cell, path[i + 1])
+			required_connections |= WireGrid.get_direction(cell, path[i + 1])
 
 		if not connection_tiles.has(required_connections):
 			push_warning("No valid tile for connections: %s" % required_connections)
@@ -137,7 +121,7 @@ func place_path(
 			cell,
 			source_id,
 			tile_id,
-			grid.get_rotation_transform(rotation)
+			WireGrid.get_rotation_transform(rotation)
 		)
 
 func fill_remaining_cells(
@@ -149,23 +133,7 @@ func fill_remaining_cells(
 	for cell in path:
 		path_cells[cell] = true
 
-	var valid_tiles: Array[Vector2i] = []
-	var atlas := grid.tile_set.get_source(source_id) as TileSetAtlasSource
-
-	if atlas == null:
-		return
-
-	for i in range(atlas.get_tiles_count()):
-		var tile_id := atlas.get_tile_id(i)
-		var tile_data := atlas.get_tile_data(tile_id, 0)
-
-		if tile_data == null:
-			continue
-
-		var is_on: bool = tile_data.get_custom_data("IsOn")
-
-		if not is_on:
-			valid_tiles.append(tile_id)
+	var valid_tiles: Array = grid.off_tile_connections.keys()
 
 	if valid_tiles.is_empty():
 		push_warning("No valid tiles found.")
@@ -185,7 +153,7 @@ func fill_remaining_cells(
 				cell,
 				source_id,
 				tile_id,
-				grid.get_rotation_transform(rotation)
+				WireGrid.get_rotation_transform(rotation)
 			)
 
 func choose_tile(options: Array) -> Dictionary:
@@ -207,44 +175,11 @@ func choose_tile(options: Array) -> Dictionary:
 func count_connections(connections: int) -> int:
 	var count := 0
 
-	if connections & TOP:
-		count += 1
-	if connections & RIGHT:
-		count += 1
-	if connections & BOTTOM:
-		count += 1
-	if connections & LEFT:
-		count += 1
+	for direction in WireGrid.DIRECTIONS:
+		if connections & direction:
+			count += 1
 
 	return count
-
-func get_direction(from: Vector2i, to: Vector2i) -> int:
-	var direction := to - from
-
-	if direction == Vector2i(0, -1):
-		return TOP
-	if direction == Vector2i(1, 0):
-		return RIGHT
-	if direction == Vector2i(0, 1):
-		return BOTTOM
-	if direction == Vector2i(-1, 0):
-		return LEFT
-
-	return 0
-
-func rotate_connections(connections: int) -> int:
-	var result := 0
-
-	if connections & TOP:
-		result |= RIGHT
-	if connections & RIGHT:
-		result |= BOTTOM
-	if connections & BOTTOM:
-		result |= LEFT
-	if connections & LEFT:
-		result |= TOP
-
-	return result
 
 func scramble_path(path: Array[Vector2i]):
 	for cell in path:
@@ -257,5 +192,5 @@ func scramble_path(path: Array[Vector2i]):
 			cell,
 			source_id,
 			tile_id,
-			grid.get_rotation_transform(rotation)
+			WireGrid.get_rotation_transform(rotation)
 		)

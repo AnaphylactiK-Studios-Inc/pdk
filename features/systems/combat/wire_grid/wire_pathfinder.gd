@@ -1,30 +1,21 @@
 extends RefCounted
 class_name WirePathfinder
 
-var astar := AStarGrid2D.new()
-
-func setup(size: int):
-	astar.region = Rect2i(0, 0, size, size)
-	astar.cell_size = Vector2(1, 1)
-	astar.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_NEVER
-	astar.update()
+var bounds := Rect2i()
 
 func generate_path(
 	size: int,
 	waypoint_count: int,
-	start_pos: Vector2i,
-	end_pos: Vector2i
+	start_cell: Vector2i,
+	end_cell: Vector2i
 ) -> Array[Vector2i]:
 	if size <= 0:
 		return []
 
-	setup(size)
+	bounds = Rect2i(0, 0, size, size)
 
-	start_pos = clamp_endpoint(start_pos, size)
-	end_pos = clamp_endpoint(end_pos, size)
-
-	var start_cell := get_adjacent_cell(start_pos, size)
-	var end_cell := get_adjacent_cell(end_pos, size)
+	if not bounds.has_point(start_cell) or not bounds.has_point(end_cell):
+		return []
 
 	var path: Array[Vector2i] = [start_cell]
 	var visited := {start_cell: true}
@@ -40,32 +31,6 @@ func generate_path(
 		path = generate_fallback_path(start_cell, end_cell)
 
 	return path
-
-func clamp_endpoint(pos: Vector2i, size: int) -> Vector2i:
-	var x: int = clampi(pos.x, -1, size)
-	var y: int = clampi(pos.y, -1, size)
-
-	if x == -1 or x == size:
-		y = clampi(y, 0, size - 1)
-	else:
-		x = clampi(x, 0, size - 1)
-
-	return Vector2i(x, y)
-
-func get_adjacent_cell(endpoint: Vector2i, size: int) -> Vector2i:
-	if endpoint.x == -1:
-		return Vector2i(0, endpoint.y)
-
-	if endpoint.x == size:
-		return Vector2i(size - 1, endpoint.y)
-
-	if endpoint.y == -1:
-		return Vector2i(endpoint.x, 0)
-
-	if endpoint.y == size:
-		return Vector2i(endpoint.x, size - 1)
-
-	return endpoint
 
 func generate_path_recursive(
 	path: Array[Vector2i],
@@ -140,7 +105,7 @@ func get_valid_neighbors(
 	var valid: Array[Vector2i] = []
 
 	for neighbor in neighbors:
-		if not astar.is_in_boundsv(neighbor):
+		if not bounds.has_point(neighbor):
 			continue
 
 		if visited.has(neighbor):
@@ -188,9 +153,9 @@ func manhattan_distance(a: Vector2i, b: Vector2i) -> int:
 
 func get_distance_to_edge(cell: Vector2i) -> int:
 	var left := cell.x
-	var right := astar.region.size.x - 1 - cell.x
+	var right := bounds.size.x - 1 - cell.x
 	var top := cell.y
-	var bottom := astar.region.size.y - 1 - cell.y
+	var bottom := bounds.size.y - 1 - cell.y
 
 	return mini(mini(left, right), mini(top, bottom))
 

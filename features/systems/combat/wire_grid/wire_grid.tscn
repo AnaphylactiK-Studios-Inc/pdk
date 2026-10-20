@@ -8,9 +8,9 @@
 [ext_resource type="Script" uid="uid://dmh10tt76barh" path="res://features/systems/combat/wire_grid/wire_connections.gd" id="6_ixy7e"]
 [ext_resource type="Texture2D" uid="uid://dh752yfnf7fte" path="res://assets/2d/wire_grid_puzzle/source.png" id="7_fqxxm"]
 [ext_resource type="Script" uid="uid://beryy0motdqqr" path="res://features/systems/combat/wire_grid/endpoint/wire_grid_endpoint.gd" id="8_qlvtn"]
-[ext_resource type="Texture2D" uid="uid://d4fskqrgcipyc" path="res://assets/2d/wire_grid_puzzle/gun.png" id="9_wwds8"]
+[ext_resource type="Texture2D" uid="uid://d4fskqrgcipyc" path="res://assets/2d/wire_grid_puzzle/TEMP_gun.png" id="9_wwds8"]
 [ext_resource type="Script" uid="uid://d2lj2vki8vfrk" path="res://features/systems/combat/wire_grid/endpoint/wire_grid_destination.gd" id="10_68r7j"]
-[ext_resource type="Texture2D" uid="uid://b4wmtis863tu2" path="res://assets/2d/wire_grid_puzzle/gun_on.png" id="11_qry20"]
+[ext_resource type="Texture2D" uid="uid://b4wmtis863tu2" path="res://assets/2d/wire_grid_puzzle/TEMP_gun_on.png" id="11_qry20"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jo6ac"]
 texture = ExtResource("4_yvnd1")
