@@ -12,6 +12,8 @@ var _settings_instance: Node = null
 
 
 func _ready() -> void:
+	add_to_group(PauseMenu.BLOCKED_GROUP)
+
 	_overlay_layer = CanvasLayer.new()
 	_overlay_layer.layer = 10
 	add_child(_overlay_layer)

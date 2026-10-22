@@ -14,35 +14,50 @@ offset_right = -2.0
 offset_bottom = 7.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 80
-theme_override_constants/margin_top = 60
-theme_override_constants/margin_right = 80
-theme_override_constants/margin_bottom = 60
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
 script = ExtResource("1_l6cm7")
 game_scene = ExtResource("2_ekxnf")
 settings_scene = ExtResource("3_ybx0p")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=38724062]
 layout_mode = 2
+size_flags_horizontal = 4
 size_flags_vertical = 0
+theme_override_constants/separation = 64
+
+[node name="Title" type="Label" parent="VBoxContainer" unique_id=252223940]
+layout_mode = 2
+theme_override_font_sizes/font_size = 56
+text = "Peanut and
+Dreadnought Killer"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Buttons" type="VBoxContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(600, 0)
+layout_mode = 2
+size_flags_horizontal = 4
 theme_override_constants/separation = 24
 
-[node name="StartButton" type="Button" parent="VBoxContainer" unique_id=1663561056]
+[node name="StartButton" type="Button" parent="VBoxContainer/Buttons" unique_id=1663561056]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 48
+theme_override_font_sizes/font_size = 36
 text = "Start"
 
-[node name="SettingsButton" type="Button" parent="VBoxContainer" unique_id=833067410]
+[node name="SettingsButton" type="Button" parent="VBoxContainer/Buttons" unique_id=833067410]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 48
+theme_override_font_sizes/font_size = 36
 text = "Settings"
 
-[node name="QuitButton" type="Button" parent="VBoxContainer" unique_id=1637353847]
+[node name="QuitButton" type="Button" parent="VBoxContainer/Buttons" unique_id=1637353847]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 48
+theme_override_font_sizes/font_size = 36
 text = "Quit"
 
 [node name="BGM" type="FmodEventEmitter2D" parent="." unique_id=693303257]
