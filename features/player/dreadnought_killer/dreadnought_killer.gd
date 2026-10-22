@@ -17,6 +17,9 @@ const CONTROL_HINTS := [
 	{"label": "Switch Character", "actions": ["switch_character"]},
 ]
 
+## Only listed in scenes that actually have a wire puzzle.
+const WIRE_PUZZLE_HINT := {"label": "Open Wire Puzzle", "actions": ["toggle_wire_puzzle"]}
+
 var _grid: Grid
 var _active: bool = false
 var _moving: bool = false
@@ -93,6 +96,8 @@ func is_controls_active() -> bool:
 	return _active and can_process()
 
 func get_control_hints() -> Array:
+	if get_tree().get_first_node_in_group(WirePuzzle.GROUP) != null:
+		return CONTROL_HINTS + [WIRE_PUZZLE_HINT]
 	return CONTROL_HINTS
 
 func is_busy() -> bool:

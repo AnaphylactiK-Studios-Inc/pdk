@@ -92,6 +92,7 @@ const REMAPPABLE_ACTIONS := {
 	"move_left": "Move Left",
 	"move_right": "Move Right",
 	"switch_character": "Switch Character",
+	"pause": "Pause",
 	"jump": "Jump",
 	"sprint": "Sprint",
 	"toggle_sprint": "Sprint (Toggle)",
@@ -176,6 +177,8 @@ func _ready() -> void:
 	_save_timer = Timer.new()
 	_save_timer.one_shot = true
 	_save_timer.wait_time = SAVE_DEBOUNCE
+	# The pause menu changes settings while the tree is paused.
+	_save_timer.process_mode = Node.PROCESS_MODE_ALWAYS
 	_save_timer.timeout.connect(save_settings)
 	add_child(_save_timer)
 
@@ -743,6 +746,23 @@ func load_settings() -> void:
 		var dicts: Variant = config.get_value("input", action, [])
 		if dicts is Array:
 			_set_binds(action, dicts)
+			_keep_one_bind_per_family(action)
+
+
+## Older saves stored the arrow keys as a second keyboard bind on move_*;
+## keep only the first bind of each family so they fit the one-per-family model.
+func _keep_one_bind_per_family(action: String) -> void:
+	var events := InputMap.action_get_events(action)
+	var seen := {}
+	var kept: Array = []
+	for e in events:
+		var family := get_event_family(e)
+		if seen.has(family):
+			continue
+		seen[family] = true
+		kept.append(_event_to_dict(e))
+	if kept.size() < events.size():
+		_set_binds(action, kept)
 
 
 func _get_bool(config: ConfigFile, section: String, key: String, default: bool) -> bool:

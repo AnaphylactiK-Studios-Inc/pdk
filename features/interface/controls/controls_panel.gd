@@ -4,6 +4,7 @@ signal closed
 
 const BIND_BUTTON_WIDTH := 160
 const SECTION_HEADER_COLOR := Color(0.55, 0.62, 0.75)
+const ESCAPE_BINDABLE_ACTION := "pause"
 
 @onready var kbm_tab_button: Button = %KbmTabButton
 @onready var controller_tab_button: Button = %ControllerTabButton
@@ -134,11 +135,12 @@ func _on_bind_pressed(action: String) -> void:
 
 	_listening_action = action
 	(_bind_buttons[action] as Button).text = "..."
-	hint_label.text = (
-		"Press a controller button or move a stick. Escape cancels, Delete unbinds."
-		if _active_family == SettingsManager.BindFamily.JOY
-		else "Press a key or mouse button. Escape cancels, Delete unbinds."
-	)
+	if _active_family == SettingsManager.BindFamily.JOY:
+		hint_label.text = "Press a controller button or move a stick. Escape cancels, Delete unbinds."
+	elif action == ESCAPE_BINDABLE_ACTION:
+		hint_label.text = "Press a key or mouse button. Delete unbinds."
+	else:
+		hint_label.text = "Press a key or mouse button. Escape cancels, Delete unbinds."
 	(_bind_buttons[action] as Button).release_focus()
 	set_process_input(true)
 
@@ -172,7 +174,8 @@ func _input(event: InputEvent) -> void:
 
 	if event is InputEventKey:
 		match event.keycode:
-			KEY_ESCAPE:
+			# Escape is Pause's default, so on that row it binds instead of cancelling.
+			KEY_ESCAPE when _listening_action != ESCAPE_BINDABLE_ACTION:
 				get_viewport().set_input_as_handled()
 				MenuAudio.back()
 				_stop_listening()
