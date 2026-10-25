@@ -34,10 +34,16 @@ func _process(_delta: float) -> void:
 
 
 func _find_active_source() -> Node:
+	var best: Node = null
+	var best_priority := -INF
 	for node in get_tree().get_nodes_in_group(SOURCE_GROUP):
-		if node.is_controls_active():
-			return node
-	return null
+		if not node.is_controls_active():
+			continue
+		var priority: float = node.get(&"controls_hint_priority") if &"controls_hint_priority" in node else 0.0
+		if priority > best_priority:
+			best = node
+			best_priority = priority
+	return best
 
 
 func _rebuild() -> void:
