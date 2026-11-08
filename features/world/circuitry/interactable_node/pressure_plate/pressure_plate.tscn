@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ddw0wydynyg6e"]
 
-[ext_resource type="Script" uid="uid://bk6tpginntnf8" path="res://features/world/trigger/pressure_plate/pressure_plate.gd" id="1_ra4vf"]
+[ext_resource type="Script" uid="uid://bk6tpginntnf8" path="res://features/world/circuitry/interactable_node/pressure_plate/pressure_plate.gd" id="1_ra4vf"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_f1lh2"]
 

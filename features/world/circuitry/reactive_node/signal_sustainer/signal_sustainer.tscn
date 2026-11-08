@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://dseeod2iy4lrc"]
+
+[ext_resource type="Script" uid="uid://cgwjy2e4je8be" path="res://features/world/circuitry/reactive_node/signal_sustainer/signal_sustainer.gd" id="1_6c5k4"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_rg5n0"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6c5k4"]
+transparency = 1
+albedo_color = Color(0.57254905, 0.14901961, 0, 0.6627451)
+
+[node name="SignalSustainer" type="Node3D" unique_id=1387099847 node_paths=PackedStringArray("mesh")]
+transform = Transform3D(0.3, 0, 0, 0, 0.72, 0, 0, 0, 0.3, 0, 0, 0)
+script = ExtResource("1_6c5k4")
+mesh = NodePath("Mesh")
+
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=1941301452]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+mesh = SubResource("BoxMesh_rg5n0")
+surface_material_override/0 = SubResource("StandardMaterial3D_6c5k4")

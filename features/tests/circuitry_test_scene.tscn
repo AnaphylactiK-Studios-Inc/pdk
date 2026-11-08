@@ -1,13 +1,15 @@
 [gd_scene format=3 uid="uid://cmj8nhsuy3b7h"]
 
-[ext_resource type="PackedScene" uid="uid://dbnd2cyiklnfh" path="res://features/world/trigger/manual_trigger/lever/lever.tscn" id="1_by4lx"]
 [ext_resource type="Texture2D" uid="uid://bp5ejxar7ql82" path="res://assets/2d/PLACEHOLDER_clear_sky.png" id="1_dytx0"]
-[ext_resource type="PackedScene" uid="uid://ccditdaywowtc" path="res://features/world/trigger/manual_trigger/button/button.tscn" id="2_ob8ju"]
+[ext_resource type="PackedScene" uid="uid://ccditdaywowtc" path="res://features/world/circuitry/interactable_node/button/button.tscn" id="2_ob8ju"]
 [ext_resource type="PackedScene" uid="uid://di57l68jpvua" path="res://features/player/peanut/peanut-character.tscn" id="2_smxyd"]
-[ext_resource type="PackedScene" uid="uid://d3mmdskg8uv0o" path="res://features/world/triggerable/wire/wire.tscn" id="5_yirpm"]
-[ext_resource type="PackedScene" uid="uid://ddw0wydynyg6e" path="res://features/world/trigger/pressure_plate/pressure_plate.tscn" id="6_hhd2h"]
-[ext_resource type="PackedScene" uid="uid://bao7vydfblf0f" path="res://features/world/triggerable/door/door.tscn" id="6_max6g"]
-[ext_resource type="PackedScene" uid="uid://5a65xaleut14" path="res://features/world/triggerable/platform/platform.tscn" id="7_8fde8"]
+[ext_resource type="PackedScene" uid="uid://d3mmdskg8uv0o" path="res://features/world/circuitry/reactive_node/wire/wire.tscn" id="5_yirpm"]
+[ext_resource type="PackedScene" uid="uid://ddw0wydynyg6e" path="res://features/world/circuitry/interactable_node/pressure_plate/pressure_plate.tscn" id="6_hhd2h"]
+[ext_resource type="PackedScene" uid="uid://bao7vydfblf0f" path="res://features/world/circuitry/reactive_node/door/door.tscn" id="6_max6g"]
+[ext_resource type="PackedScene" uid="uid://5a65xaleut14" path="res://features/world/circuitry/reactive_node/platform/platform.tscn" id="7_8fde8"]
+[ext_resource type="PackedScene" uid="uid://btbbllsi6bf03" path="res://features/world/circuitry/interactable_node/lever/lever.tscn" id="7_myha2"]
+[ext_resource type="PackedScene" uid="uid://cj7d1i6qq3tp" path="res://features/world/circuitry/reactive_node/delay_block/delay_block.tscn" id="9_p7kyn"]
+[ext_resource type="PackedScene" uid="uid://dseeod2iy4lrc" path="res://features/world/circuitry/reactive_node/signal_sustainer/signal_sustainer.tscn" id="10_d07wg"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_yirpm"]
 panorama = ExtResource("1_dytx0")
@@ -37,6 +39,23 @@ size = Vector3(25, 0.80892336, 25)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_myha2"]
 
+[sub_resource type="BoxMesh" id="BoxMesh_d07wg"]
+size = Vector3(1, 1, 1.3028564)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_f1lh2"]
+top_radius = 0.47216797
+bottom_radius = 0.47216797
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_p7kyn"]
+transparency = 1
+albedo_color = Color(0.5731696, 0.14935315, 1.3957917e-06, 0.6627451)
+
+[sub_resource type="BoxMesh" id="BoxMesh_p7kyn"]
+size = Vector3(1.5991211, 1, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_f1lh2"]
+size = Vector3(1.2954102, 1, 1)
+
 [node name="CircuitryTestScene" type="Node3D" unique_id=767040196]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1793835094]
@@ -45,12 +64,41 @@ environment = SubResource("Environment_max6g")
 [node name="Plane" type="StaticBody3D" parent="." unique_id=300973135]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Plane" unique_id=742984944]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.06172037, -0.107052326, 0.061229944)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.054933667, -0.103749275, 0.061204225)
 mesh = SubResource("PlaneMesh_8fde8")
+
+[node name="Label3D" type="Label3D" parent="Plane/MeshInstance3D" unique_id=1514752887]
+transform = Transform3D(-1, 0, -8.940697e-08, 0, 1, 0, 8.940697e-08, 0, -1, 0, 0.23331758, 0.9418564)
+text = "Press to send signal"
+font_size = 12
+
+[node name="Label3D2" type="Label3D" parent="Plane/MeshInstance3D" unique_id=153963452]
+transform = Transform3D(-1, 0, -8.940697e-08, 0, 1, 0, 8.940697e-08, 0, -1, -1.1891148, 0.32731888, 0.9418564)
+text = "Delay (2 Seconds)"
+font_size = 12
+
+[node name="Label3D3" type="Label3D" parent="Plane/MeshInstance3D" unique_id=1706809212]
+transform = Transform3D(-1, 0, -8.940697e-08, 0, 1, 0, 8.940697e-08, 0, -1, -2.5907216, 0.44019088, 0.9418564)
+text = "Branching Wires"
+font_size = 12
+
+[node name="Label3D4" type="Label3D" parent="Plane/MeshInstance3D" unique_id=757022323]
+transform = Transform3D(-1, 0, -8.940697e-08, 0, 1, 0, 8.940697e-08, 0, -1, -2.5907216, 0.24202564, 0.38984165)
+text = "Delay (2 Seconds)"
+font_size = 12
+
+[node name="Label3D5" type="Label3D" parent="Plane/MeshInstance3D" unique_id=271953373]
+transform = Transform3D(-1, 0, -8.940697e-08, 0, 1, 0, 8.940697e-08, 0, -1, -2.7740083, 0.18507588, -0.28736177)
+text = "Signal Sustainer (5 seconds)"
+font_size = 12
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Plane" unique_id=670391606]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.49507728, 0)
 shape = SubResource("BoxShape3D_22fu7")
+
+[node name="Platform" parent="Plane" unique_id=1531490433 node_paths=PackedStringArray("inputs") instance=ExtResource("7_8fde8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2500463, -0.04422928, -1.3225312)
+inputs = [NodePath("../../Wire10")]
 
 [node name="VoxelGI" type="VoxelGI" parent="." unique_id=64284892]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.6310425, 0, 0)
@@ -64,27 +112,20 @@ light_color = Color(0.79607844, 0.9137255, 1, 1)
 light_specular = 1.14
 shadow_enabled = true
 
-[node name="Platform" parent="." unique_id=1531490433 node_paths=PackedStringArray("triggers") instance=ExtResource("7_8fde8")]
+[node name="Platform" parent="." unique_id=226802062 node_paths=PackedStringArray("inputs") instance=ExtResource("7_8fde8")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.27086735, -0.046543777, 2.6822412)
-triggers = [NodePath("Platform/PressurePlate")]
+inputs = [NodePath("Platform/PressurePlate")]
 
 [node name="Platform" parent="Platform" index="0" unique_id=1628791351]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.4633017, 0, -1.2656467)
 
 [node name="PressurePlate" parent="Platform/Platform" index="2" unique_id=1333214972 instance=ExtResource("6_hhd2h")]
-transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, -0.020524979, 0.061260335, 0.0021044016)
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0.006187439, 0.053547017, -0.007902861)
 
-[node name="Wire" parent="." unique_id=1965212947 node_paths=PackedStringArray("triggers") instance=ExtResource("5_yirpm")]
-transform = Transform3D(2.9802322e-08, 0, -0.34671646, 0, 1, 0, 1, 0, 1.0332956e-08, -0.27652246, -0.084872775, 1.0459964)
-triggers = [NodePath("../Lever")]
-
-[node name="Lever" parent="." unique_id=708373182 instance=ExtResource("1_by4lx")]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0.09833372, -0.11006938, 1.0552639)
-is_on = false
-
-[node name="Door" parent="." unique_id=2140460678 node_paths=PackedStringArray("triggers") instance=ExtResource("6_max6g")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5893482, 0.40938443, 2.8793132)
-triggers = [NodePath("../WallSegments/Button")]
+[node name="Label3D2" type="Label3D" parent="Platform/Platform" index="3" unique_id=67929406]
+transform = Transform3D(-0.9999619, 0, -0.008726637, 0, 1, 0, 0.008726637, 0, -0.9999619, -0.014831066, 0.31726474, 0.15941846)
+text = "Pressure Plate"
+font_size = 12
 
 [node name="WallSegments" type="StaticBody3D" parent="." unique_id=1689608159]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 2.689487, 0.38906264, 3.3163314)
@@ -101,20 +142,25 @@ shape = SubResource("BoxShape3D_myha2")
 transform = Transform3D(1, 0, 0, 0, 2.2639494, 0, 0, 0, 1, 0, -0.23837152, 2.1921725)
 mesh = SubResource("BoxMesh_rg5n0")
 
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="WallSegments" unique_id=271326043]
+transform = Transform3D(1, 0, 0, 0, 1.5046426, 0, 0, 0, 1, 0, 0.14713705, 0)
+mesh = SubResource("BoxMesh_rg5n0")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="WallSegments" unique_id=1476467760]
+transform = Transform3D(1, 0, 0, 0, 2.2639494, 0, 0, 0, 1, 0, -0.23837152, 2.1921725)
+mesh = SubResource("BoxMesh_rg5n0")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="WallSegments" unique_id=620521119]
+transform = Transform3D(1, 0, 0, 0, 2.2639494, 0, 0, 0, 1, -7.1525574e-07, -0.23837152, -2.2657259)
+mesh = SubResource("BoxMesh_rg5n0")
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="WallSegments" unique_id=2045576002]
+transform = Transform3D(1, 0, 0, 0, 2.2639494, 0, 0, 0, 1, -4.7683716e-07, -0.23837152, -4.590523)
+mesh = SubResource("BoxMesh_d07wg")
+
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="WallSegments" unique_id=845997089]
 transform = Transform3D(1, 0, 0, 0, 2.2639494, 0, 0, 0, 1, 0, -0.23837152, 2.1921725)
 shape = SubResource("BoxShape3D_myha2")
-
-[node name="Button" parent="WallSegments" unique_id=1336324132 instance=ExtResource("2_ob8ju")]
-transform = Transform3D(-8.742278e-08, -2, 0, 2, -8.742278e-08, 0, 0, 0, 2, -0.489882, -0.22905071, 0.20993829)
-
-[node name="Wire" parent="WallSegments" unique_id=1850777998 node_paths=PackedStringArray("triggers") instance=ExtResource("5_yirpm")]
-transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, -0.14855002, 0, 0.99999994, -6.4933277e-09, -0.527792, 0.03765762, 0.20905685)
-triggers = [NodePath("../Button")]
-
-[node name="Wire2" parent="WallSegments" unique_id=902598797 node_paths=PackedStringArray("triggers") instance=ExtResource("5_yirpm")]
-transform = Transform3D(-0.99999994, 0, 2.204347e-09, 0, 1, 0, -1.3909066e-08, 0, -0.15848282, -0.51889443, 0.17129499, 0.35514808)
-triggers = [NodePath("../Button")]
 
 [node name="Peanut" parent="." unique_id=447074899 instance=ExtResource("2_smxyd")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.424883, 0.061950624, -0.69818366)
@@ -122,8 +168,111 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.424883, 0.061950624, -0.698
 [node name="Camera3D" type="Camera3D" parent="Peanut" unique_id=2139937882]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -0.025038004, 0.89510566, -1.6447877)
 
+[node name="Wire1" parent="." unique_id=692499757 node_paths=PackedStringArray("inputs") instance=ExtResource("5_yirpm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4804301, 0.5468906, 2.7885394)
+inputs = [NodePath("../Lever")]
+
+[node name="Wire2" parent="." unique_id=1074416774 node_paths=PackedStringArray("inputs") instance=ExtResource("5_yirpm")]
+transform = Transform3D(-1.7484556e-08, -0.1359873, 0, 0.4, -5.944194e-09, 0, 0, 0, 0.4, 2.3324032, 0.83659816, 2.7885394)
+inputs = [NodePath("../Wire1")]
+
+[node name="WireLength" parent="Wire2" index="0" unique_id=377826323]
+transform = Transform3D(0.09999995, -5.3290705e-15, 0, 8.881784e-16, 1.1405724, 0, 0, 0, 0.09999995, 0.0065791607, -0.004003525, 0)
+
+[node name="WireLength2" type="MeshInstance3D" parent="Wire2" unique_id=820479293]
+transform = Transform3D(0.09999995, -5.3290705e-15, 0, 8.881784e-16, 1.1405724, 0, 0, 0, 0.09999995, 0.0065791607, -0.004003525, 0)
+mesh = SubResource("CylinderMesh_f1lh2")
+surface_material_override/0 = SubResource("StandardMaterial3D_p7kyn")
+
+[node name="Lever" parent="." unique_id=587112311 instance=ExtResource("7_myha2")]
+transform = Transform3D(2, 0, 0, 0, -8.742278e-08, 2, 0, -2, -8.742278e-08, 2.4764888, 0.16034973, 2.8243902)
+
+[node name="Door" parent="." unique_id=1845904367 node_paths=PackedStringArray("inputs") instance=ExtResource("6_max6g")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5893482, 0.40938443, 2.8793132)
+inputs = [NodePath("../Wire2")]
+
+[node name="Door2" parent="." unique_id=1680434510 node_paths=PackedStringArray("inputs") instance=ExtResource("6_max6g")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5893482, 0.40938443, 2.8793132)
+inputs = [NodePath("../Wire2")]
+
+[node name="Button" parent="." unique_id=1336324132 instance=ExtResource("2_ob8ju")]
+transform = Transform3D(2, 0, 0, 0, -8.742278e-08, 2, 0, -2, -8.742278e-08, 0.12147024, 0.3509609, 1.0421126)
+
+[node name="Wall" type="MeshInstance3D" parent="." unique_id=1009178487]
+transform = Transform3D(3.2978878, 0, 0, 0, 2.2639494, 0, 0, 0, 0.43007642, -2.2089233, -0.34447062, 1.2612047)
+mesh = SubResource("BoxMesh_p7kyn")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Wall" unique_id=201813368]
+transform = Transform3D(1, 0, 0, 0, 0.9999999, 0, 0, 0, 1, -0.14770508, 0, 0)
+shape = SubResource("BoxShape3D_f1lh2")
+
+[node name="Wire" parent="." unique_id=1234895057 node_paths=PackedStringArray("inputs") instance=ExtResource("5_yirpm")]
+transform = Transform3D(-4.371139e-08, -1.8197422, 0, 1, -7.9543454e-08, 0, 0, 0, 1, -0.47744912, 0.36105716, 1.0256321)
+inputs = [NodePath("../Button")]
+
+[node name="Wire3" parent="." unique_id=811291578 node_paths=PackedStringArray("inputs") instance=ExtResource("5_yirpm")]
+transform = Transform3D(-4.371139e-08, -1.703303, 0, 1, -7.445374e-08, 0, 0, 0, 1, -1.6979223, 0.36105716, 1.0256321)
+inputs = [NodePath("../DelayBlock")]
+
+[node name="Wire4" parent="." unique_id=2140277631 node_paths=PackedStringArray("inputs") instance=ExtResource("5_yirpm")]
+transform = Transform3D(-0.99999994, 1.05375506e-07, 0, -1.5099579e-07, -0.69787043, 0, 0, 0, 1, -2.195851, 0.1378051, 1.0256321)
+inputs = [NodePath("../Wire3")]
+
+[node name="Wire7" parent="." unique_id=844591271 node_paths=PackedStringArray("inputs") instance=ExtResource("5_yirpm")]
+transform = Transform3D(1, -3.085734e-08, 0, 5.960465e-08, 0.5177002, 0, 0, 0, 1, -2.20192, 0.5207168, 1.0256321)
+inputs = [NodePath("../Wire3")]
+
+[node name="Wire8" parent="." unique_id=1468806900 node_paths=PackedStringArray("inputs") instance=ExtResource("5_yirpm")]
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, -2.4947958, 0.6717972, 1.0256321)
+inputs = [NodePath("../Wire7")]
+
+[node name="Wire5" parent="." unique_id=2092524194 node_paths=PackedStringArray("inputs") instance=ExtResource("5_yirpm")]
+transform = Transform3D(1, 0, 0, 0, -2.9150828e-08, 1, 0, -0.6668932, -4.371139e-08, -2.199634, -0.09365225, 0.83413315)
+inputs = [NodePath("../Wire4")]
+
+[node name="Wire6" parent="." unique_id=1875506611 node_paths=PackedStringArray("inputs") instance=ExtResource("5_yirpm")]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -2.2049751, -0.09365225, 0.15817434)
+inputs = [NodePath("../DelayBlock2")]
+
+[node name="Wire10" parent="." unique_id=1850777998 node_paths=PackedStringArray("inputs") instance=ExtResource("5_yirpm")]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -2.2049751, -0.09365225, -0.56442195)
+inputs = [NodePath("../SignalSustainer2")]
+
+[node name="DelayBlock" parent="." unique_id=946165943 node_paths=PackedStringArray("inputs") instance=ExtResource("9_p7kyn")]
+transform = Transform3D(-4.371139e-09, -0.1, 0, 0.1, -4.371139e-09, 0, 0, 0, 0.1, -1.0843129, 0.3593941, 1.0207691)
+delay = 2.0
+inputs = [NodePath("../Wire")]
+
+[node name="DelayBlock2" parent="." unique_id=268184694 node_paths=PackedStringArray("inputs") instance=ExtResource("9_p7kyn")]
+transform = Transform3D(1.9106856e-16, 4.371139e-09, -0.1, 0.1, -4.371139e-09, 0, -4.371139e-09, -0.1, -4.371139e-09, -2.2006211, -0.10633227, 0.5608361)
+delay = 2.0
+inputs = [NodePath("../Wire5")]
+
+[node name="Lever3" parent="." unique_id=824075837 instance=ExtResource("7_myha2")]
+transform = Transform3D(2, 0, 0, 0, 5.9604645e-08, 2, 0, -2, 5.9604645e-08, 7.1835413, 0.3623669, 2.8304536)
+
+[node name="Wire9" parent="." unique_id=814508621 node_paths=PackedStringArray("inputs") instance=ExtResource("5_yirpm")]
+transform = Transform3D(-4.371139e-08, -0.6059872, 0, 1, -2.6488541e-08, 0, 0, 0, 1, 6.971326, 0.36525524, 2.8057601)
+inputs = [NodePath("../Lever3")]
+
+[node name="Door3" parent="." unique_id=2140460678 node_paths=PackedStringArray("inputs") instance=ExtResource("6_max6g")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.0498657, 0.4093845, 2.919617)
+inputs = [NodePath("../SignalSustainer")]
+
+[node name="SignalSustainer" parent="." unique_id=1387099847 node_paths=PackedStringArray("inputs") instance=ExtResource("10_d07wg")]
+transform = Transform3D(-1.3113417e-08, -0.8841276, 0, 0.3, -3.8646444e-08, 0, 0, 0, 0.3, 6.706452, 0.37274772, 2.8076463)
+inputs = [NodePath("../Wire9")]
+
+[node name="SignalSustainer2" parent="." unique_id=2069321732 node_paths=PackedStringArray("inputs") instance=ExtResource("10_d07wg")]
+transform = Transform3D(-0.29999998, 6.294441e-08, -1.3027009e-15, 0, -2.9802322e-08, -0.29999998, -2.6226832e-08, -0.7200001, 1.4901161e-08, -2.201348, -0.09728982, -0.20838206)
+inputs = [NodePath("../Wire6")]
+
+[node name="Label3D" type="Label3D" parent="." unique_id=1443107754]
+transform = Transform3D(-0.9999619, 0, -0.008726637, 0, 1, 0, 0.008726637, 0, -0.9999619, 6.5828824, 0.27072096, 2.7360091)
+text = "Signal Sustainer 
+(5 seconds)"
+font_size = 12
+
 [editable path="Platform"]
-[editable path="Wire"]
-[editable path="Lever"]
-[editable path="WallSegments/Wire"]
-[editable path="WallSegments/Wire2"]
+[editable path="Wire1"]
+[editable path="Wire2"]
