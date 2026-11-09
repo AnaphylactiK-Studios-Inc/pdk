@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://d3mmdskg8uv0o"]
+
+[ext_resource type="Script" uid="uid://1b7pqbjif635" path="res://features/world/circuitry/reactive_node/wire/wire.gd" id="1_lhj8y"]
+[ext_resource type="ShaderMaterial" path="res://features/world/circuitry/reactive_node/wire/wire_material.tres" id="2_material"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_f1lh2"]
+top_radius = 0.47216797
+bottom_radius = 0.47216797
+
+[node name="Wire" type="Node3D" unique_id=1850777998 node_paths=PackedStringArray("wire_cylinder")]
+script = ExtResource("1_lhj8y")
+wire_cylinder = NodePath("WireLength")
+
+[node name="WireLength" type="MeshInstance3D" parent="." unique_id=377826323]
+transform = Transform3D(0.03, 0, 0, 0, 0.3, 0, 0, 0, 0.03, 0, 0, 0)
+mesh = SubResource("CylinderMesh_f1lh2")
+material_override = ExtResource("2_material")

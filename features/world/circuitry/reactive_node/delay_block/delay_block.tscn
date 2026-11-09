@@ -1,0 +1,63 @@
+[gd_scene format=3 uid="uid://cj7d1i6qq3tp"]
+
+[ext_resource type="Script" uid="uid://l1k1j14aw71n" path="res://features/world/circuitry/reactive_node/delay_block/delay_block.gd" id="1_yy1jx"]
+[ext_resource type="ShaderMaterial" path="res://features/world/circuitry/reactive_node/delay_block/delay_block_material.tres" id="2_material"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_rg5n0"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f1lh2"]
+transparency = 1
+albedo_color = Color(0.57254905, 0.14901961, 0, 0.6627451)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_mp7da"]
+height = 0.14404297
+
+[node name="DelayBlock" type="Node3D" unique_id=1041757506 node_paths=PackedStringArray("prism")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+script = ExtResource("1_yy1jx")
+prism = NodePath("MeshInstance3D")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1073811299]
+transform = Transform3D(0.7, 0, 0, 0, 1, 0, 0, 0, 0.7, 0, 0, 0)
+mesh = SubResource("CylinderMesh_rg5n0")
+material_override = ExtResource("2_material")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=1091433991]
+transform = Transform3D(0.7, 0, 0, 0, 1, 0, 0, 0, 0.7, 0, -0.9279785, 0)
+mesh = SubResource("CylinderMesh_mp7da")
+surface_material_override/0 = SubResource("StandardMaterial3D_f1lh2")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="." unique_id=1618872869]
+transform = Transform3D(0.7, 0, 0, 0, 1, 0, 0, 0, 0.7, 0, -0.66423476, 0)
+mesh = SubResource("CylinderMesh_mp7da")
+surface_material_override/0 = SubResource("StandardMaterial3D_f1lh2")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="." unique_id=469875413]
+transform = Transform3D(0.7, 0, 0, 0, 1, 0, 0, 0, 0.7, 0, -0.4053517, 0)
+mesh = SubResource("CylinderMesh_mp7da")
+surface_material_override/0 = SubResource("StandardMaterial3D_f1lh2")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="." unique_id=1923265306]
+transform = Transform3D(0.7, 0, 0, 0, 1, 0, 0, 0, 0.7, 0, -0.16346274, 0)
+mesh = SubResource("CylinderMesh_mp7da")
+surface_material_override/0 = SubResource("StandardMaterial3D_f1lh2")
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="." unique_id=11032881]
+transform = Transform3D(0.7, 0, 0, 0, 1, 0, 0, 0, 0.7, 0, 0.11538023, 0)
+mesh = SubResource("CylinderMesh_mp7da")
+surface_material_override/0 = SubResource("StandardMaterial3D_f1lh2")
+
+[node name="MeshInstance3D7" type="MeshInstance3D" parent="." unique_id=479113834]
+transform = Transform3D(0.7, 0, 0, 0, 1, 0, 0, 0, 0.7, 0, 0.37814653, 0)
+mesh = SubResource("CylinderMesh_mp7da")
+surface_material_override/0 = SubResource("StandardMaterial3D_f1lh2")
+
+[node name="MeshInstance3D8" type="MeshInstance3D" parent="." unique_id=228277310]
+transform = Transform3D(0.7, 0, 0, 0, 1, 0, 0, 0, 0.7, 0, 0.6226914, 0)
+mesh = SubResource("CylinderMesh_mp7da")
+surface_material_override/0 = SubResource("StandardMaterial3D_f1lh2")
+
+[node name="MeshInstance3D9" type="MeshInstance3D" parent="." unique_id=1974295046]
+transform = Transform3D(0.7, 0, 0, 0, 1, 0, 0, 0, 0.7, 0, 0.9290861, 0)
+mesh = SubResource("CylinderMesh_mp7da")
+surface_material_override/0 = SubResource("StandardMaterial3D_f1lh2")

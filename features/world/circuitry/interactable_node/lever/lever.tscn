@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://btbbllsi6bf03"]
+
+[ext_resource type="Script" uid="uid://jdnmm4t3wwfh" path="res://features/world/circuitry/interactable_node/lever/lever.gd" id="1_rdyc1"]
+[ext_resource type="PackedScene" uid="uid://qnxc2dj1tral" path="res://features/world/circuitry/interactable_node/lever/model/SM_leverOffPCC_01.fbx" id="2_rdyc1"]
+[ext_resource type="PackedScene" uid="uid://n5ypwjhcpib2" path="res://features/world/circuitry/interactable_node/lever/model/SM_leverOnPCC_03.fbx" id="3_c8cyv"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_o3rf3"]
+size = Vector3(0.09820557, 0.13962418, 0.23181152)
+
+[node name="Lever" type="Node3D" unique_id=824075837 node_paths=PackedStringArray("on_model", "off_model")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+script = ExtResource("1_rdyc1")
+on_model = NodePath("OnModel")
+off_model = NodePath("OffModel")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1697343759]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.021246545, 0)
+collision_layer = 9
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=457222943]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.06287834, 0)
+shape = SubResource("BoxShape3D_o3rf3")
+
+[node name="OnModel" parent="." unique_id=1866844760 instance=ExtResource("2_rdyc1")]
+
+[node name="OffModel" parent="." unique_id=37580615 instance=ExtResource("3_c8cyv")]

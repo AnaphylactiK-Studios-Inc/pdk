@@ -115,7 +115,7 @@ func _ready() -> void:
 	if anim.has_animation("interact"):
 		anim.get_animation("interact").loop_mode = Animation.LOOP_NONE
 
-	interaction_area.interact_started.connect(_on_interact_started)
+	interaction_area.interacted.connect(_on_interacted)
 	interaction_area.rotation.y = model.rotation.y
 
 	# Keeps the character from sliding down slopes when standing still
@@ -521,10 +521,9 @@ func _play(clip: String, fallback: String = "") -> void:
 		anim.play(want)
 
 
-func _on_interact_started(_trigger: ManualTrigger) -> void:
+func _on_interacted() -> void:
 	anim.speed_scale = 1.0
 	_play("interact")
-
 
 ## A capsule meets a slope tangentially, so its lowest point never reaches the
 ## surface the player can see: on an incline the body rides
