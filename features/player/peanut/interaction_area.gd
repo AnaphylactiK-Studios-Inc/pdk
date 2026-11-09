@@ -1,35 +1,21 @@
 extends Area3D
 
-var current_node: InteractableNode = null
-
 signal interacted
-
-func _ready() -> void:
-	body_entered.connect(_on_body_entered)
-	body_exited.connect(_on_body_exited)
 
 func set_enabled(enabled: bool) -> void:
 	set_process_unhandled_input(enabled)
 
-func _physics_process(_delta: float) -> void:
-	current_node = _find_nearest_node()
-
-func _on_body_entered(_body: Node3D) -> void:
-	current_node = _find_nearest_node()
-
-func _on_body_exited(_body: Node3D) -> void:
-	current_node = _find_nearest_node()
-
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("interact") and !event.is_echo():
-		current_node = _find_nearest_node()
+	if !event.is_action_pressed("interact") or event.is_echo():
+		return
 
-		if current_node == null:
-			return
+	var node := _find_nearest_node()
+	if node == null:
+		return
 
-		get_viewport().set_input_as_handled()
-		current_node.interact()
-		interacted.emit()
+	get_viewport().set_input_as_handled()
+	node.interact()
+	interacted.emit()
 
 func _find_nearest_node() -> InteractableNode:
 	var nearest: InteractableNode = null

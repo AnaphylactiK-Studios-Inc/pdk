@@ -10,6 +10,7 @@ var left_closed_position: Vector3
 var right_closed_position: Vector3
 
 var _tween: Tween
+var _pulse_pending := false
 
 func _ready() -> void:
 	left_closed_position = left_door.position
@@ -19,24 +20,15 @@ func _ready() -> void:
 
 	super._ready()
 
-	if is_on:
-		_set_door_positions(true)
-
 func process_inputs() -> void:
-	var should_open := !inputs.is_empty()
-
-	for input in inputs:
-		if input == null or !input.is_on:
-			should_open = false
-			break
-
-	set_state(should_open)
+	set_state(_inputs_satisfied())
 
 func _on_state_changed(value: bool) -> void:
 	_move_doors(value)
 
 func _on_activation_received() -> void:
-	if is_executing:
+	if is_on:
+		activate()
 		return
 
 	_move_doors(true, true)
@@ -44,6 +36,7 @@ func _on_activation_received() -> void:
 func _move_doors(open: bool, pulse: bool = false) -> void:
 	if _tween != null and _tween.is_valid():
 		_tween.kill()
+		_flush_pulse()
 		finish_execution()
 
 	var left_target := left_closed_position
@@ -59,13 +52,9 @@ func _move_doors(open: bool, pulse: bool = false) -> void:
 		var remaining := left_door.position.distance_to(left_target)
 		duration *= clampf(remaining / open_distance, 0.0, 1.0)
 
-	if is_zero_approx(duration):
+	if is_zero_approx(duration) and !pulse:
 		left_door.position = left_target
 		right_door.position = right_target
-
-		if pulse:
-			activate()
-
 		return
 
 	begin_execution()
@@ -78,16 +67,16 @@ func _move_doors(open: bool, pulse: bool = false) -> void:
 	_tween.parallel().tween_property(right_door, "position", right_target, duration)
 
 	if pulse:
-		_tween.tween_callback(activate)
+		_pulse_pending = true
+		_tween.tween_callback(_flush_pulse)
 		_tween.tween_property(left_door, "position", left_closed_position, open_time)
 		_tween.parallel().tween_property(right_door, "position", right_closed_position, open_time)
 
 	_tween.finished.connect(finish_execution)
 
-func _set_door_positions(open: bool) -> void:
-	if open:
-		left_door.position = left_closed_position + Vector3.LEFT * open_distance
-		right_door.position = right_closed_position + Vector3.RIGHT * open_distance
-	else:
-		left_door.position = left_closed_position
-		right_door.position = right_closed_position
+func _flush_pulse() -> void:
+	if !_pulse_pending:
+		return
+
+	_pulse_pending = false
+	activate()

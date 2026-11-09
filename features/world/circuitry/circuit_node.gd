@@ -6,8 +6,12 @@ signal activation_received
 signal execution_started
 signal execution_finished
 
-var is_executing := false
 var is_on := false
+var is_executing: bool:
+	get:
+		return _execution_count > 0
+
+var _execution_count := 0
 
 var outputs: Array[CircuitNode] = []
 
@@ -21,28 +25,23 @@ func set_state(value: bool) -> void:
 	is_on = value
 	state_changed.emit(is_on)
 
+func is_steady_source() -> bool:
+	return true
+
 func activate() -> void:
 	activation_received.emit()
 
-func receive_activation() -> void:
-	_on_activation_received()
-
-func _on_activation_received() -> void:
-	activate()
-
 func begin_execution() -> void:
-	if is_executing:
-		return
+	_execution_count += 1
 
-	is_executing = true
-	execution_started.emit()
+	if _execution_count == 1:
+		execution_started.emit()
 
 func finish_execution() -> void:
-	if !is_executing:
+	if _execution_count == 0:
 		return
 
-	is_executing = false
-	execution_finished.emit()
+	_execution_count -= 1
 
-func interact() -> void:
-	pass
+	if _execution_count == 0:
+		execution_finished.emit()

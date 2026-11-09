@@ -1,154 +1,59 @@
 extends ReactiveNode
 class_name DelayBlock
 
-@export var delay: float = 3.0
+@export_range(0.0, 10.0, 0.01, "or_greater") var delay: float = 3.0
 @export var prism: MeshInstance3D
 
-var timer: Timer
-var activation_timer: Timer
-
-var prism_material: ShaderMaterial
-var progress_tween: Tween
-
-var progress := 0.0
+var _level_tween: Tween
+var _pulse_tween: Tween
 
 func _ready() -> void:
-	_setup_material()
-
-	timer = Timer.new()
-	timer.one_shot = true
-	add_child(timer)
-	timer.timeout.connect(_on_timeout)
-
-	activation_timer = Timer.new()
-	activation_timer.one_shot = true
-	add_child(activation_timer)
-	activation_timer.timeout.connect(_on_activation_timeout)
+	var bounds := prism.mesh.get_aabb()
+	prism.set_instance_shader_parameter("bottom_height", bounds.position.y)
+	prism.set_instance_shader_parameter("top_height", bounds.end.y)
 
 	super._ready()
 
-
-func _setup_material() -> void:
-	var bounds: AABB = prism.mesh.get_aabb()
-
-	var shader := Shader.new()
-
-	shader.code = """
-	shader_type spatial;
-	render_mode blend_mix;
-
-	uniform vec4 off_color : source_color = vec4(0.5725, 0.1490, 0.0, 0.6627);
-	uniform vec4 on_color : source_color = vec4(1.0, 0.25, 0.0, 1.0);
-
-	uniform float progress : hint_range(0.0, 1.0) = 0.0;
-	uniform float bottom_height;
-	uniform float top_height;
-
-	varying float local_height;
-
-	void vertex() {
-		local_height = VERTEX.y;
-	}
-
-	void fragment() {
-		float height = (local_height - bottom_height) / (top_height - bottom_height);
-
-		float band_width = 0.04;
-		float band = (1.0 - smoothstep(
-			band_width,
-			band_width + 0.015,
-			abs(height - progress)
-		)) * step(0.001, progress);
-
-		float intensity = band;
-
-		vec3 color = mix(off_color.rgb, on_color.rgb, intensity);
-
-		ALBEDO = color;
-		ALPHA = mix(off_color.a, on_color.a, intensity);
-		EMISSION = mix(off_color.rgb, on_color.rgb, band) * band * 3.0;
-	}
-	"""
-
-	prism_material = ShaderMaterial.new()
-	prism_material.shader = shader
-
-	prism_material.set_shader_parameter("bottom_height", bounds.position.y)
-	prism_material.set_shader_parameter("top_height", bounds.end.y)
-
-	prism.material_override = prism_material
-
-
-func _start_progress() -> void:
-	_reset_progress()
-
-	progress_tween = create_tween()
-	progress_tween.set_trans(Tween.TRANS_LINEAR)
-	progress_tween.set_ease(Tween.EASE_IN_OUT)
-
-	progress_tween.tween_method(
-		_set_progress,
-		0.0,
-		1.0,
-		delay
-	)
-
-
-func _set_progress(value: float) -> void:
-	progress = value
-	prism_material.set_shader_parameter("progress", progress)
-
-
-func _reset_progress() -> void:
-	if progress_tween != null and progress_tween.is_valid():
-		progress_tween.kill()
-
-	progress = 0.0
-	prism_material.set_shader_parameter("progress", progress)
-
-
 func process_inputs() -> void:
-	if inputs.is_empty():
-		_on_trigger_state_changed(false)
-		return
-
-	for input in inputs:
-		if input == null or !input.is_on:
-			_on_trigger_state_changed(false)
-			return
-
-	_on_trigger_state_changed(true)
-
-
-func _on_trigger_state_changed(value: bool) -> void:
-	if !value:
-		timer.stop()
-		_reset_progress()
-
-		if is_executing:
+	if !_inputs_satisfied():
+		if _level_tween != null:
+			_level_tween.kill()
+			_level_tween = null
 			finish_execution()
 
+		_set_progress(0.0)
 		set_state(false)
 
-	elif !is_on and timer.is_stopped():
+	elif !is_on and _level_tween == null:
 		begin_execution()
-		_start_progress()
-		timer.start(delay)
+		_level_tween = _create_progress_tween(_set_progress, _on_level_finished)
 
-
-func _on_timeout() -> void:
+func _on_level_finished() -> void:
+	_level_tween = null
 	set_state(true)
 	finish_execution()
 
-
 func _on_activation_received() -> void:
-	if activation_timer.is_stopped():
-		begin_execution()
-		_start_progress()
-		activation_timer.start(delay)
+	if _pulse_tween != null:
+		return
 
+	begin_execution()
+	_pulse_tween = _create_progress_tween(_set_pulse_progress, _on_pulse_finished)
 
-func _on_activation_timeout() -> void:
+func _on_pulse_finished() -> void:
+	_pulse_tween = null
 	activate()
-	_reset_progress()
+	_set_pulse_progress(0.0)
 	finish_execution()
+
+func _create_progress_tween(setter: Callable, on_finished: Callable) -> Tween:
+	var tween := create_tween()
+	tween.tween_method(setter, 0.0, 1.0, delay)
+	tween.tween_callback(on_finished)
+	return tween
+
+func _set_progress(value: float) -> void:
+	prism.set_instance_shader_parameter("progress", value)
+
+func _set_pulse_progress(value: float) -> void:
+	prism.set_instance_shader_parameter("pulse_progress", value)

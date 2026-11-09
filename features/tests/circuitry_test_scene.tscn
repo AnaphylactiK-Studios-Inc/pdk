@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://btbbllsi6bf03" path="res://features/world/circuitry/interactable_node/lever/lever.tscn" id="7_myha2"]
 [ext_resource type="PackedScene" uid="uid://cj7d1i6qq3tp" path="res://features/world/circuitry/reactive_node/delay_block/delay_block.tscn" id="9_p7kyn"]
 [ext_resource type="PackedScene" uid="uid://dseeod2iy4lrc" path="res://features/world/circuitry/reactive_node/signal_sustainer/signal_sustainer.tscn" id="10_d07wg"]
+[ext_resource type="PackedScene" path="res://features/interface/controls_hint/controls_hint.tscn" id="11_ctrlhint"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_yirpm"]
 panorama = ExtResource("1_dytx0")
@@ -272,6 +273,9 @@ transform = Transform3D(-0.9999619, 0, -0.008726637, 0, 1, 0, 0.008726637, 0, -0
 text = "Signal Sustainer 
 (5 seconds)"
 font_size = 12
+
+
+[node name="ControlsHint" parent="." instance=ExtResource("11_ctrlhint")]
 
 [editable path="Platform"]
 [editable path="Wire1"]
